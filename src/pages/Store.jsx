@@ -11,7 +11,20 @@ const products = [
   { id: 3, name: "Gadget Innovador", price: "$79.99", image: "🎧", category: "Audio" },
   { id: 4, name: "Herramienta Útil", price: "$29.99", image: "🔧", category: "Herramientas" },
   { id: 5, name: "Decoración Moderna", price: "$39.99", image: "🏠", category: "Hogar" },
-  { id: 6, name: "Producto Exclusivo", price: "$149.99", image: "💎", category: "Premium" }
+  { id: 6, name: "Producto Exclusivo", price: "$149.99", image: "💎", category: "Premium" },
+  { id: 7, name: "Producto Premium", price: "$99.99", image: "📱", category: "Tecnología" },
+  { id: 8, name: "Accesorio Elegante", price: "$49.99", image: "⌚", category: "Accesorios" },
+  { id: 9, name: "Gadget Innovador", price: "$79.99", image: "🎧", category: "Audio" },
+  { id: 10, name: "Herramienta Útil", price: "$29.99", image: "🔧", category: "Herramientas" },
+  { id: 11, name: "Decoración Moderna", price: "$39.99", image: "🏠", category: "Hogar" },
+  { id: 12, name: "Producto Exclusivo", price: "$149.99", image: "💎", category: "Premium" },
+  { id: 13, name: "Producto Premium", price: "$99.99", image: "📱", category: "Tecnología" },
+  { id: 14, name: "Accesorio Elegante", price: "$49.99", image: "⌚", category: "Accesorios" },
+  { id: 15, name: "Gadget Innovador", price: "$79.99", image: "🎧", category: "Audio" },
+  { id: 16, name: "Herramienta Útil", price: "$29.99", image: "🔧", category: "Herramientas" },
+  { id: 17, name: "Decoración Moderna", price: "$39.99", image: "🏠", category: "Hogar" },
+  { id: 18, name: "Producto Exclusivo", price: "$149.99", image: "💎", category: "Premium" },
+  { id: 19, name: "Producto Premium", price: "$99.99", image: "📱", category: "Tecnología" },
 ];
 
 export default function Store() {

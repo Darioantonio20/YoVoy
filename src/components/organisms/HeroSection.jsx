@@ -23,8 +23,8 @@ const HeroSection = memo(() => {
       <div className="absolute inset-0">
         <Dither
           waveSpeed={0.05}
-          waveFrequency={3}
-          waveAmplitude={0.3}
+          waveFrequency={2}
+          waveAmplitude={0.1}
           waveColor={[0.4, 0.4, 0.4]}
           colorNum={4}
           pixelSize={2}
