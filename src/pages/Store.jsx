@@ -26,12 +26,12 @@ export default function Store() {
       <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
         <Beams
           beamWidth={1.1}
-          beamHeight={21}
-          beamNumber={26}
+          beamHeight={6}
+          beamNumber={6}
           lightColor="#ffffff"
-          speed={3.9}
-          noiseIntensity={2.9}
-          scale={0.33}
+          speed={0.5}
+          noiseIntensity={1}
+          scale={0.3}
           rotation={30}
         />
       </div>
