@@ -1,33 +1,27 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../components/atoms/Button";
 import PageHeader from "../components/molecules/PageHeader";
 import { ShoppingBag } from "lucide-react";
 import ProductGrid from "../components/organisms/ProductGrid";
 import Beams from "../components/organisms/Beams";
-
-const products = [
-  { id: 1, name: "Producto Premium", price: "$99.99", image: "📱", category: "Tecnología" },
-  { id: 2, name: "Accesorio Elegante", price: "$49.99", image: "⌚", category: "Accesorios" },
-  { id: 3, name: "Gadget Innovador", price: "$79.99", image: "🎧", category: "Audio" },
-  { id: 4, name: "Herramienta Útil", price: "$29.99", image: "🔧", category: "Herramientas" },
-  { id: 5, name: "Decoración Moderna", price: "$39.99", image: "🏠", category: "Hogar" },
-  { id: 6, name: "Producto Exclusivo", price: "$149.99", image: "💎", category: "Premium" },
-  { id: 7, name: "Producto Premium", price: "$99.99", image: "📱", category: "Tecnología" },
-  { id: 8, name: "Accesorio Elegante", price: "$49.99", image: "⌚", category: "Accesorios" },
-  { id: 9, name: "Gadget Innovador", price: "$79.99", image: "🎧", category: "Audio" },
-  { id: 10, name: "Herramienta Útil", price: "$29.99", image: "🔧", category: "Herramientas" },
-  { id: 11, name: "Decoración Moderna", price: "$39.99", image: "🏠", category: "Hogar" },
-  { id: 12, name: "Producto Exclusivo", price: "$149.99", image: "💎", category: "Premium" },
-  { id: 13, name: "Producto Premium", price: "$99.99", image: "📱", category: "Tecnología" },
-  { id: 14, name: "Accesorio Elegante", price: "$49.99", image: "⌚", category: "Accesorios" },
-  { id: 15, name: "Gadget Innovador", price: "$79.99", image: "🎧", category: "Audio" },
-  { id: 16, name: "Herramienta Útil", price: "$29.99", image: "🔧", category: "Herramientas" },
-  { id: 17, name: "Decoración Moderna", price: "$39.99", image: "🏠", category: "Hogar" },
-  { id: 18, name: "Producto Exclusivo", price: "$149.99", image: "💎", category: "Premium" },
-  { id: 19, name: "Producto Premium", price: "$99.99", image: "📱", category: "Tecnología" },
-];
+import StoreCard from "../components/molecules/StoreCard";
+import Text from "../components/atoms/Text";
+import storesData from "../data/stores.json";
 
 export default function Store() {
+  const [selectedStore, setSelectedStore] = useState(null);
+  const [category, setCategory] = useState("");
+
+  const filteredStores = storesData.stores.filter(store =>
+    store.category.toLowerCase().includes(category.toLowerCase()) ||
+    store.name.toLowerCase().includes(category.toLowerCase())
+  );
+
+  const products = selectedStore
+    ? storesData.products.filter(p => p.storeId === selectedStore.id)
+    : [];
+
   const handleAddToCart = (product) => {
     console.log('Agregando al carrito:', product);
     // Aquí iría la lógica para agregar al carrito
@@ -51,18 +45,49 @@ export default function Store() {
       {/* Contenido principal */}
       <div className="container text-center mx-auto px-4 py-8 relative z-10">
         <PageHeader 
-          title="Busca tus productos o antojos favoritos y añádelos al carrito"
-          subtitle="Ordena, Pide, Compra y Yovoy se encarga de llevártelo."
+          title={selectedStore ? selectedStore.name : "Busca tu tienda favorita por categoría"}
+          subtitle={selectedStore ? "Elige tus productos y añádelos al carrito" : "Filtra por categoría o nombre de tienda para encontrar lo que buscas."}
           icon={<ShoppingBag size={32} className="inline-block align-middle text-orange-400 mr-2" />}
         />
-        <ProductGrid products={products} onAddToCart={handleAddToCart} />
-        <div className="text-center">
-          <Link to="/cart">
-            <Button className="text-lg px-8 py-4">
-              🛒 Ver Carrito ({products.length} productos)
+        {!selectedStore && (
+          <>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+              <input
+                type="text"
+                value={category}
+                onChange={e => setCategory(e.target.value)}
+                placeholder="Buscar por categoría o nombre de tienda..."
+                className="w-full sm:w-80 px-4 py-2 rounded-lg border border-white/30 bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              />
+              <Button variant="fire" onClick={() => setCategory(category)}>
+                Buscar
+              </Button>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
+              {filteredStores.map(store => (
+                <StoreCard key={store.id} store={store} onSelect={setSelectedStore} />
+              ))}
+              {filteredStores.length === 0 && (
+                <Text className="col-span-full text-white/70">No se encontraron tiendas para esa búsqueda.</Text>
+              )}
+            </div>
+          </>
+        )}
+        {selectedStore && (
+          <>
+            <Button variant="minimal" className="mb-6" onClick={() => setSelectedStore(null)}>
+              ← Volver a tiendas
             </Button>
-          </Link>
-        </div>
+            <ProductGrid products={products} onAddToCart={handleAddToCart} />
+            <div className="text-center">
+              <Link to="/cart">
+                <Button className="text-lg px-8 py-4">
+                  🛒 Ver Carrito ({products.length} productos)
+                </Button>
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
