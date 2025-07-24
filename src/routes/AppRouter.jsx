@@ -3,7 +3,6 @@ import { Suspense, lazy } from "react";
 
 // Lazy loading para mejorar el rendimiento
 const Home = lazy(() => import("../pages/Home"));
-const LoginRegister = lazy(() => import("../pages/LoginRegister"));
 const Store = lazy(() => import("../pages/Store"));
 const Cart = lazy(() => import("../pages/Cart"));
 const Confirm = lazy(() => import("../pages/Confirm"));
@@ -21,7 +20,6 @@ export default function AppRouter() {
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginRegister />} />
           <Route path="/store" element={<Store />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/confirm" element={<Confirm />} />
