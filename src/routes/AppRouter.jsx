@@ -6,6 +6,7 @@ const Home = lazy(() => import("../pages/Home"));
 const Store = lazy(() => import("../pages/Store"));
 const Cart = lazy(() => import("../pages/Cart"));
 const Confirm = lazy(() => import("../pages/Confirm"));
+const AdminPanel = lazy(() => import("../components/organisms/AdminPanel"));
 
 // Componente de carga
 const LoadingSpinner = () => (
@@ -23,6 +24,7 @@ export default function AppRouter() {
           <Route path="/store" element={<Store />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/confirm" element={<Confirm />} />
+          <Route path="/admin" element={<AdminPanel />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>

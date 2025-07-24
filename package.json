@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^10.6.0",
     "@react-three/fiber": "^9.2.0",
     "@react-three/postprocessing": "^3.0.4",
     "@splinetool/react-spline": "^4.1.0",
+    "framer-motion": "^12.23.9",
     "lucide-react": "^0.525.0",
     "postprocessing": "^6.37.6",
     "react": "^19.1.0",

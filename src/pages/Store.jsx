@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import Button from "../components/atoms/Button";
 import PageHeader from "../components/molecules/PageHeader";
+import { ShoppingBag } from "lucide-react";
 import ProductGrid from "../components/organisms/ProductGrid";
+import Beams from "../components/organisms/Beams";
 
 const products = [
   { id: 1, name: "Producto Premium", price: "$99.99", image: "📱", category: "Tecnología" },
@@ -19,16 +21,28 @@ export default function Store() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="container mx-auto px-4 py-8">
-        <PageHeader 
-          title="Nuestra Tienda"
-          subtitle="Descubre nuestra colección de productos increíbles. Calidad garantizada en cada compra."
-          icon="🛍️"
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Fondo animado 3D */}
+      <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
+        <Beams
+          beamWidth={1.1}
+          beamHeight={21}
+          beamNumber={26}
+          lightColor="#ffffff"
+          speed={3.9}
+          noiseIntensity={2.9}
+          scale={0.33}
+          rotation={30}
         />
-
+      </div>
+      {/* Contenido principal */}
+      <div className="container text-center mx-auto px-4 py-8 relative z-10">
+        <PageHeader 
+          title="Busca tus productos o antojos favoritos y añádelos al carrito"
+          subtitle="Ordena, Pide, Compra y Yovoy se encarga de llevártelo."
+          icon={<ShoppingBag size={32} className="inline-block align-middle text-orange-400 mr-2" />}
+        />
         <ProductGrid products={products} onAddToCart={handleAddToCart} />
-
         <div className="text-center">
           <Link to="/cart">
             <Button className="text-lg px-8 py-4">
