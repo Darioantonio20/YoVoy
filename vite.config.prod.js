@@ -1,11 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+// Configuración específica para producción
 export default defineConfig({
   plugins: [react()],
   build: {
-    chunkSizeWarningLimit: 1000, // Aumentar el límite de advertencia a 1MB
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: (id) => {
@@ -31,13 +31,8 @@ export default defineConfig({
     include: ['react', 'react-dom', 'lucide-react'],
     exclude: ['@react-three/fiber', '@react-three/drei', 'three']
   },
-  resolve: {
-    alias: {
-      'react': 'react',
-      'react-dom': 'react-dom'
-    }
-  },
   define: {
-    'process.env.NODE_ENV': '"production"'
+    'process.env.NODE_ENV': '"production"',
+    'global': 'globalThis'
   }
-});
+}); 
