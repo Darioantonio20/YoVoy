@@ -11,16 +11,22 @@ const PaymentMethodModal = ({ isOpen, onClose, onConfirm, orderDetails }) => {
 
   const paymentMethods = [
     {
+      id: "efectivo",
+      name: "Efectivo",
+      icon: <div className="w-6 h-6 flex items-center justify-center text-green-600 text-xl">💵</div>,
+      description: "Pago en efectivo al momento de la entrega"
+    },
+    {
+      id: "transferencia",
+      name: "Transferencia Bancaria",
+      icon: <div className="w-6 h-6 flex items-center justify-center text-blue-600 text-xl">🏦</div>,
+      description: "Transferencia a cuenta bancaria"
+    },
+    {
       id: "card",
       name: "Tarjeta de Crédito/Débito",
       icon: <CreditCard className="w-6 h-6" />,
       description: "Visa, Mastercard, American Express"
-    },
-    {
-      id: "paypal",
-      name: "PayPal",
-      icon: <div className="w-6 h-6 bg-blue-500 rounded flex items-center justify-center text-white text-xs font-bold">P</div>,
-      description: "Paga con tu cuenta PayPal"
     }
   ];
 

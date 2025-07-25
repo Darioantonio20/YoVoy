@@ -59,11 +59,6 @@ const AdminDashboard = () => {
     ));
   };
 
-  const handleViewOrder = (order) => {
-    // Aquí podrías abrir un modal con los detalles de la orden
-    alert(`Viendo orden: ${order.id}`);
-  };
-
   const handleUpdateOrderStatus = (orderId, newStatus) => {
     setOrders(prev => prev.map(o => 
       o.id === orderId ? { ...o, status: newStatus } : o
@@ -194,7 +189,6 @@ const AdminDashboard = () => {
           {activeSection === "orders" && (
             <OrderTable
               orders={orders}
-              onViewOrder={handleViewOrder}
               onUpdateStatus={handleUpdateOrderStatus}
             />
           )}

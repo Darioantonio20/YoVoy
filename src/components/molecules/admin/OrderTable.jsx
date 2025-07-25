@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { Eye } from "lucide-react";
 import Button from "../../atoms/Button";
 import Text from "../../atoms/Text";
+import OrderDetailsModal from "./OrderDetailsModal";
 import ordersData from "../../../data/admin/orders.json";
 
-const OrderTable = ({ orders, onViewOrder, onUpdateStatus }) => {
+const OrderTable = ({ orders, onUpdateStatus }) => {
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const [ordersToDisplay, setOrdersToDisplay] = useState([]);
 
   useEffect(() => {
@@ -45,8 +49,19 @@ const OrderTable = ({ orders, onViewOrder, onUpdateStatus }) => {
     }
   };
 
+  const handleViewDetails = (order) => {
+    setSelectedOrder(order);
+    setShowDetailsModal(true);
+  };
+
+  const handleCloseDetailsModal = () => {
+    setShowDetailsModal(false);
+    setSelectedOrder(null);
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <>
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-200">
         <Text variant="h3" size="lg" className="text-gray-800">
           Pedidos Registrados
@@ -125,14 +140,19 @@ const OrderTable = ({ orders, onViewOrder, onUpdateStatus }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div className="flex space-x-2">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => onViewOrder(order)}
-                      className="text-xs"
-                    >
-                      Ver
-                    </Button>
+                    {/* Botón de detalles - solo visible si está completado */}
+                    {order.status === "completado" && (
+                      <Button
+                        variant="success"
+                        onClick={() => handleViewDetails(order)}
+                        className="text-xs px-3 py-1 flex items-center space-x-1"
+                      >
+                        <Eye className="w-3 h-3" />
+                        <span>Detalles</span>
+                      </Button>
+                    )}
+                    
+                    {/* Selector de estado */}
                     <select
                       value={order.status}
                       onChange={(e) => onUpdateStatus(order.id, e.target.value)}
@@ -159,6 +179,14 @@ const OrderTable = ({ orders, onViewOrder, onUpdateStatus }) => {
         </div>
       )}
     </div>
+
+    {/* Modal de detalles de la orden */}
+    <OrderDetailsModal
+      isOpen={showDetailsModal}
+      onClose={handleCloseDetailsModal}
+      order={selectedOrder}
+    />
+    </>
   );
 };
 

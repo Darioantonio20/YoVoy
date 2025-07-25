@@ -3,6 +3,8 @@
     "id": "ORD-001",
     "customer": "Juan Pérez",
     "email": "juan@email.com",
+    "phone": "+52 55 1234 5678",
+    "shippingAddress": "Av. Insurgentes Sur 1234, Col. Del Valle, CDMX",
     "products": [
       {
         "name": "Muñeca Clásica",
@@ -16,14 +18,19 @@
       }
     ],
     "total": 64.97,
-    "status": "pendiente",
+    "subtotal": 54.98,
+    "shipping": 9.99,
+    "status": "completado",
     "date": "2024-01-15",
-    "paymentMethod": "Tarjeta"
+    "paymentMethod": "efectivo",
+    "paymentDetails": "Pago en efectivo al momento de la entrega"
   },
-  {
-    "id": "ORD-002",
+    {
+    "id": "ORD-002", 
     "customer": "María García",
     "email": "maria@email.com",
+    "phone": "+52 81 9876 5432",
+    "shippingAddress": "Calle Morelos 567, Col. Centro, Monterrey, NL",
     "products": [
       {
         "name": "Muñeca Clásica",
@@ -32,14 +39,19 @@
       }
     ],
     "total": 34.98,
+    "subtotal": 24.99,
+    "shipping": 9.99,
     "status": "completado",
     "date": "2024-01-14",
-    "paymentMethod": "PayPal"
+    "paymentMethod": "transferencia",
+    "paymentDetails": "Transferencia a cuenta BBVA: 012345678901234567"
   },
-  {
+    {
     "id": "ORD-003",
     "customer": "Carlos López",
     "email": "carlos@email.com",
+    "phone": "+52 33 4567 8901",
+    "shippingAddress": "Av. Vallarta 890, Col. Americana, Guadalajara, Jal",
     "products": [
       {
         "name": "Carrito de Juguete",
@@ -48,14 +60,19 @@
       }
     ],
     "total": 54.96,
+    "subtotal": 44.97,
+    "shipping": 9.99,
     "status": "en_proceso",
     "date": "2024-01-13",
-    "paymentMethod": "Tarjeta"
+    "paymentMethod": "transferencia",
+    "paymentDetails": "Transferencia a cuenta Banamex: 002180012345678901"
   },
   {
     "id": "ORD-004",
     "customer": "Ana Rodríguez",
     "email": "ana@email.com",
+    "phone": "+52 55 2345 6789",
+    "shippingAddress": "Calle Reforma 234, Col. Juárez, CDMX",
     "products": [
       {
         "name": "Camiseta Básica",
@@ -69,14 +86,19 @@
       }
     ],
     "total": 64.97,
+    "subtotal": 54.98,
+    "shipping": 9.99,
     "status": "pendiente",
     "date": "2024-01-16",
-    "paymentMethod": "PayPal"
+    "paymentMethod": "Tarjeta",
+    "paymentDetails": "Pago con tarjeta Visa terminada en 1234"
   },
   {
     "id": "ORD-005",
     "customer": "Luis Martínez",
     "email": "luis@email.com",
+    "phone": "+52 81 3456 7890",
+    "shippingAddress": "Av. Constitución 456, Col. Centro, Saltillo, Coah",
     "products": [
       {
         "name": "Carrito de Juguete",
@@ -85,8 +107,11 @@
       }
     ],
     "total": 24.98,
+    "subtotal": 14.99,
+    "shipping": 9.99,
     "status": "completado",
     "date": "2024-01-12",
-    "paymentMethod": "Tarjeta"
+    "paymentMethod": "efectivo",
+    "paymentDetails": "Pago en efectivo al momento de la entrega"
   }
 ] 
