@@ -15,6 +15,7 @@ export const useCartContext = () => {
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [previousItemCount, setPreviousItemCount] = useState(0);
 
   // Cargar carrito desde localStorage al inicializar
   useEffect(() => {
@@ -89,6 +90,14 @@ export const CartProvider = ({ children }) => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
+  // Actualizar previousItemCount cuando cambie el carrito
+  useEffect(() => {
+    const currentItemCount = getTotalItems();
+    if (currentItemCount !== previousItemCount) {
+      setPreviousItemCount(currentItemCount);
+    }
+  }, [cartItems]);
+
   // Calcular subtotal
   const getSubtotal = () => {
     return cartItems.reduce((total, item) => {
@@ -105,7 +114,8 @@ export const CartProvider = ({ children }) => {
     clearCart,
     getTotalItems,
     getSubtotal,
-    isInitialized
+    isInitialized,
+    previousItemCount
   };
 
   return (

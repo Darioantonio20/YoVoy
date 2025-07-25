@@ -1,0 +1,18 @@
+{
+  "categoryColors": {
+    "Tecnología": "from-blue-500/20 to-cyan-500/20",
+    "Moda": "from-pink-500/20 to-purple-500/20",
+    "Juguetes": "from-yellow-500/20 to-orange-500/20",
+    "Comida": "from-red-500/20 to-pink-500/20",
+    "Hogar": "from-green-500/20 to-emerald-500/20",
+    "Jardín": "from-emerald-500/20 to-teal-500/20",
+    "Mascotas": "from-purple-500/20 to-indigo-500/20",
+    "Deportes": "from-orange-500/20 to-red-500/20",
+    "Belleza": "from-rose-500/20 to-pink-500/20",
+    "Libros": "from-amber-500/20 to-yellow-500/20",
+    "Música": "from-indigo-500/20 to-purple-500/20",
+    "Arte": "from-violet-500/20 to-purple-500/20",
+    "Automotriz": "from-gray-500/20 to-slate-500/20",
+    "Ferretería": "from-slate-500/20 to-gray-500/20"
+  }
+} 

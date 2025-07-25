@@ -21,7 +21,7 @@ export default function Store() {
   const [searchProducts, setSearchProducts] = useState("");
   const [currentView, setCurrentView] = useState("search"); // "search", "stores", "products"
   const { isLoading } = useSpinner(1500);
-  const { addToCart, getTotalItems, cartItems, isInitialized } = useCartContext();
+  const { addToCart, getTotalItems, cartItems, isInitialized, previousItemCount } = useCartContext();
 
   // Obtener categorías únicas para el buscador
   const categories = [...new Set(storesData.stores.map(store => store.category))];
@@ -102,7 +102,7 @@ export default function Store() {
       {isLoading && <Spinner message="Cargando tiendas y productos..." />}
       
       {/* Carrito flotante */}
-      <FloatingCart itemCount={getTotalItems()} />
+              <FloatingCart itemCount={getTotalItems()} previousItemCount={previousItemCount} />
       
       <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
         {/* Elementos decorativos de fondo */}
