@@ -1,43 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   build: {
-    chunkSizeWarningLimit: 1000, // Aumentar el límite de advertencia a 1MB
-    rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          // Separar React y React-DOM
-          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
-            return 'react-vendor';
-          }
-          // Separar librerías de UI
-          if (id.includes('node_modules/lucide-react')) {
-            return 'ui-libs';
-          }
-          // Separar Three.js y componentes pesados
-          if (id.includes('node_modules/three') || 
-              id.includes('node_modules/@react-three') ||
-              id.includes('components/organisms/Dither')) {
-            return 'three-components';
-          }
-        }
-      }
-    }
+    chunkSizeWarningLimit: 2000, // Aumentar el límite
   },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'lucide-react'],
-    exclude: ['@react-three/fiber', '@react-three/drei', 'three']
-  },
-  resolve: {
-    alias: {
-      'react': 'react',
-      'react-dom': 'react-dom'
-    }
-  },
-  define: {
-    'process.env.NODE_ENV': '"production"'
-  }
 });
