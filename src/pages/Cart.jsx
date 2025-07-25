@@ -1,28 +1,66 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/molecules/PageHeader";
 import CartList from "../components/organisms/CartList";
 import OrderSummary from "../components/molecules/OrderSummary";
-
-const cartItems = [
-  { id: 1, name: "Producto Premium", price: 99.99, quantity: 2, image: "📱" },
-  { id: 2, name: "Accesorio Elegante", price: 49.99, quantity: 1, image: "⌚" },
-  { id: 3, name: "Gadget Innovador", price: 79.99, quantity: 1, image: "🎧" }
-];
-
-const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-const shipping = 9.99;
-const total = subtotal + shipping;
+import OrderConfirmationModal from "../components/molecules/OrderConfirmationModal";
+import { useCartContext } from "../context/CartContext";
 
 export default function Cart() {
   const navigate = useNavigate();
+  const { cartItems, removeFromCart, updateQuantity, clearCart, getSubtotal } = useCartContext();
+  
+  const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null);
+
+  // Manejar redirección cuando el carrito está vacío
+  useEffect(() => {
+    if (cartItems.length === 0 && !showOrderConfirmation) {
+      navigate('/store');
+    }
+  }, [cartItems.length, showOrderConfirmation, navigate]);
 
   const handleContinueShopping = () => {
     navigate('/store');
   };
 
   const handleConfirmPurchase = () => {
-    navigate('/confirm');
+    const shipping = cartItems.length > 0 ? 9.99 : 0;
+    const total = getSubtotal() + shipping;
+    
+    setOrderDetails({
+      items: cartItems,
+      subtotal: getSubtotal(),
+      shipping,
+      total
+    });
+    
+    setShowOrderConfirmation(true);
+    // No limpiar el carrito aquí, se limpiará cuando se cierre el modal
   };
+
+  const handleRemoveItem = (productId) => {
+    removeFromCart(productId);
+  };
+
+  const handleUpdateQuantity = (productId, quantity) => {
+    updateQuantity(productId, quantity);
+  };
+
+  const handleCloseOrderConfirmation = () => {
+    setShowOrderConfirmation(false);
+    setOrderDetails(null);
+    clearCart(); // Limpiar el carrito aquí
+    navigate('/store');
+  };
+
+  const shipping = cartItems.length > 0 ? 9.99 : 0;
+  const total = getSubtotal() + shipping;
+
+  // Si no hay productos, mostrar loading o nada mientras se redirige
+  if (cartItems.length === 0) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -34,10 +72,14 @@ export default function Cart() {
         />
 
         <div className="max-w-4xl mx-auto">
-          <CartList items={cartItems} />
+          <CartList 
+            items={cartItems} 
+            onRemoveItem={handleRemoveItem}
+            onUpdateQuantity={handleUpdateQuantity}
+          />
           
           <OrderSummary
-            subtotal={subtotal}
+            subtotal={getSubtotal()}
             shipping={shipping}
             total={total}
             onContinueShopping={handleContinueShopping}
@@ -45,6 +87,13 @@ export default function Cart() {
           />
         </div>
       </div>
+
+      {/* Modal de confirmación de orden */}
+      <OrderConfirmationModal
+        isOpen={showOrderConfirmation}
+        onClose={handleCloseOrderConfirmation}
+        orderDetails={orderDetails}
+      />
     </div>
   );
 } 
