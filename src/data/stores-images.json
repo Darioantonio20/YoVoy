@@ -1,0 +1,102 @@
+{
+  "stores": {
+    "1": {
+      "id": 1,
+      "name": "TechZone Pro",
+      "image": "https://images.unsplash.com/photo-1649539324022-e42b75efa132?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Centro de Tecnología",
+      "address": "Av. Reforma 789, Col. Cuauhtémoc"
+    },
+    "4": {
+      "id": 4,
+      "name": "Boutique Elegante",
+      "image": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "location": "Zona Rosa",
+      "address": "Calle Amberes 45, Col. Juárez"
+    },
+    "7": {
+      "id": 7,
+      "name": "Juguetelandia",
+      "image": "https://images.unsplash.com/photo-1609713292783-5e45ec29b62d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Centro de Juguetes",
+      "address": "Calle Génova 123, Col. Juárez"
+    },
+    "10": {
+      "id": 10,
+      "name": "Los Hochos Morochos",
+      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "location": "Centro Comercial Plaza Mayor",
+      "address": "Av. Insurgentes Sur 1234, Col. Del Valle"
+    },
+    "13": {
+      "id": 13,
+      "name": "Decoración Hogar Plus",
+      "image": "https://images.unsplash.com/photo-1581513746494-2905afa2376b?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Plaza Comercial",
+      "address": "Blvd. Miguel Hidalgo 567, Col. Polanco"
+    },
+    "15": {
+      "id": 15,
+      "name": "Vivero El Paraíso",
+      "image": "https://images.unsplash.com/photo-1678274313051-7d126fb02d09?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Vivero Central",
+      "address": "Blvd. Adolfo López Mateos 678, Col. Del Valle"
+    },
+    "16": {
+      "id": 16,
+      "name": "Mascotas Felices",
+      "image": "https://images.unsplash.com/photo-1708204930650-abdd2928f9a3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Centro Veterinario",
+      "address": "Calle Tonalá 234, Col. Roma Norte"
+    },
+    "17": {
+      "id": 17,
+      "name": "Deportes Max",
+      "image": "https://images.unsplash.com/photo-1640013529820-300027d1bb0f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Centro Deportivo",
+      "address": "Av. Universidad 234, Col. Coyoacán"
+    },
+    "19": {
+      "id": 19,
+      "name": "Belleza Express",
+      "image": "https://images.unsplash.com/photo-1691187861263-089f49891144?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Centro de Belleza",
+      "address": "Calle Florencia 89, Col. Juárez"
+    },
+    "21": {
+      "id": 21,
+      "name": "Librería Central",
+      "image": "https://plus.unsplash.com/premium_photo-1681488394409-5614ef55488c?q=80&w=2864&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Zona Universitaria",
+      "address": "Av. Insurgentes Norte 456, Col. San Rafael"
+    },
+    "22": {
+      "id": 22,
+      "name": "Música y Más",
+      "image": "https://images.unsplash.com/photo-1519508234439-4f23643125c1?q=80&w=2098&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Centro Cultural",
+      "address": "Calle Madero 123, Col. Centro"
+    },
+    "23": {
+      "id": 23,
+      "name": "Arte Creativo",
+      "image": "https://images.unsplash.com/photo-1608869396716-b3de8bf1e16e?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Zona Artística",
+      "address": "Av. Álvaro Obregón 345, Col. Roma"
+    },
+    "24": {
+      "id": 24,
+      "name": "Auto Parts Express",
+      "image": "https://images.unsplash.com/photo-1615142831591-3f944c1e5393?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Centro Automotriz",
+      "address": "Av. Constituyentes 901, Col. San Miguel Chapultepec"
+    },
+    "25": {
+      "id": 25,
+      "name": "Ferretería El Tornillo",
+      "image": "https://images.unsplash.com/photo-1519520104014-df63821cb6f9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "location": "Centro de Herramientas",
+      "address": "Av. Patriotismo 567, Col. San Pedro de los Pinos"
+    }
+  }
+} 

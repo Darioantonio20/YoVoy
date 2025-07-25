@@ -12,6 +12,7 @@ import FloatingCart from "../components/atoms/FloatingCart";
 import useSpinner from "../hooks/useSpinner";
 import { useCartContext } from "../context/CartContext";
 import storesData from "../data/stores.json";
+import categoriesData from "../data/categories.json";
 
 export default function Store() {
   const [selectedStore, setSelectedStore] = useState(null);
@@ -53,10 +54,13 @@ export default function Store() {
   );
 
   const handleCategorySearch = (category) => {
-    setSearchCategory(category);
-    setCurrentView("stores");
-    setSelectedStore(null);
-    setSearchStores("");
+    // Agregar un pequeño delay para mostrar la transición
+    setTimeout(() => {
+      setSearchCategory(category);
+      setCurrentView("stores");
+      setSelectedStore(null);
+      setSearchStores("");
+    }, 150);
   };
 
   const handleStoreSelect = (store) => {
@@ -82,6 +86,17 @@ export default function Store() {
     addToCart(product);
   };
 
+  // Función para obtener datos de categoría desde JSON
+  const getCategoryData = (category) => {
+    const categoryKey = category.toLowerCase();
+    return categoriesData.categories[categoryKey] || {
+      name: category,
+      image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
+      icon: '🛍️',
+      description: 'Productos y servicios variados'
+    };
+  };
+
   return (
     <>
       {isLoading && <Spinner message="Cargando tiendas y productos..." />}
@@ -89,7 +104,20 @@ export default function Store() {
       {/* Carrito flotante */}
       <FloatingCart itemCount={getTotalItems()} />
       
-      <div className="relative min-h-screen bg-black">
+      <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+        {/* Elementos decorativos de fondo */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Círculos flotantes */}
+          <div className="absolute top-20 left-10 w-32 h-32 bg-orange-500/10 rounded-full blur-xl animate-pulse"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-purple-500/10 rounded-full blur-xl animate-pulse delay-1000"></div>
+          <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-blue-500/10 rounded-full blur-xl animate-pulse delay-2000"></div>
+          <div className="absolute bottom-40 right-1/3 w-28 h-28 bg-green-500/10 rounded-full blur-xl animate-pulse delay-3000"></div>
+          
+          {/* Líneas decorativas */}
+          <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-500/20 to-transparent"></div>
+          <div className="absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent"></div>
+        </div>
+        
         {/* Contenido principal */}
         <div className="container text-center mx-auto px-4 py-8 relative z-10">
           {/* Vista de búsqueda por categoría */}
@@ -101,25 +129,68 @@ export default function Store() {
                 icon={<ShoppingBag size={32} className="inline-block align-middle text-orange-400 mr-2" />}
                 textColor="text-white"
               />
-              <SearchBar
-                value={searchCategory}
-                onChange={(e) => setSearchCategory(e.target.value)}
-                placeholder="Buscar categoría..."
-                showSearchButton={false}
-              />
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
+              <div className="max-w-2xl mx-auto mb-12">
+                <SearchBar
+                  value={searchCategory}
+                  onChange={(e) => setSearchCategory(e.target.value)}
+                  placeholder="Buscar categoría..."
+                  showSearchButton={false}
+                />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
                 {filteredCategories.map((category, index) => (
-                  <Button
+                  <div
                     key={index}
-                    variant="fire"
                     onClick={() => handleCategorySearch(category)}
-                    className="p-4 text-sm sm:text-base"
+                    className="group relative overflow-hidden bg-white rounded-2xl cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/30 transform-gpu h-80"
                   >
-                    {category}
-                  </Button>
+                    {/* Imagen de fondo */}
+                    <div 
+                      className="absolute inset-0 bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-700"
+                      style={{ backgroundImage: `url(${getCategoryData(category).image})` }}
+                    >
+                      {/* Overlay gradiente para mejor legibilidad */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                    </div>
+                    
+                    {/* Contenido */}
+                    <div className="relative z-10 h-full flex flex-col justify-end p-6">
+                      {/* Nombre de categoría */}
+                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-orange-300 transition-colors duration-300">
+                        {getCategoryData(category).name}
+                      </h3>
+                      
+                      {/* Descripción */}
+                      <p className="text-white/80 text-sm mb-3">
+                        {getCategoryData(category).description}
+                      </p>
+                      
+                      {/* Contador de tiendas */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2 text-white/70 text-xs">
+                          <span>🏪</span>
+                          <span>{storesInCategory.filter(store => store.category === category).length} tiendas</span>
+                        </div>
+                        
+                        {/* Flecha indicadora */}
+                        <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                          <span className="text-orange-400 text-xl">→</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Efecto de brillo */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  </div>
                 ))}
                 {filteredCategories.length === 0 && (
-                  <Text className="col-span-full text-white/70">No se encontraron categorías para "{searchCategory}".</Text>
+                  <div className="col-span-full text-center py-12">
+                    <div className="w-24 h-24 mx-auto mb-4 bg-white/10 rounded-full flex items-center justify-center">
+                      <span className="text-4xl">🔍</span>
+                    </div>
+                    <Text className="text-white/70 text-lg mb-2">No se encontraron categorías</Text>
+                    <Text className="text-white/50 text-sm">Intenta con otro término de búsqueda</Text>
+                  </div>
                 )}
               </div>
             </>

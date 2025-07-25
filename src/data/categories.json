@@ -1,0 +1,124 @@
+{
+  "categories": {
+    "comida": {
+      "name": "Comida",
+      "image": "https://plus.unsplash.com/premium_photo-1673108852141-e8c3c22a4a22?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29taWRhfGVufDB8fDB8fHww",
+      "icon": "🍕",
+      "description": "Deliciosos platillos y restaurantes"
+    },
+    "moda": {
+      "name": "Moda",
+      "image": "https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "👗",
+      "description": "Ropa, accesorios y tendencias"
+    },
+    "juguetes": {
+      "name": "Juguetes",
+      "image": "https://images.unsplash.com/photo-1599623560574-39d485900c95?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "icon": "🧸",
+      "description": "Diversión para todas las edades"
+    },
+    "tecnología": {
+      "name": "Tecnología",
+      "image": "https://media.istockphoto.com/id/2165761854/it/foto/nuova-barra-di-avanzamento-dellanno-2025-su-display-lcd-digitale-con-riflessione.jpg?s=612x612&w=0&k=20&c=mr9SMuWnk46CAORuQLKrZq00cMz7i1mzly61o95Xkpo=",
+      "icon": "📱",
+      "description": "Gadgets y dispositivos modernos"
+    },
+    "hogar": {
+      "name": "Hogar",
+      "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "🏠",
+      "description": "Todo para tu casa y decoración"
+    },
+    "deportes": {
+      "name": "Deportes",
+      "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "⚽",
+      "description": "Equipamiento y ropa deportiva"
+    },
+    "belleza": {
+      "name": "Belleza",
+      "image": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "💄",
+      "description": "Cosméticos y productos de cuidado"
+    },
+    "libros": {
+      "name": "Libros",
+      "image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "📚",
+      "description": "Literatura y conocimiento"
+    },
+    "música": {
+      "name": "Música",
+      "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "🎵",
+      "description": "Instrumentos y accesorios musicales"
+    },
+    "arte": {
+      "name": "Arte",
+      "image": "https://images.unsplash.com/flagged/photo-1572392640988-ba48d1a74457?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "icon": "🎨",
+      "description": "Materiales y obras artísticas"
+    },
+    "jardín": {
+      "name": "Jardín",
+      "image": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "🌱",
+      "description": "Plantas y herramientas de jardinería"
+    },
+    "automotriz": {
+      "name": "Automotriz",
+      "image": "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "🚗",
+      "description": "Repuestos y servicios automotrices"
+    },
+    "mascotas": {
+      "name": "Mascotas",
+      "image": "https://images.unsplash.com/photo-1450778869180-41d0601e046e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "🐕",
+      "description": "Alimentos y accesorios para mascotas"
+    },
+    "fitness": {
+      "name": "Fitness",
+      "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "💪",
+      "description": "Equipos y suplementos deportivos"
+    },
+    "fotografía": {
+      "name": "Fotografía",
+      "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "📸",
+      "description": "Cámaras y accesorios fotográficos"
+    },
+    "viajes": {
+      "name": "Viajes",
+      "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "✈️",
+      "description": "Servicios y productos para viajeros"
+    },
+    "bebidas": {
+      "name": "Bebidas",
+      "image": "https://images.unsplash.com/photo-1546173159-315724a31696?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "🥤",
+      "description": "Refrescos, jugos y bebidas"
+    },
+    "postres": {
+      "name": "Postres",
+      "image": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "🍰",
+      "description": "Dulces y pastelería artesanal"
+    },
+    "ropa": {
+      "name": "Ropa",
+      "image": "https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "👕",
+      "description": "Vestimenta para toda la familia"
+    },
+    "zapatos": {
+      "name": "Zapatos",
+      "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      "icon": "👟",
+      "description": "Calzado de moda y deportivo"
+    }
+  }
+} 
