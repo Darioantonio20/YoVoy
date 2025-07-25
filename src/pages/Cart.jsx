@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/molecules/PageHeader";
 import CartList from "../components/organisms/CartList";
 import OrderSummary from "../components/molecules/OrderSummary";
+import PaymentMethodModal from "../components/molecules/PaymentMethodModal";
 import OrderConfirmationModal from "../components/molecules/OrderConfirmationModal";
 import { useCartContext } from "../context/CartContext";
 
@@ -10,6 +11,7 @@ export default function Cart() {
   const navigate = useNavigate();
   const { cartItems, removeFromCart, updateQuantity, clearCart, getSubtotal } = useCartContext();
   
+  const [showPaymentMethod, setShowPaymentMethod] = useState(false);
   const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
   const [orderDetails, setOrderDetails] = useState(null);
 
@@ -35,8 +37,17 @@ export default function Cart() {
       total
     });
     
+    setShowPaymentMethod(true);
+  };
+
+  const handlePaymentConfirm = (paymentMethod) => {
+    setShowPaymentMethod(false);
     setShowOrderConfirmation(true);
-    // No limpiar el carrito aquí, se limpiará cuando se cierre el modal
+  };
+
+  const handlePaymentClose = () => {
+    setShowPaymentMethod(false);
+    setOrderDetails(null);
   };
 
   const handleRemoveItem = (productId) => {
@@ -51,6 +62,8 @@ export default function Cart() {
     setShowOrderConfirmation(false);
     setOrderDetails(null);
     clearCart(); // Limpiar el carrito aquí
+    // Mostrar alerta de compra enviada
+    alert("¡Tu compra se ha enviado a la tienda!");
     navigate('/store');
   };
 
@@ -64,29 +77,47 @@ export default function Cart() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         <PageHeader 
           title="Tu Carrito"
           subtitle="Revisa tus productos antes de continuar"
           icon="🛒"
+          textColor="text-blue-600"
         />
 
         <div className="max-w-4xl mx-auto">
-          <CartList 
-            items={cartItems} 
-            onRemoveItem={handleRemoveItem}
-            onUpdateQuantity={handleUpdateQuantity}
-          />
-          
-          <OrderSummary
-            subtotal={getSubtotal()}
-            shipping={shipping}
-            total={total}
-            onContinueShopping={handleContinueShopping}
-            onConfirmPurchase={handleConfirmPurchase}
-          />
+          {/* Layout vertical: CartList arriba, OrderSummary abajo */}
+          <div className="space-y-6 lg:space-y-8">
+            {/* CartList - full width en todos los dispositivos */}
+            <CartList 
+              items={cartItems} 
+              onRemoveItem={handleRemoveItem}
+              onUpdateQuantity={handleUpdateQuantity}
+            />
+            
+            {/* OrderSummary - centrado en desktop */}
+            <div className="flex justify-center">
+              <div className="w-full max-w-md lg:max-w-lg">
+                <OrderSummary
+                  subtotal={getSubtotal()}
+                  shipping={shipping}
+                  total={total}
+                  onContinueShopping={handleContinueShopping}
+                  onConfirmPurchase={handleConfirmPurchase}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Modal de métodos de pago */}
+      <PaymentMethodModal
+        isOpen={showPaymentMethod}
+        onClose={handlePaymentClose}
+        onConfirm={handlePaymentConfirm}
+        orderDetails={orderDetails}
+      />
 
       {/* Modal de confirmación de orden */}
       <OrderConfirmationModal

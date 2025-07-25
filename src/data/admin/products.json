@@ -1,0 +1,82 @@
+[
+  {
+    "id": "1",
+    "name": "Muñeca Clásica",
+    "description": "Muñeca de trapo tradicional",
+    "price": "$24.99",
+    "image": "👧",
+    "category": "juguetes",
+    "stock": 15,
+    "isActive": true
+  },
+  {
+    "id": "2",
+    "name": "Carrito de Juguete",
+    "description": "Carrito de juguete metálico",
+    "price": "$14.99",
+    "image": "🚗",
+    "category": "juguetes",
+    "stock": 8,
+    "isActive": true
+  },
+  {
+    "id": "3",
+    "name": "Camiseta Básica",
+    "description": "Camiseta de algodón 100%",
+    "price": "$19.99",
+    "image": "👕",
+    "category": "ropa",
+    "stock": 25,
+    "isActive": false
+  },
+  {
+    "id": "4",
+    "name": "Pelota de Fútbol",
+    "description": "Pelota oficial de fútbol",
+    "price": "$29.99",
+    "image": "⚽",
+    "category": "deportes",
+    "stock": 12,
+    "isActive": true
+  },
+  {
+    "id": "5",
+    "name": "Laptop Gaming",
+    "description": "Laptop para juegos de alto rendimiento",
+    "price": "$899.99",
+    "image": "💻",
+    "category": "electronica",
+    "stock": 3,
+    "isActive": true
+  },
+  {
+    "id": "6",
+    "name": "Juego de Mesa",
+    "description": "Juego de estrategia familiar",
+    "price": "$34.99",
+    "image": "🎮",
+    "category": "juguetes",
+    "stock": 0,
+    "isActive": true
+  },
+  {
+    "id": "7",
+    "name": "Zapatillas Deportivas",
+    "description": "Zapatillas cómodas para correr",
+    "price": "$79.99",
+    "image": "👟",
+    "category": "ropa",
+    "stock": 18,
+    "isActive": true
+  },
+  {
+    "id": "8",
+    "name": "Lámpara de Mesa",
+    "description": "Lámpara LED moderna",
+    "price": "$45.99",
+    "image": "💡",
+    "category": "hogar",
+    "stock": 7,
+    "isActive": true
+  }
+] 

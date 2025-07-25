@@ -5,7 +5,7 @@ import { Suspense, lazy } from "react";
 const Home = lazy(() => import("../pages/Home"));
 const Store = lazy(() => import("../pages/Store"));
 const Cart = lazy(() => import("../pages/Cart"));
-const AdminPanel = lazy(() => import("../components/organisms/AdminPanel"));
+const AdminPanel = lazy(() => import("../pages/AdminPanel"));
 
 // Componente de carga
 const LoadingSpinner = () => (

@@ -1,5 +1,5 @@
 import React from "react";
-import { X, CheckCircle } from "lucide-react";
+import { X, CheckCircle, ArrowLeft } from "lucide-react";
 import Button from "../atoms/Button";
 
 const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
@@ -10,13 +10,22 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        {/* Botón cerrar */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          <X size={24} />
-        </button>
+        {/* Header con botón back */}
+        <div className="flex items-center justify-between mb-6">
+          <button
+            onClick={onClose}
+            className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span>Volver</span>
+          </button>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <X size={24} />
+          </button>
+        </div>
 
         {/* Contenido del modal */}
         <div className="text-center">
@@ -89,11 +98,11 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
 
           {/* Botón */}
           <Button
-            variant="fire"
+            variant="success"
             onClick={onClose}
             className="w-full"
           >
-            Continuar comprando
+            Confirmar compra
           </Button>
         </div>
       </div>

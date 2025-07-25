@@ -47,12 +47,12 @@ const FloatingCart = ({ itemCount = 0, className = "" }) => {
       {/* Alerta de carrito vacío */}
       {showEmptyAlert && (
         <div className="fixed top-20 right-6 z-50 animate-bounce">
-          <div className="bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center space-x-2 max-w-xs">
+          <div className="bg-yellow-400 text-black px-4 py-3 rounded-lg shadow-lg flex items-center space-x-2 max-w-xs">
             <ShoppingCart className="w-5 h-5 flex-shrink-0" />
-            <span className="text-sm">Tu carrito está vacío. Agrega productos para continuar.</span>
+            <span className="text-sm">Tu carrito está vacío</span>
             <button
               onClick={() => setShowEmptyAlert(false)}
-              className="ml-2 text-white/80 hover:text-white transition-colors"
+              className="ml-2 text-yellow/80 hover:text-yellow transition-colors"
             >
               <X size={16} />
             </button>

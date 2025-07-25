@@ -99,6 +99,7 @@ export default function Store() {
                 title="¿Qué tipo de negocio buscas?"
                 subtitle="Busca o selecciona una categoría para encontrar tiendas y productos"
                 icon={<ShoppingBag size={32} className="inline-block align-middle text-orange-400 mr-2" />}
+                textColor="text-white"
               />
               <SearchBar
                 value={searchCategory}
@@ -136,6 +137,7 @@ export default function Store() {
                 title={`Tiendas de ${searchCategory}`}
                 subtitle="Busca o selecciona una tienda para ver sus productos"
                 icon={<ShoppingBag size={32} className="inline-block align-middle text-orange-400 mr-2" />}
+                textColor="text-white"
               />
               <SearchBar
                 value={searchStores}
@@ -171,6 +173,7 @@ export default function Store() {
                 title={selectedStore.name}
                 subtitle={`Productos de ${selectedStore.category} - ${selectedStore.description}`}
                 icon={<span className="text-3xl">{selectedStore.logo}</span>}
+                textColor="text-white"
               />
               <SearchBar
                 value={searchProducts}
