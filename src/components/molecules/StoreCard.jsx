@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Star, Clock } from "lucide-react";
+import { MapPin, Star, Clock, Eye } from "lucide-react";
 import Button from "../atoms/Button";
 import Text from "../atoms/Text";
 import storesImagesData from "../../data/stores-images.json";
@@ -75,22 +75,24 @@ const StoreCard = ({ store, onSelect }) => {
           </Text>
           
           {/* Footer con botón y horario */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-white/70 text-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+            <div className="flex items-center space-x-2 text-white/70 text-xs justify-center">
               <Clock className="w-3 h-3" />
               <span>Abierto</span>
             </div>
             
-            <Button 
-              variant="fire" 
-              className="text-xs py-2 px-4 font-semibold group-hover:scale-105 transition-transform duration-200"
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelect(store);
-              }}
-            >
-              Ver Tienda
-            </Button>
+            <div className="flex justify-center sm:justify-end">
+              <Button 
+                variant="fire" 
+                className="text-xs py-2 px-4 font-semibold group-hover:scale-105 transition-transform duration-200"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelect(store);
+                }}
+              >
+                <Eye className="text-center w-3 h-3 sm:w-4 sm:h-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>

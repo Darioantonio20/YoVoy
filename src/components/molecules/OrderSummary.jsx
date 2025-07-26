@@ -3,19 +3,18 @@ import Button from "../atoms/Button";
 
 const OrderSummary = memo(({ subtotal, shipping, total, onContinueShopping, onConfirmPurchase }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6">📋 Resumen de Compra</h2>
+    <div className="bg-white/5 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/10 p-6 sm:p-8">
       <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
         <div className="flex justify-between text-base sm:text-lg">
-          <span className="text-gray-600">Subtotal:</span>
-          <span className="font-semibold">${subtotal.toFixed(2)}</span>
+          <span className="text-white/70">Subtotal:</span>
+          <span className="font-semibold text-white">${subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-base sm:text-lg">
-          <span className="text-gray-600">Envío:</span>
-          <span className="font-semibold">${shipping.toFixed(2)}</span>
+          <span className="text-white/70">Envío:</span>
+          <span className="font-semibold text-white">${shipping.toFixed(2)}</span>
         </div>
-        <div className="border-t pt-3 sm:pt-4">
-          <div className="flex justify-between text-xl sm:text-2xl font-bold text-blue-600">
+        <div className="border-t border-white/20 pt-3 sm:pt-4">
+          <div className="flex justify-between text-xl sm:text-2xl font-bold text-orange-400">
             <span>Total:</span>
             <span>${total.toFixed(2)}</span>
           </div>

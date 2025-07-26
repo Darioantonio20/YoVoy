@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import { Eye, Star, Image as ImageIcon, ShoppingCart } from "lucide-react";
+import { Eye, Star, Image as ImageIcon } from "lucide-react";
 import Button from "../atoms/Button";
 import ProductImageModal from "./ProductImageModal";
 import categoryColorsData from "../../data/category-colors.json";

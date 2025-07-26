@@ -5,6 +5,8 @@ import CartList from "../components/organisms/CartList";
 import OrderSummary from "../components/molecules/OrderSummary";
 import PaymentMethodModal from "../components/molecules/PaymentMethodModal";
 import OrderConfirmationModal from "../components/molecules/OrderConfirmationModal";
+import BackgroundDecorator from "../components/atoms/BackgroundDecorator";
+import Alert from "../components/atoms/Alert";
 import { useCartContext } from "../context/CartContext";
 
 export default function Cart() {
@@ -63,7 +65,10 @@ export default function Cart() {
     setOrderDetails(null);
     clearCart(); // Limpiar el carrito aquí
     // Mostrar alerta de compra enviada
-    alert("¡Tu compra se ha enviado a la tienda!");
+    Alert.success(
+      "¡Compra Enviada!", 
+      "Tu compra se ha enviado a la tienda. Recibirás una llamada de confirmación con los detalles de tu pedido."
+    );
     navigate('/store');
   };
 
@@ -76,35 +81,67 @@ export default function Cart() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-        <PageHeader 
-          title="Tu Carrito"
-          subtitle="Revisa tus productos antes de continuar"
-          icon="🛒"
-          textColor="text-blue-600"
-        />
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
+      <BackgroundDecorator />
 
-        <div className="max-w-4xl mx-auto">
-          {/* Layout vertical: CartList arriba, OrderSummary abajo */}
-          <div className="space-y-6 lg:space-y-8">
-            {/* CartList - full width en todos los dispositivos */}
-            <CartList 
-              items={cartItems} 
-              onRemoveItem={handleRemoveItem}
-              onUpdateQuantity={handleUpdateQuantity}
-            />
-            
-            {/* OrderSummary - centrado en desktop */}
-            <div className="flex justify-center">
-              <div className="w-full max-w-md lg:max-w-lg">
-                <OrderSummary
-                  subtotal={getSubtotal()}
-                  shipping={shipping}
-                  total={total}
-                  onContinueShopping={handleContinueShopping}
-                  onConfirmPurchase={handleConfirmPurchase}
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+        {/* Header con diseño mejorado */}
+        <div className="mb-8 sm:mb-12">
+          <PageHeader 
+            title="Tu Carrito"
+            subtitle="Revisa tus productos antes de continuar"
+            icon="🛒"
+            textColor="text-white"
+          />
+        </div>
+
+        <div className="max-w-6xl mx-auto">
+          {/* Layout mejorado con grid responsivo */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+            {/* CartList - ocupa 2 columnas en desktop */}
+            <div className="lg:col-span-2">
+              <div className="bg-white/10 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8">
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-white mb-2 flex items-center">
+                    <span className="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
+                      Productos en tu carrito
+                    </span>
+                    <span className="ml-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-sm font-semibold px-3 py-1 rounded-full">
+                      {cartItems.length}
+                    </span>
+                  </h2>
+                  <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full"></div>
+                </div>
+                
+                <CartList 
+                  items={cartItems} 
+                  onRemoveItem={handleRemoveItem}
+                  onUpdateQuantity={handleUpdateQuantity}
                 />
+              </div>
+            </div>
+            
+            {/* OrderSummary - sidebar en desktop */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-8">
+                <div className="bg-white/10 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8">
+                  <div className="mb-6">
+                    <h3 className="text-xl font-bold text-white mb-2 flex items-center">
+                      <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                        Resumen de compra
+                      </span>
+                    </h3>
+                    <div className="w-16 h-1 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"></div>
+                  </div>
+                  
+                  <OrderSummary
+                    subtotal={getSubtotal()}
+                    shipping={shipping}
+                    total={total}
+                    onContinueShopping={handleContinueShopping}
+                    onConfirmPurchase={handleConfirmPurchase}
+                  />
+                </div>
               </div>
             </div>
           </div>
