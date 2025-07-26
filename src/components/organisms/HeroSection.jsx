@@ -53,7 +53,7 @@ const HeroSection = memo(() => {
               size="2xl" 
               className="text-white/90 max-w-3xl mx-auto drop-shadow-lg md:text-3xl"
             >
-              Compra tus productos y YoVoy se encarga de llevartelos
+              Compra tus productos y Jasai se encarga de llevartelos
             </Text>
           </div>
           

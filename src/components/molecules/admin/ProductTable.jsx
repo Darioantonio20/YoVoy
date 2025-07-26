@@ -27,9 +27,9 @@ const ProductTable = ({ products, onEdit, onDelete, onToggleStatus }) => {
   };
 
   const getStockStatus = (stock) => {
-    if (stock === 0) return "bg-red-100 text-red-800";
-    if (stock < 5) return "bg-yellow-100 text-yellow-800";
-    return "bg-green-100 text-green-800";
+    if (stock === 0) return "bg-red-500/20 text-red-300 border border-red-400/30";
+    if (stock < 5) return "bg-yellow-500/20 text-yellow-300 border border-yellow-400/30";
+    return "bg-green-500/20 text-green-300 border border-green-400/30";
   };
 
   const getStockText = (stock) => {
@@ -39,94 +39,96 @@ const ProductTable = ({ products, onEdit, onDelete, onToggleStatus }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-200">
-        <Text variant="h3" size="lg" className="text-gray-800">
-          Productos de la Tienda
+    <div className="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
+      <div className="px-6 py-4 border-b border-white/20">
+        <Text variant="h3" size="lg" className="text-white">
+          <span className="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
+            Productos de la Tienda
+          </span>
         </Text>
-        <Text variant="bodyLight" size="sm" className="text-gray-600 mt-1">
+        <Text variant="bodyLight" size="sm" className="text-white/70 mt-1">
           Gestiona el catálogo de productos
         </Text>
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-white/5">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
                 Producto
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-white/70 uppercase tracking-wider">
                 Categoría
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-white/70 uppercase tracking-wider">
                 Precio
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-white/70 uppercase tracking-wider">
                 Stock
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-white/70 uppercase tracking-wider">
                 Estado
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-white/70 uppercase tracking-wider">
                 Acciones
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white/5 divide-y divide-white/10">
             {productsToDisplay.map((product) => (
-              <tr key={product.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
+              <tr key={product.id} className="hover:bg-white/5 transition-colors duration-200">
+                <td className="px-6 py-4 whitespace-nowrap text-left">
                   <div className="flex items-center">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mr-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 border border-orange-400/30 rounded-full flex items-center justify-center mr-3">
                       <span className="text-xl">{product.image}</span>
                     </div>
                     <div>
-                      <Text variant="body" size="sm" className="font-medium text-gray-900">
+                      <Text variant="body" size="sm" className="font-medium text-white">
                         {product.name}
                       </Text>
-                      <Text variant="bodyLight" size="xs" className="text-gray-500">
+                      <Text variant="bodyLight" size="xs" className="text-white/70">
                         {product.description}
                       </Text>
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-white/10 text-white/90 border border-white/20">
                     {getCategoryLabel(product.category)}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <Text variant="body" size="sm" className="font-medium text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <Text variant="body" size="sm" className="font-medium text-white">
                     {product.price}
                   </Text>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <div className="flex items-center justify-center">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStockStatus(product.stock)}`}>
                       {getStockText(product.stock)}
                     </span>
-                    <Text variant="bodyLight" size="xs" className="text-gray-500 ml-2">
+                    <Text variant="bodyLight" size="xs" className="text-white/70 ml-2">
                       ({product.stock})
                     </Text>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                     product.isActive 
-                      ? "bg-green-100 text-green-800" 
-                      : "bg-red-100 text-red-800"
+                      ? "bg-green-500/20 text-green-300 border border-green-400/30" 
+                      : "bg-red-500/20 text-red-300 border border-red-400/30"
                   }`}>
                     {product.isActive ? "Activo" : "Inactivo"}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <div className="flex space-x-2">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                  <div className="flex space-x-2 justify-center">
                     <Button
                       variant="secondary"
                       size="sm"
                       onClick={() => onEdit(product)}
-                      className="text-xs"
+                      className="text-xs bg-white/10 hover:bg-white/20 border border-white/20"
                     >
                       Editar
                     </Button>
@@ -134,7 +136,11 @@ const ProductTable = ({ products, onEdit, onDelete, onToggleStatus }) => {
                       variant={product.isActive ? "warning" : "success"}
                       size="sm"
                       onClick={() => onToggleStatus(product.id)}
-                      className="text-xs"
+                      className={`text-xs ${
+                        product.isActive 
+                          ? "bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-400/30"
+                          : "bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-400/30"
+                      }`}
                     >
                       {product.isActive ? "Desactivar" : "Activar"}
                     </Button>
@@ -142,7 +148,7 @@ const ProductTable = ({ products, onEdit, onDelete, onToggleStatus }) => {
                       variant="danger"
                       size="sm"
                       onClick={() => onDelete(product.id)}
-                      className="text-xs"
+                      className="text-xs bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-400/30"
                     >
                       Eliminar
                     </Button>
@@ -156,7 +162,7 @@ const ProductTable = ({ products, onEdit, onDelete, onToggleStatus }) => {
 
       {productsToDisplay.length === 0 && (
         <div className="text-center py-8">
-          <Text variant="bodyLight" size="md" className="text-gray-500">
+          <Text variant="bodyLight" size="md" className="text-white/70">
             No hay productos registrados aún
           </Text>
         </div>

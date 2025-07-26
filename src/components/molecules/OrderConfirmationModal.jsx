@@ -1,5 +1,5 @@
 import React from "react";
-import { X, CheckCircle, ArrowLeft } from "lucide-react";
+import { CheckCircle, ArrowLeft } from "lucide-react";
 import Button from "../atoms/Button";
 
 const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
@@ -18,12 +18,6 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Volver</span>
-          </button>
-          <button
-            onClick={onClose}
-            className="text-white/60 hover:text-white transition-colors"
-          >
-            <X size={24} />
           </button>
         </div>
 
@@ -90,12 +84,6 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
               #{Math.random().toString(36).substr(2, 9).toUpperCase()}
             </p>
           </div>
-
-          {/* Mensaje de agradecimiento */}
-          <p className="text-white/70 mb-8">
-            Gracias por tu compra. Recibirás una llamada de confirmación con los detalles de tu pedido.
-          </p>
-
           {/* Botón */}
           <Button
             variant="success"

@@ -40,7 +40,7 @@ const OrderDetailsForDownload = ({ order }) => {
               <span className="text-white text-xl">🛒</span>
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-blue-800">YoVoy</h1>
+              <h1 className="text-3xl font-bold text-blue-800">Jasai</h1>
               <p className="text-blue-600 font-medium">Detalles de la Orden</p>
             </div>
           </div>
@@ -188,7 +188,7 @@ const OrderDetailsForDownload = ({ order }) => {
               minute: '2-digit'
             })}
           </p>
-          <p className="text-blue-600 font-medium mt-2">YoVoy - Tu tienda de confianza</p>
+          <p className="text-blue-600 font-medium mt-2">Jasai - Tu tienda de confianza</p>
         </div>
       </div>
     </div>

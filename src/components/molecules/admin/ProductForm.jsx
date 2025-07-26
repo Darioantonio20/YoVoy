@@ -93,12 +93,14 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6">
       <div className="mb-6">
-        <Text variant="h3" size="lg" className="text-gray-800">
-          {isEditing ? "Editar Producto" : "Crear Nuevo Producto"}
+        <Text variant="h3" size="lg" className="text-white">
+          <span className="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
+            {isEditing ? "Editar Producto" : "Crear Nuevo Producto"}
+          </span>
         </Text>
-        <Text variant="bodyLight" size="sm" className="text-gray-600 mt-1">
+        <Text variant="bodyLight" size="sm" className="text-white/70 mt-1">
           {isEditing ? "Modifica la información del producto" : "Agrega un nuevo producto a tu tienda"}
         </Text>
       </div>
@@ -106,20 +108,20 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Nombre del producto */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-white/90 mb-2">
             Nombre del Producto *
           </label>
           <input
             type="text"
             value={formData.name}
             onChange={(e) => handleInputChange("name", e.target.value)}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.name ? "border-red-500" : "border-gray-300"
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50 ${
+              errors.name ? "border-red-400" : "border-white/20"
             }`}
             placeholder="Ej: Muñeca Clásica"
           />
           {errors.name && (
-            <Text variant="bodyLight" size="xs" className="text-red-600 mt-1">
+            <Text variant="bodyLight" size="xs" className="text-red-400 mt-1">
               {errors.name}
             </Text>
           )}
@@ -127,20 +129,20 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
 
         {/* Descripción */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-white/90 mb-2">
             Descripción *
           </label>
           <textarea
             value={formData.description}
             onChange={(e) => handleInputChange("description", e.target.value)}
             rows={3}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.description ? "border-red-500" : "border-gray-300"
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50 ${
+              errors.description ? "border-red-400" : "border-white/20"
             }`}
             placeholder="Describe el producto..."
           />
           {errors.description && (
-            <Text variant="bodyLight" size="xs" className="text-red-600 mt-1">
+            <Text variant="bodyLight" size="xs" className="text-red-400 mt-1">
               {errors.description}
             </Text>
           )}
@@ -149,32 +151,32 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
         {/* Precio y Stock */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-white/90 mb-2">
               Precio *
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-2 text-gray-500">$</span>
+              <span className="absolute left-3 top-2 text-white/50">$</span>
               <input
                 type="number"
                 step="0.01"
                 min="0"
                 value={formData.price}
                 onChange={(e) => handleInputChange("price", e.target.value)}
-                className={`w-full pl-8 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.price ? "border-red-500" : "border-gray-300"
+                className={`w-full pl-8 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50 ${
+                  errors.price ? "border-red-400" : "border-white/20"
                 }`}
                 placeholder="0.00"
               />
             </div>
             {errors.price && (
-              <Text variant="bodyLight" size="xs" className="text-red-600 mt-1">
+              <Text variant="bodyLight" size="xs" className="text-red-400 mt-1">
                 {errors.price}
               </Text>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-white/90 mb-2">
               Stock *
             </label>
             <input
@@ -182,13 +184,13 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
               min="0"
               value={formData.stock}
               onChange={(e) => handleInputChange("stock", e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.stock ? "border-red-500" : "border-gray-300"
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50 ${
+                errors.stock ? "border-red-400" : "border-white/20"
               }`}
               placeholder="0"
             />
             {errors.stock && (
-              <Text variant="bodyLight" size="xs" className="text-red-600 mt-1">
+              <Text variant="bodyLight" size="xs" className="text-red-400 mt-1">
                 {errors.stock}
               </Text>
             )}
@@ -197,16 +199,16 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
 
         {/* Categoría */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-white/90 mb-2">
             Categoría
           </label>
           <select
             value={formData.category}
             onChange={(e) => handleInputChange("category", e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white"
           >
             {categories.map(category => (
-              <option key={category.value} value={category.value}>
+              <option key={category.value} value={category.value} className="bg-gray-800 text-white">
                 {category.label}
               </option>
             ))}
@@ -215,7 +217,7 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
 
         {/* Imagen (Emoji) */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-white/90 mb-2">
             Imagen (Emoji)
           </label>
           <div className="grid grid-cols-5 gap-2">
@@ -226,8 +228,8 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
                 onClick={() => handleInputChange("image", emoji)}
                 className={`w-12 h-12 text-2xl rounded-lg border-2 flex items-center justify-center transition-all ${
                   formData.image === emoji
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-300 hover:border-gray-400"
+                    ? "border-orange-400 bg-orange-500/20"
+                    : "border-white/20 hover:border-white/40 bg-white/5"
                 }`}
               >
                 {emoji}
@@ -243,9 +245,9 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
             id="isActive"
             checked={formData.isActive}
             onChange={(e) => handleInputChange("isActive", e.target.checked)}
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            className="h-4 w-4 text-orange-400 focus:ring-orange-400 border-white/30 rounded bg-white/5"
           />
-          <label htmlFor="isActive" className="ml-2 block text-sm text-gray-700">
+          <label htmlFor="isActive" className="ml-2 block text-sm text-white/90">
             Producto activo (disponible para venta)
           </label>
         </div>
@@ -255,7 +257,7 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
           <Button
             type="submit"
             variant="success"
-            className="flex-1"
+            className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
           >
             {isEditing ? "Actualizar Producto" : "Crear Producto"}
           </Button>
@@ -263,7 +265,7 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
             type="button"
             variant="secondary"
             onClick={onCancel}
-            className="flex-1"
+            className="flex-1 bg-white/10 hover:bg-white/20 border border-white/20"
           >
             Cancelar
           </Button>
