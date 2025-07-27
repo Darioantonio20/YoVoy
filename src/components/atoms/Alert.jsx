@@ -2,7 +2,10 @@ import Swal from 'sweetalert2';
 
 const Alert = {
   // Alerta de éxito
-  success: (title = '¡Éxito!', message = 'Operación completada exitosamente') => {
+  success: (
+    title = '¡Éxito!',
+    message = 'Operación completada exitosamente'
+  ) => {
     return Swal.fire({
       title,
       text: message,
@@ -15,8 +18,8 @@ const Alert = {
         popup: 'dark-popup',
         title: 'dark-title',
         content: 'dark-content',
-        confirmButton: 'dark-confirm-button'
-      }
+        confirmButton: 'dark-confirm-button',
+      },
     });
   },
 
@@ -34,13 +37,16 @@ const Alert = {
         popup: 'dark-popup',
         title: 'dark-title',
         content: 'dark-content',
-        confirmButton: 'dark-confirm-button'
-      }
+        confirmButton: 'dark-confirm-button',
+      },
     });
   },
 
   // Alerta de confirmación
-  confirm: (title = 'Confirmar', message = '¿Estás seguro de realizar esta acción?') => {
+  confirm: (
+    title = 'Confirmar',
+    message = '¿Estás seguro de realizar esta acción?'
+  ) => {
     return Swal.fire({
       title,
       text: message,
@@ -57,8 +63,8 @@ const Alert = {
         title: 'dark-title',
         content: 'dark-content',
         confirmButton: 'dark-confirm-button',
-        cancelButton: 'dark-cancel-button'
-      }
+        cancelButton: 'dark-cancel-button',
+      },
     });
   },
 
@@ -76,8 +82,8 @@ const Alert = {
         popup: 'dark-popup',
         title: 'dark-title',
         content: 'dark-content',
-        confirmButton: 'dark-confirm-button'
-      }
+        confirmButton: 'dark-confirm-button',
+      },
     });
   },
 
@@ -95,10 +101,10 @@ const Alert = {
         popup: 'dark-popup',
         title: 'dark-title',
         content: 'dark-content',
-        confirmButton: 'dark-confirm-button'
-      }
+        confirmButton: 'dark-confirm-button',
+      },
     });
-  }
+  },
 };
 
-export default Alert; 
+export default Alert;

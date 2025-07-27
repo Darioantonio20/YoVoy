@@ -4,12 +4,12 @@ import { useEffect, useRef, useState, useMemo } from 'react';
 const buildKeyframes = (from, steps) => {
   const keys = new Set([
     ...Object.keys(from),
-    ...steps.flatMap((s) => Object.keys(s)),
+    ...steps.flatMap(s => Object.keys(s)),
   ]);
 
   const keyframes = {};
-  keys.forEach((k) => {
-    keyframes[k] = [from[k], ...steps.map((s) => s[k])];
+  keys.forEach(k => {
+    keyframes[k] = [from[k], ...steps.map(s => s[k])];
   });
   return keyframes;
 };
@@ -24,7 +24,7 @@ const BlurText = ({
   rootMargin = '0px',
   animationFrom,
   animationTo,
-  easing = (t) => t,
+  easing = t => t,
   onAnimationComplete,
   stepDuration = 0.35,
 }) => {
@@ -78,10 +78,7 @@ const BlurText = ({
   );
 
   return (
-    <p
-      ref={ref}
-      className={`blur-text ${className} flex flex-wrap`}
-    >
+    <p ref={ref} className={`blur-text ${className} flex flex-wrap`}>
       {elements.map((segment, index) => {
         const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
 
@@ -90,11 +87,11 @@ const BlurText = ({
           times,
           delay: (index * delay) / 1000,
         };
-        (spanTransition).ease = easing;
+        spanTransition.ease = easing;
 
         return (
           <motion.span
-            className="inline-block will-change-[transform,filter,opacity]"
+            className='inline-block will-change-[transform,filter,opacity]'
             key={index}
             initial={fromSnapshot}
             animate={inView ? animateKeyframes : fromSnapshot}
@@ -112,4 +109,4 @@ const BlurText = ({
   );
 };
 
-export default BlurText; 
+export default BlurText;

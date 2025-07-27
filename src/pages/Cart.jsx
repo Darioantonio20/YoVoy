@@ -1,18 +1,19 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import PageHeader from "../components/molecules/PageHeader";
-import CartList from "../components/organisms/CartList";
-import OrderSummary from "../components/molecules/OrderSummary";
-import PaymentMethodModal from "../components/molecules/PaymentMethodModal";
-import OrderConfirmationModal from "../components/molecules/OrderConfirmationModal";
-import BackgroundDecorator from "../components/atoms/BackgroundDecorator";
-import Alert from "../components/atoms/Alert";
-import { useCartContext } from "../context/CartContext";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PageHeader from '../components/molecules/PageHeader';
+import CartList from '../components/organisms/CartList';
+import OrderSummary from '../components/molecules/OrderSummary';
+import PaymentMethodModal from '../components/molecules/PaymentMethodModal';
+import OrderConfirmationModal from '../components/molecules/OrderConfirmationModal';
+import BackgroundDecorator from '../components/atoms/BackgroundDecorator';
+import Alert from '../components/atoms/Alert';
+import { useCartContext } from '../context/CartContext';
 
 export default function Cart() {
   const navigate = useNavigate();
-  const { cartItems, removeFromCart, updateQuantity, clearCart, getSubtotal } = useCartContext();
-  
+  const { cartItems, removeFromCart, updateQuantity, clearCart, getSubtotal } =
+    useCartContext();
+
   const [showPaymentMethod, setShowPaymentMethod] = useState(false);
   const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
   const [orderDetails, setOrderDetails] = useState(null);
@@ -31,18 +32,18 @@ export default function Cart() {
   const handleConfirmPurchase = () => {
     const shipping = cartItems.length > 0 ? 9.99 : 0;
     const total = getSubtotal() + shipping;
-    
+
     setOrderDetails({
       items: cartItems,
       subtotal: getSubtotal(),
       shipping,
-      total
+      total,
     });
-    
+
     setShowPaymentMethod(true);
   };
 
-  const handlePaymentConfirm = (paymentMethod) => {
+  const handlePaymentConfirm = paymentMethod => {
     setShowPaymentMethod(false);
     setShowOrderConfirmation(true);
   };
@@ -52,7 +53,7 @@ export default function Cart() {
     setOrderDetails(null);
   };
 
-  const handleRemoveItem = (productId) => {
+  const handleRemoveItem = productId => {
     removeFromCart(productId);
   };
 
@@ -66,8 +67,8 @@ export default function Cart() {
     clearCart(); // Limpiar el carrito aquí
     // Mostrar alerta de compra enviada
     Alert.success(
-      "¡Compra Enviada!", 
-      "Tu compra se ha enviado a la tienda. Recibirás una llamada de confirmación con los detalles de tu pedido."
+      '¡Compra Enviada!',
+      'Tu compra se ha enviado a la tienda. Recibirás una llamada de confirmación con los detalles de tu pedido.'
     );
     navigate('/store');
   };
@@ -81,59 +82,59 @@ export default function Cart() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
+    <div className='min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden'>
       <BackgroundDecorator />
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+      <div className='relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12'>
         {/* Header con diseño mejorado */}
-        <div className="mb-8 sm:mb-12">
-          <PageHeader 
-            title="Tu Carrito"
-            subtitle="Revisa tus productos antes de continuar"
-            icon="🛒"
-            textColor="text-white"
+        <div className='mb-8 sm:mb-12'>
+          <PageHeader
+            title='Tu Carrito'
+            subtitle='Revisa tus productos antes de continuar'
+            icon='🛒'
+            textColor='text-white'
           />
         </div>
 
-        <div className="max-w-6xl mx-auto">
+        <div className='max-w-6xl mx-auto'>
           {/* Layout mejorado con grid responsivo */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+          <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12'>
             {/* CartList - ocupa 2 columnas en desktop */}
-            <div className="lg:col-span-2">
-              <div className="bg-white/10 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8">
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-white mb-2 flex items-center">
-                    <span className="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
+            <div className='lg:col-span-2'>
+              <div className='bg-white/10 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8'>
+                <div className='mb-6'>
+                  <h2 className='text-2xl font-bold text-white mb-2 flex items-center'>
+                    <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
                       Productos en tu carrito
                     </span>
-                    <span className="ml-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-sm font-semibold px-3 py-1 rounded-full">
+                    <span className='ml-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-sm font-semibold px-3 py-1 rounded-full'>
                       {cartItems.length}
                     </span>
                   </h2>
-                  <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full"></div>
+                  <div className='w-20 h-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full'></div>
                 </div>
-                
-                <CartList 
-                  items={cartItems} 
+
+                <CartList
+                  items={cartItems}
                   onRemoveItem={handleRemoveItem}
                   onUpdateQuantity={handleUpdateQuantity}
                 />
               </div>
             </div>
-            
+
             {/* OrderSummary - sidebar en desktop */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-8">
-                <div className="bg-white/10 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8">
-                  <div className="mb-6">
-                    <h3 className="text-xl font-bold text-white mb-2 flex items-center">
-                      <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+            <div className='lg:col-span-1'>
+              <div className='sticky top-8'>
+                <div className='bg-white/10 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8'>
+                  <div className='mb-6'>
+                    <h3 className='text-xl font-bold text-white mb-2 flex items-center'>
+                      <span className='bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent'>
                         Resumen de compra
                       </span>
                     </h3>
-                    <div className="w-16 h-1 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"></div>
+                    <div className='w-16 h-1 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full'></div>
                   </div>
-                  
+
                   <OrderSummary
                     subtotal={getSubtotal()}
                     shipping={shipping}
@@ -164,4 +165,4 @@ export default function Cart() {
       />
     </div>
   );
-} 
+}

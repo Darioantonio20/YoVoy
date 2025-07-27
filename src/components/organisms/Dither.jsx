@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unknown-property */
-import { useRef, useEffect, forwardRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { EffectComposer, wrapEffect } from "@react-three/postprocessing";
-import { Effect } from "postprocessing";
-import * as THREE from "three";
+import { useRef, useEffect, forwardRef } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { EffectComposer, wrapEffect } from '@react-three/postprocessing';
+import { Effect } from 'postprocessing';
+import * as THREE from 'three';
 
 const waveVertexShader = `
 precision highp float;
@@ -135,23 +135,23 @@ void mainImage(in vec4 inputColor, in vec2 uv, out vec4 outputColor) {
 class RetroEffectImpl extends Effect {
   constructor() {
     const uniforms = new Map([
-      ["colorNum", new THREE.Uniform(4.0)],
-      ["pixelSize", new THREE.Uniform(2.0)],
+      ['colorNum', new THREE.Uniform(4.0)],
+      ['pixelSize', new THREE.Uniform(2.0)],
     ]);
-    super("RetroEffect", ditherFragmentShader, { uniforms });
+    super('RetroEffect', ditherFragmentShader, { uniforms });
     this.uniforms = uniforms;
   }
   set colorNum(v) {
-    this.uniforms.get("colorNum").value = v;
+    this.uniforms.get('colorNum').value = v;
   }
   get colorNum() {
-    return this.uniforms.get("colorNum").value;
+    return this.uniforms.get('colorNum').value;
   }
   set pixelSize(v) {
-    this.uniforms.get("pixelSize").value = v;
+    this.uniforms.get('pixelSize').value = v;
   }
   get pixelSize() {
-    return this.uniforms.get("pixelSize").value;
+    return this.uniforms.get('pixelSize').value;
   }
 }
 
@@ -161,7 +161,7 @@ const RetroEffect = forwardRef((props, ref) => {
   const { colorNum, pixelSize } = props;
   return <WrappedRetro ref={ref} colorNum={colorNum} pixelSize={pixelSize} />;
 });
-RetroEffect.displayName = "RetroEffect";
+RetroEffect.displayName = 'RetroEffect';
 
 function DitheredWaves({
   waveSpeed,
@@ -227,7 +227,7 @@ function DitheredWaves({
     }
   });
 
-  const handlePointerMove = (e) => {
+  const handlePointerMove = e => {
     if (!enableMouseInteraction) return;
     const rect = gl.domElement.getBoundingClientRect();
     const dpr = gl.getPixelRatio();
@@ -278,7 +278,7 @@ export default function Dither({
 }) {
   return (
     <Canvas
-      className="w-full h-full relative"
+      className='w-full h-full relative'
       camera={{ position: [0, 0, 6] }}
       dpr={window.devicePixelRatio}
       gl={{ antialias: true, preserveDrawingBuffer: true }}
@@ -296,4 +296,4 @@ export default function Dither({
       />
     </Canvas>
   );
-} 
+}

@@ -1,13 +1,13 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const CART_STORAGE_KEY = "jasai_cart";
+const CART_STORAGE_KEY = 'jasai_cart';
 
 const CartContext = createContext();
 
 export const useCartContext = () => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error("useCartContext must be used within a CartProvider");
+    throw new Error('useCartContext must be used within a CartProvider');
   }
   return context;
 };
@@ -20,13 +20,13 @@ export const CartProvider = ({ children }) => {
   // Cargar carrito desde localStorage al inicializar
   useEffect(() => {
     const savedCart = localStorage.getItem(CART_STORAGE_KEY);
-    
+
     if (savedCart) {
       try {
         const parsedCart = JSON.parse(savedCart);
         setCartItems(parsedCart);
       } catch (error) {
-        console.error("Error loading cart from localStorage:", error);
+        console.error('Error loading cart from localStorage:', error);
         setCartItems([]);
       }
     }
@@ -41,10 +41,10 @@ export const CartProvider = ({ children }) => {
   }, [cartItems, isInitialized]);
 
   // Agregar producto al carrito
-  const addToCart = (product) => {
+  const addToCart = product => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
-      
+
       if (existingItem) {
         // Si ya existe, incrementar cantidad
         return prevItems.map(item =>
@@ -60,7 +60,7 @@ export const CartProvider = ({ children }) => {
   };
 
   // Remover producto del carrito
-  const removeFromCart = (productId) => {
+  const removeFromCart = productId => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
   };
 
@@ -70,12 +70,10 @@ export const CartProvider = ({ children }) => {
       removeFromCart(productId);
       return;
     }
-    
+
     setCartItems(prevItems =>
       prevItems.map(item =>
-        item.id === productId
-          ? { ...item, quantity }
-          : item
+        item.id === productId ? { ...item, quantity } : item
       )
     );
   };
@@ -102,7 +100,7 @@ export const CartProvider = ({ children }) => {
   const getSubtotal = () => {
     return cartItems.reduce((total, item) => {
       const price = parseFloat(item.price.replace('$', '').replace(',', ''));
-      return total + (price * item.quantity);
+      return total + price * item.quantity;
     }, 0);
   };
 
@@ -115,12 +113,8 @@ export const CartProvider = ({ children }) => {
     getTotalItems,
     getSubtotal,
     isInitialized,
-    previousItemCount
+    previousItemCount,
   };
 
-  return (
-    <CartContext.Provider value={value}>
-      {children}
-    </CartContext.Provider>
-  );
-}; 
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+};

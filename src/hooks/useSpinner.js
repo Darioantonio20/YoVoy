@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 const useSpinner = (minLoadTime = 1000) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,14 +13,14 @@ const useSpinner = (minLoadTime = 1000) => {
     return () => clearTimeout(timer);
   }, [minLoadTime]);
 
-  const setLoading = (loading) => {
+  const setLoading = loading => {
     setIsLoading(loading);
   };
 
   return {
     isLoading,
-    setLoading
+    setLoading,
   };
 };
 
-export default useSpinner; 
+export default useSpinner;

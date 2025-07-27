@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-const CART_STORAGE_KEY = "jasai_cart";
+const CART_STORAGE_KEY = 'jasai_cart';
 
 const useCart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -9,13 +9,13 @@ const useCart = () => {
   // Cargar carrito desde localStorage al inicializar
   useEffect(() => {
     const savedCart = localStorage.getItem(CART_STORAGE_KEY);
-    
+
     if (savedCart) {
       try {
         const parsedCart = JSON.parse(savedCart);
         setCartItems(parsedCart);
       } catch (error) {
-        console.error("Error loading cart from localStorage:", error);
+        console.error('Error loading cart from localStorage:', error);
         setCartItems([]);
       }
     }
@@ -30,10 +30,10 @@ const useCart = () => {
   }, [cartItems, isInitialized]);
 
   // Agregar producto al carrito
-  const addToCart = (product) => {
+  const addToCart = product => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
-      
+
       if (existingItem) {
         // Si ya existe, incrementar cantidad
         return prevItems.map(item =>
@@ -49,7 +49,7 @@ const useCart = () => {
   };
 
   // Remover producto del carrito
-  const removeFromCart = (productId) => {
+  const removeFromCart = productId => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
   };
 
@@ -59,12 +59,10 @@ const useCart = () => {
       removeFromCart(productId);
       return;
     }
-    
+
     setCartItems(prevItems =>
       prevItems.map(item =>
-        item.id === productId
-          ? { ...item, quantity }
-          : item
+        item.id === productId ? { ...item, quantity } : item
       )
     );
   };
@@ -83,7 +81,7 @@ const useCart = () => {
   const getSubtotal = () => {
     return cartItems.reduce((total, item) => {
       const price = parseFloat(item.price.replace('$', '').replace(',', ''));
-      return total + (price * item.quantity);
+      return total + price * item.quantity;
     }, 0);
   };
 
@@ -95,8 +93,8 @@ const useCart = () => {
     clearCart,
     getTotalItems,
     getSubtotal,
-    isInitialized
+    isInitialized,
   };
 };
 
-export default useCart; 
+export default useCart;

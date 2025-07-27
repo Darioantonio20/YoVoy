@@ -25,8 +25,8 @@
     "paymentMethod": "efectivo",
     "paymentDetails": "Pago en efectivo al momento de la entrega"
   },
-    {
-    "id": "ORD-002", 
+  {
+    "id": "ORD-002",
     "customer": "María García",
     "email": "maria@email.com",
     "phone": "+52 81 9876 5432",
@@ -46,7 +46,7 @@
     "paymentMethod": "transferencia",
     "paymentDetails": "Transferencia a cuenta BBVA: 012345678901234567"
   },
-    {
+  {
     "id": "ORD-003",
     "customer": "Carlos López",
     "email": "carlos@email.com",
@@ -114,4 +114,4 @@
     "paymentMethod": "efectivo",
     "paymentDetails": "Pago en efectivo al momento de la entrega"
   }
-] 
+]
