@@ -23,10 +23,24 @@
     },
     {
       "id": 10,
-      "name": "Los Hochos Morochos",
+      "name": "Marvin Marisquería",
       "category": "Comida",
       "logo": "🍔",
-      "description": "Los mejores hot dogs y hamburguesas"
+      "description": "Los mejores Mariscos"
+    },
+    {
+      "id": 11,
+      "name": "Pollo Arrecho",
+      "category": "Comida",
+      "logo": "🍗",
+      "description": "El mejor pollo de la ciudad"
+    },
+    {
+      "id": 12,
+      "name": "Oreo Negro",
+      "category": "Comida",
+      "logo": "🍔",
+      "description": "Los mejores snacks"
     },
     {
       "id": 13,
@@ -34,6 +48,13 @@
       "category": "Hogar",
       "logo": "🏠",
       "description": "Decoración para tu hogar"
+    },
+    {
+      "id": 14,
+      "name": "Alita To Go",
+      "category": "Comida",
+      "logo": "🍔",
+      "description": "Los mejores snacks"
     },
     {
       "id": 15,
@@ -57,11 +78,25 @@
       "description": "Equipamiento deportivo"
     },
     {
+      "id": 18,
+      "name": "Cafe Cafe El Aroma de Lo Nuestro",
+      "category": "Comida",
+      "logo": "☕️",
+      "description": "Los mejores cafes"
+    },
+    {
       "id": 19,
       "name": "Belleza Express",
       "category": "Belleza",
       "logo": "💄",
       "description": "Productos de belleza"
+    },
+    {
+      "id": 20,
+      "name": "Gorditas Don Tebby",
+      "category": "Comida",
+      "logo": "🌮",
+      "description": "Los mejores gorditas"
     },
     {
       "id": 21,
@@ -97,6 +132,13 @@
       "category": "Ferretería",
       "logo": "🔧",
       "description": "Herramientas y materiales"
+    },
+    {
+      "id": 26,
+      "name": "Villanos Burguer",
+      "category": "Comida",
+      "logo": "🍔",
+      "description": "La mejor hamburguesería de la ciudad"
     }
   ],
   "products": [
@@ -375,95 +417,184 @@
 
     {
       "id": 101,
-      "name": "Hot Dog Clásico",
-      "price": "$2.99",
-      "image": "🌭",
+      "name": "Mariscos al coco",
+      "price": "$70.00",
+      "image": "🍤",
       "category": "Comida",
       "storeId": 10,
-      "description": "Hot dog con salchicha, cebolla y mostaza"
+      "description": "Mariscos al coco"
     },
     {
       "id": 102,
-      "name": "Hot Dog Especial",
-      "price": "$3.99",
-      "image": "🌭",
+      "name": "Hueva de cazon",
+      "price": "$90.00",
+      "image": "🦐",
       "category": "Comida",
       "storeId": 10,
-      "description": "Hot dog con todo: salchicha, cebolla, tomate, lechuga, queso"
+      "description": "Hueva de cazón"
     },
     {
       "id": 103,
-      "name": "Hamburguesa Sencilla",
+      "name": "Empanada de cazon",
       "price": "$4.99",
       "image": "🍔",
       "category": "Comida",
       "storeId": 10,
-      "description": "Hamburguesa con carne, lechuga y tomate"
+      "description": "Empanada de cazón"
     },
     {
       "id": 104,
-      "name": "Hamburguesa Doble",
-      "price": "$6.99",
-      "image": "🍔",
+      "name": "Pollo Arrecho Pollo",
+      "price": "$120.99",
+      "image": "🍗",
       "category": "Comida",
-      "storeId": 10,
-      "description": "Hamburguesa doble carne con queso y aderezos"
+      "storeId": 11,
+      "description": "Pollo Arrecho Pollo frito"
     },
     {
       "id": 105,
-      "name": "Papas a la Francesa",
-      "price": "$1.99",
-      "image": "🍟",
+      "name": "Pollo Arrecho Alitas",
+      "price": "$150.99",
+      "image": "🍗",
       "category": "Comida",
-      "storeId": 10,
-      "description": "Papas crujientes y doradas"
+      "storeId": 11,
+      "description": "Pollo Arrecho Alitas"
     },
     {
       "id": 106,
-      "name": "Refresco Grande",
-      "price": "$1.49",
-      "image": "🥤",
+      "name": "Hamburguesa Maniaka",
+      "price": "$150.99",
+      "image": "🍔",
       "category": "Comida",
-      "storeId": 10,
-      "description": "Refresco de cola 600ml"
+      "storeId": 12,
+      "description": "Hamburguesa Maniaka"
     },
     {
       "id": 107,
-      "name": "Combo Hot Dog",
-      "price": "$4.49",
-      "image": "🌭",
+      "name": "Hamburguesas 2x1",
+      "price": "$190.99",
+      "image": "🍔",
       "category": "Comida",
-      "storeId": 10,
-      "description": "Hot dog + papas + refresco"
+      "storeId": 12,
+      "description": "Hamburguesa Maniaka"
     },
     {
       "id": 108,
-      "name": "Combo Hamburguesa",
-      "price": "$6.49",
+      "name": "Postre",
+      "price": "$100.99",
       "image": "🍔",
       "category": "Comida",
-      "storeId": 10,
-      "description": "Hamburguesa + papas + refresco"
+      "storeId": 12,
+      "description": "postre de mini pastel"
     },
     {
       "id": 109,
-      "name": "Nachos con Queso",
-      "price": "$2.99",
-      "image": "🧀",
+      "name": "Flan",
+      "price": "$100.99",
+      "image": "🍔",
       "category": "Comida",
-      "storeId": 10,
-      "description": "Nachos con queso fundido y jalapeños"
+      "storeId": 12,
+      "description": "Flan de tipo pastel"
     },
     {
       "id": 110,
-      "name": "Agua Mineral",
-      "price": "$0.99",
-      "image": "💧",
+      "name": "Cheese Fingers",
+      "price": "$100.99",
+      "image": "🍔",
       "category": "Comida",
-      "storeId": 10,
-      "description": "Agua mineral 500ml"
+      "storeId": 14,
+      "description": "Cheese Fingers"
     },
-
+    {
+      "id": 111,
+      "name": "Alitas BBQ",
+      "price": "$100.99",
+      "image": "🍔",
+      "category": "Comida",
+      "storeId": 14,
+      "description": "Alitas BBQ"
+    },
+    {
+      "id": 112,
+      "name": "Alitas 4 sabores",
+      "price": "$100.99",
+      "image": "🍔",
+      "category": "Comida",
+      "storeId": 14,
+      "description": "Alitas 4 sabores"
+    },
+    {
+      "id": 113,
+      "name": "Vainilla latte",
+      "price": "$110.99",
+      "image": "🍔",
+      "category": "Comida",
+      "storeId": 18,
+      "description": "Vainilla latte"
+    },
+    {
+      "id": 114,
+      "name": "Batido",
+      "price": "$80.99",
+      "image": "🍔",
+      "category": "Comida",
+      "storeId": 18,
+      "description": "Cafe con leche"
+    },
+    {
+      "id": 115,
+      "name": "Huevos con tocino",
+      "price": "$70.99",
+      "image": "🍔",
+      "category": "Comida",
+      "storeId": 18,
+      "description": "Huevos con tocino"
+    },
+    {
+      "id": 116,
+      "name": "Postre de fresa",
+      "price": "$160.99",
+      "image": "🍔",
+      "category": "Comida",
+      "storeId": 18,
+      "description": "Postre de fresa"
+    },
+    {
+      "id": 117,
+      "name": "Tacos Don Tebby",
+      "price": "$50.99",
+      "image": "🌮",
+      "category": "Comida",
+      "storeId": 20,
+      "description": "Tacos de don tebby"
+    },
+    {
+      "id": 118,
+      "name": "Tacos de Cuerito y Maciza",
+      "price": "$40.99",
+      "image": "🌮",
+      "category": "Comida",
+      "storeId": 20,
+      "description": "Tacos con quesito y maciza"
+    },
+    {
+      "id": 119,
+      "name": "Gorditas",
+      "price": "$30.99",
+      "image": "🌮",
+      "category": "Comida",
+      "storeId": 20,
+      "description": "Gordita"
+    },
+    {
+      "id": 120,
+      "name": "Hamburguesa Villana",
+      "price": "$30.99",
+      "image": "🌮",
+      "category": "Comida",
+      "storeId": 26,
+      "description": "Hambuguesa del otro mundo"
+    },
     {
       "id": 201,
       "name": "Base de Maquillaje",

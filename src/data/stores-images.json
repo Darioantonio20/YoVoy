@@ -23,10 +23,24 @@
     },
     "10": {
       "id": 10,
-      "name": "Los Hochos Morochos",
-      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-      "location": "Centro Comercial Plaza Mayor",
-      "address": "Av. Insurgentes Sur 1234, Col. Del Valle"
+      "name": "Marvin Marisquería",
+      "image": "https://i.ibb.co/23dn5DfX/marvin-Marisqueria.png",
+      "location": "Villa Flores",
+      "address": "4 Av. Sur entre 6 y 7 Poniente"
+    },
+    "11": {
+      "id": 11,
+      "name": "Pollo Arrecho",
+      "image": "https://i.ibb.co/twTNhWCd/Captura-de-pantalla-2025-07-27-a-la-s-9-03-12-p-m.png",
+      "location": "Villa Flores",
+      "address": "Av central entre 4 y 5 poniente"
+    },
+    "12": {
+      "id": 12,
+      "name": "Oreo Negro",
+      "image": "https://i.ibb.co/LD0p8fMh/oreo-Negro.png",
+      "location": "Villa Flores",
+      "address": "1 poniente entre 3 y 4 sur"
     },
     "13": {
       "id": 13,
@@ -34,6 +48,13 @@
       "image": "https://images.unsplash.com/photo-1581513746494-2905afa2376b?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "location": "Plaza Comercial",
       "address": "Blvd. Miguel Hidalgo 567, Col. Polanco"
+    },
+    "14": {
+      "id": 14,
+      "name": "Alita ToGo",
+      "image": "https://i.ibb.co/hxyDBRTZ/alita-To-Go.png",
+      "location": "Villa Flores",
+      "address": "1 oriente entre av central y 1 sur"
     },
     "15": {
       "id": 15,
@@ -56,12 +77,26 @@
       "location": "Centro Deportivo",
       "address": "Av. Universidad 234, Col. Coyoacán"
     },
+    "18": {
+      "id": 18,
+      "name": "Cafe Cafe El Aroma de Lo Nuestro",
+      "image": "https://i.ibb.co/hxkGpLH8/cafe-cafe-el-aroma.png",
+      "location": "Villa Flores",
+      "address": "Av central entre calle central y primera oriente"
+    },
     "19": {
       "id": 19,
       "name": "Belleza Express",
       "image": "https://images.unsplash.com/photo-1691187861263-089f49891144?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "location": "Centro de Belleza",
       "address": "Calle Florencia 89, Col. Juárez"
+    },
+    "20": {
+      "id": 20,
+      "name": "Gorditas Don Tebby",
+      "image": "https://i.ibb.co/YBcvX86X/Don-tebby.png",
+      "location": "Villa Flores",
+      "address": "Av central entre quinta y sexta sur"
     },
     "21": {
       "id": 21,
@@ -97,6 +132,13 @@
       "image": "https://images.unsplash.com/photo-1519520104014-df63821cb6f9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "location": "Centro de Herramientas",
       "address": "Av. Patriotismo 567, Col. San Pedro de los Pinos"
+    },
+    "26": {
+      "id": 26,
+      "name": "Villanos Burguer",
+      "image": "https://i.ibb.co/4wfSckHC/Villanos-burguer.png",
+      "location": "Zona Panadera",
+      "address": "Calle de la Paz 123, Col. Roma Sur"
     }
   }
 }
