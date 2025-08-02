@@ -23,13 +23,7 @@ export default function Store() {
   const [searchProducts, setSearchProducts] = useState('');
   const [currentView, setCurrentView] = useState('search'); // "search", "stores", "products"
   const { isLoading } = useSpinner(1500);
-  const {
-    addToCart,
-    getTotalItems,
-    cartItems,
-    isInitialized,
-    previousItemCount,
-  } = useCartContext();
+  const { addToCart, getTotalItems, previousItemCount } = useCartContext();
 
   // Obtener categorías únicas para el buscador
   const categories = [

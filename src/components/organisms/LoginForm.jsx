@@ -6,7 +6,10 @@ import Text from '../atoms/Text';
 
 const LoginForm = memo(({ onBack }) => {
   const [isLogin, setIsLogin] = useState(true);
-  const [isStore, setIsStore] = useState(false); // Nuevo estado para "crear cuenta como tienda"
+  const [isStore, setIsStore] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [storeLocation, setStoreLocation] = useState({ alias: '', link: '' });
+  const [clientLocation, setClientLocation] = useState({ alias: '', link: '' });
   const navigate = useNavigate();
 
   const toggleForm = () => {
@@ -14,9 +17,27 @@ const LoginForm = memo(({ onBack }) => {
   };
 
   const handleSubmit = () => {
-    // Aquí iría la lógica de autenticación o registro
-    if (!isLogin && isStore) {
-      navigate('/admin'); // Redirige al panel administrativo si es tienda
+    // Validar campos requeridos
+    if (!isLogin) {
+      if (isStore) {
+        // Validar campos de tienda
+        if (!storeLocation.alias.trim() || !storeLocation.link.trim()) {
+          alert('Por favor, completa el nombre y el vínculo de la ubicación de la tienda');
+          return;
+        }
+        if (selectedCategories.length === 0) {
+          alert('Por favor, selecciona al menos una categoría');
+          return;
+        }
+        navigate('/admin');
+      } else {
+        // Validar campos de cliente
+        if (!clientLocation.alias.trim() || !clientLocation.link.trim()) {
+          alert('Por favor, completa el nombre y el vínculo de tu ubicación de entrega');
+          return;
+        }
+        navigate('/store');
+      }
     } else {
       navigate('/store');
     }
@@ -117,25 +138,109 @@ const LoginForm = memo(({ onBack }) => {
                   />
                 </div>
                 <div className='flex flex-col h-full'>
-                  <label className='block mb-5 sm:mb-2 text-gray-50 text-sm sm:text-sm font-medium'>
-                    4. Ubicación de la tienda
+                  <label className='block mb-2 text-gray-50 text-sm sm:text-sm font-medium'>
+                    4. Ubicación exacta de la tienda
                   </label>
-                  <textarea
-                    placeholder='Dirección'
-                    rows='2'
-                    className='w-full  border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors resize-none text-sm sm:text-base'
-                  />
+                  <div className='mb-3'>
+                    <button
+                      type='button'
+                      onClick={() => window.open('https://www.google.com/maps', '_blank')}
+                      className='flex items-center gap-2 px-3 py-2 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded-lg text-orange-300 hover:text-orange-200 transition-colors text-xs'
+                    >
+                      <svg className='w-4 h-4' viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                      </svg>
+                      Abrir Google Maps
+                    </button>
+                    <div className='mt-2 p-2 bg-blue-500/10 border border-blue-500/20 rounded text-xs text-blue-300/90'>
+                      <div className='space-y-1'>
+                        <p className='font-medium text-blue-300'>📍 Instrucciones:</p>
+                        <p>1. Busca tu local en Google Maps</p>
+                        <p>2. Busaca el icono de compartir</p>
+                        <p>3. Dale clic en copiar vínculo</p>
+                        <p>4. Pégala pegala en el campo requerido</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <input
+                      type="text"
+                      value={storeLocation.alias}
+                      onChange={(e) => setStoreLocation(prev => ({ ...prev, alias: e.target.value }))}
+                      placeholder="Nombre de la tienda (ej: Sucursal Centro, Local Principal)"
+                      className='w-full border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                    />
+                    <textarea
+                      value={storeLocation.link}
+                      onChange={(e) => setStoreLocation(prev => ({ ...prev, link: e.target.value }))}
+                      placeholder='Pega aquí el vínculo de Google Maps'
+                      rows='2'
+                      className='w-full border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors resize-none text-sm sm:text-base'
+                    />
+                  </div>
                 </div>
                 {/* Fila 3: Categoría */}
                 <div className='md:col-span-2'>
-                  <label className='block mb-2 sm:mb-2 text-gray-50 text-sm sm:text-sm font-medium'>
-                    5. Categoría de productos
+                  <label className='block mb-3 text-gray-50 text-sm sm:text-sm font-medium'>
+                    5. Categorías de productos
+                    <span className='text-gray-400 text-xs ml-2'>(Selecciona las que apliquen)</span>
                   </label>
-                  <input
-                    type='text'
-                    placeholder='Ej: comida, moda, juguetes, etc.'
-                    className='w-full p-3 sm:p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
-                  />
+                  <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3'>
+                    {[
+                      { id: 'tecnologia', label: 'Tecnología', icon: '💻' },
+                      { id: 'moda', label: 'Moda', icon: '👕' },
+                      { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
+                      { id: 'comida', label: 'Comida', icon: '🍔' },
+                      { id: 'hogar', label: 'Hogar', icon: '🏠' },
+                      { id: 'jardin', label: 'Jardín', icon: '🌱' },
+                      { id: 'mascotas', label: 'Mascotas', icon: '🐕' },
+                      { id: 'deportes', label: 'Deportes', icon: '⚽' },
+                      { id: 'belleza', label: 'Belleza', icon: '💄' },
+                      { id: 'libros', label: 'Libros', icon: '📚' },
+                      { id: 'musica', label: 'Música', icon: '🎵' },
+                      { id: 'arte', label: 'Arte', icon: '🎨' },
+                      { id: 'automotriz', label: 'Automotriz', icon: '🚗' },
+                      { id: 'ferreteria', label: 'Ferretería', icon: '🔧' },
+                    ].map(category => (
+                      <label
+                        key={category.id}
+                        className='relative flex items-center p-3 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300 cursor-pointer group'
+                      >
+                        <input
+                          type='checkbox'
+                          name='categories'
+                          value={category.id}
+                          checked={selectedCategories.includes(category.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedCategories([...selectedCategories, category.id]);
+                            } else {
+                              setSelectedCategories(selectedCategories.filter(id => id !== category.id));
+                            }
+                          }}
+                          className='peer sr-only'
+                        />
+                        <div
+                          className='w-7 h-7 rounded-lg bg-transparent border-2 border-orange-500/70 transition-all duration-300 ease-in-out
+                            peer-checked:bg-gradient-to-br from-orange-400 to-yellow-400
+                            peer-checked:border-0 peer-checked:rotate-12
+                            after:content-[""] after:absolute after:top-[22px] after:left-[14px]
+                            after:-translate-x-1/2 after:-translate-y-1/2 after:w-4 after:h-4
+                            after:opacity-0 after:bg-[url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSIyMCA2IDkgMTcgNCAxMiI+PC9wb2x5bGluZT48L3N2Zz4=")]
+                            after:bg-contain after:bg-no-repeat peer-checked:after:opacity-100
+                            after:transition-opacity after:duration-300
+                            hover:shadow-[0_0_15px_rgba(251,146,60,0.5)]'
+                        ></div>
+                        <div className='flex items-center gap-2 ml-3'>
+                          <span className='text-xl'>{category.icon}</span>
+                          <span className='text-sm text-white/90 group-hover:text-white transition-colors'>
+                            {category.label}
+                          </span>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
                 </div>
               </div>
             ) : (
@@ -173,14 +278,47 @@ const LoginForm = memo(({ onBack }) => {
                   />
                 </div>
                 <div className='flex flex-col h-full'>
-                  <label className='block mb-2 sm:mb-2 text-gray-50 text-sm sm:text-sm font-medium'>
+                  <label className='block mb-2 text-gray-50 text-sm sm:text-sm font-medium'>
                     4. Ubicación para envío
                   </label>
-                  <textarea
-                    placeholder='Dirección'
-                    rows='1'
-                    className='w-full p-3 sm:p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors resize-none text-sm sm:text-base'
-                  />
+                  <div className='mb-3'>
+                    <button
+                      type='button'
+                      onClick={() => window.open('https://www.google.com/maps', '_blank')}
+                      className='flex items-center gap-2 px-3 py-2 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded-lg text-orange-300 hover:text-orange-200 transition-colors text-xs'
+                    >
+                      <svg className='w-4 h-4' viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                      </svg>
+                      Abrir Google Maps
+                    </button>
+                    <div className='mt-2 p-2 bg-blue-500/10 border border-blue-500/20 rounded text-xs text-blue-300/90'>
+                      <div className='space-y-1'>
+                        <p className='font-medium text-blue-300'>📍 Instrucciones:</p>
+                        <p>1. Busca tu ubicación de entrega en Google Maps</p>
+                        <p>2. Busca el ícono de compartir</p>
+                        <p>3. Dale clic en copiar vínculo</p>
+                        <p>4. Pégala en el campo requerido</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <input
+                      type="text"
+                      value={clientLocation.alias}
+                      onChange={(e) => setClientLocation(prev => ({ ...prev, alias: e.target.value }))}
+                      placeholder="Nombre del lugar (ej: Casa, Trabajo, Gimnasio)"
+                      className='w-full border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                    />
+                    <textarea
+                      value={clientLocation.link}
+                      onChange={(e) => setClientLocation(prev => ({ ...prev, link: e.target.value }))}
+                      placeholder='Pega aquí el vínculo de Google Maps'
+                      rows='2'
+                      className='w-full border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors resize-none text-sm sm:text-base'
+                    />
+                  </div>
                 </div>
               </div>
             )}

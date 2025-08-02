@@ -7,7 +7,7 @@ const PaymentMethodModal = ({ isOpen, onClose, onConfirm, orderDetails }) => {
 
   if (!isOpen) return null;
 
-  const { items, subtotal, shipping, total } = orderDetails;
+  const { subtotal, shipping, total } = orderDetails;
 
   const paymentMethods = [
     {
@@ -136,12 +136,12 @@ const PaymentMethodModal = ({ isOpen, onClose, onConfirm, orderDetails }) => {
         </div>
 
         {/* Botones */}
-        <div className='flex space-x-4'>
-          <Button variant='secondary' onClick={onClose} className='flex-1'>
-            Cancelar
-          </Button>
-          <Button variant='success' onClick={handleConfirm} className='flex-1'>
+        <div className='flex flex-col sm:flex-row gap-3 sm:space-x-4'>
+          <Button variant='success' onClick={handleConfirm} className='w-full order-1 sm:order-2 py-3'>
             Confirmar Pago
+          </Button>
+          <Button variant='secondary' onClick={onClose} className='w-full order-2 sm:order-1'>
+            Cancelar
           </Button>
         </div>
       </div>
