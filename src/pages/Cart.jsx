@@ -11,7 +11,7 @@ import { useCartContext } from '../context/CartContext';
 
 export default function Cart() {
   const navigate = useNavigate();
-  const { cartItems, removeFromCart, updateQuantity, clearCart, getSubtotal } =
+  const { cartItems, removeFromCart, updateQuantity, updateNote, clearCart, getSubtotal } =
     useCartContext();
 
   const [showPaymentMethod, setShowPaymentMethod] = useState(false);
@@ -85,9 +85,9 @@ export default function Cart() {
     <div className='min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden'>
       <BackgroundDecorator />
 
-      <div className='relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12'>
+      <div className='relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8'>
         {/* Header con diseño mejorado */}
-        <div className='mb-8 sm:mb-12'>
+        <div className='mb-6 sm:mb-8'>
           <PageHeader
             title='Tu Carrito'
             subtitle='Revisa tus productos antes de continuar'
@@ -96,14 +96,14 @@ export default function Cart() {
           />
         </div>
 
-        <div className='max-w-6xl mx-auto'>
+        <div className='w-full'>
           {/* Layout mejorado con grid responsivo */}
-          <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12'>
-            {/* CartList - ocupa 2 columnas en desktop */}
-            <div className='lg:col-span-2'>
-              <div className='bg-white/10 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8'>
-                <div className='mb-6'>
-                  <h2 className='text-2xl font-bold text-white mb-2 flex items-center'>
+          <div className='grid grid-cols-1 xl:grid-cols-12 gap-6 sm:gap-8'>
+            {/* CartList - ocupa más espacio en desktop */}
+            <div className='xl:col-span-8'>
+              <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-4 sm:p-6'>
+                <div className='mb-4 sm:mb-6'>
+                  <h2 className='text-xl sm:text-2xl font-bold text-white mb-2 flex items-center'>
                     <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
                       Productos en tu carrito
                     </span>
@@ -118,13 +118,14 @@ export default function Cart() {
                   items={cartItems}
                   onRemoveItem={handleRemoveItem}
                   onUpdateQuantity={handleUpdateQuantity}
+                  onUpdateNote={updateNote}
                 />
               </div>
             </div>
 
             {/* OrderSummary - sidebar en desktop */}
-            <div className='lg:col-span-1'>
-              <div className='sticky top-8'>
+            <div className='xl:col-span-4'>
+              <div className='sticky top-4'>
                 <div className='bg-white/10 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8'>
                   <div className='mb-6'>
                     <h3 className='text-xl font-bold text-white mb-2 flex items-center'>

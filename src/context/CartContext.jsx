@@ -53,8 +53,8 @@ export const CartProvider = ({ children }) => {
             : item
         );
       } else {
-        // Si no existe, agregar nuevo item
-        return [...prevItems, { ...product, quantity: 1 }];
+        // Si no existe, agregar nuevo item con nota vacía
+        return [...prevItems, { ...product, quantity: 1, note: '' }];
       }
     });
   };
@@ -104,11 +104,21 @@ export const CartProvider = ({ children }) => {
     }, 0);
   };
 
+  // Actualizar nota de un producto
+  const updateNote = (productId, note) => {
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.id === productId ? { ...item, note } : item
+      )
+    );
+  };
+
   const value = {
     cartItems,
     addToCart,
     removeFromCart,
     updateQuantity,
+    updateNote,
     clearCart,
     getTotalItems,
     getSubtotal,

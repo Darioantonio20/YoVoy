@@ -69,6 +69,9 @@ const ProductTable = ({ products, onEdit, onDelete, onToggleStatus }) => {
               <th className='px-6 py-3 text-center text-xs font-medium text-white/70 uppercase tracking-wider'>
                 Stock
               </th>
+              <th className='px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider'>
+                Nota del Admin
+              </th>
               <th className='px-6 py-3 text-center text-xs font-medium text-white/70 uppercase tracking-wider'>
                 Estado
               </th>
@@ -135,6 +138,27 @@ const ProductTable = ({ products, onEdit, onDelete, onToggleStatus }) => {
                       ({product.stock})
                     </Text>
                   </div>
+                </td>
+                <td className='px-6 py-4'>
+                  {product.adminNote ? (
+                    <div className='flex items-start gap-2'>
+                      <div className='w-5 h-5 flex-shrink-0 mt-0.5'>
+                        <div className='w-5 h-5 bg-orange-500/20 rounded-full flex items-center justify-center border border-orange-500/30'>
+                          <span className='text-orange-400 text-sm'>📝</span>
+                        </div>
+                      </div>
+                      <p className='text-orange-300/90 text-sm italic'>
+                        "{product.adminNote}"
+                      </p>
+                    </div>
+                  ) : (
+                    <div className='flex items-center gap-2 text-white/30'>
+                      <div className='w-5 h-5 bg-white/5 rounded-full flex items-center justify-center border border-white/10'>
+                        <span className='text-white/30 text-xs'>-</span>
+                      </div>
+                      <span className='text-sm'>Sin nota</span>
+                    </div>
+                  )}
                 </td>
                 <td className='px-6 py-4 whitespace-nowrap text-center'>
                   <span

@@ -56,6 +56,11 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
                       <p className='text-sm text-white/70'>
                         Cantidad: {item.quantity}
                       </p>
+                      {item.note && (
+                        <p className='text-sm text-orange-400/80 italic mt-1'>
+                          Nota: {item.note}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <p className='font-semibold text-white'>

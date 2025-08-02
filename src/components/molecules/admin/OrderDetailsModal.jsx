@@ -265,13 +265,29 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                         >
                           {product.name}
                         </Text>
-                        <Text
-                          variant='bodyLight'
-                          size='xs'
-                          className='text-white/70'
-                        >
-                          Cantidad: {product.quantity}
-                        </Text>
+                        <div className='space-y-1'>
+                          <Text
+                            variant='bodyLight'
+                            size='xs'
+                            className='text-white/70'
+                          >
+                            Cantidad: {product.quantity}
+                          </Text>
+                          {product.note && (
+                            <div className='flex items-center gap-1.5'>
+                              <span className='px-1.5 py-0.5 text-[10px] bg-orange-500/20 text-orange-300 rounded-full border border-orange-500/30'>
+                                Nota
+                              </span>
+                              <Text
+                                variant='bodyLight'
+                                size='xs'
+                                className='text-white/70 italic'
+                              >
+                                "{product.note}"
+                              </Text>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <Text

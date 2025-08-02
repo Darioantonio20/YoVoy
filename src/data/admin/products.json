@@ -17,7 +17,8 @@
     "image": "🚗",
     "category": "juguetes",
     "stock": 8,
-    "isActive": true
+    "isActive": true,
+    "adminNote": "Edición limitada, solo quedan 8 unidades"
   },
   {
     "id": "3",
@@ -37,7 +38,8 @@
     "image": "⚽",
     "category": "deportes",
     "stock": 12,
-    "isActive": true
+    "isActive": true,
+    "adminNote": "Balón oficial del torneo local, stock limitado"
   },
   {
     "id": "5",
@@ -47,7 +49,8 @@
     "image": "💻",
     "category": "electronica",
     "stock": 3,
-    "isActive": true
+    "isActive": true,
+    "adminNote": "¡Últimas unidades! Próximo restock en 2 semanas"
   },
   {
     "id": "6",
@@ -57,7 +60,8 @@
     "image": "🎮",
     "category": "juguetes",
     "stock": 0,
-    "isActive": true
+    "isActive": true,
+    "adminNote": "Producto agotado. Nueva temporada llega en 1 mes"
   },
   {
     "id": "7",
@@ -67,7 +71,8 @@
     "image": "👟",
     "category": "ropa",
     "stock": 18,
-    "isActive": true
+    "isActive": true,
+    "adminNote": "Tallas disponibles: 36-42. Colores: negro y blanco"
   },
   {
     "id": "8",
@@ -77,6 +82,7 @@
     "image": "💡",
     "category": "hogar",
     "stock": 7,
-    "isActive": true
+    "isActive": true,
+    "adminNote": "Modelo descontinuado, aplicar 15% descuento"
   }
 ]

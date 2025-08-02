@@ -11,6 +11,7 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
     category: 'juguetes',
     stock: '',
     isActive: true,
+    adminNote: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -25,6 +26,7 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
         category: product.category || 'juguetes',
         stock: product.stock || '',
         isActive: product.isActive !== undefined ? product.isActive : true,
+        adminNote: product.adminNote || '',
       });
     }
   }, [product, isEditing]);
@@ -242,6 +244,21 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Nota del Admin */}
+        <div>
+          <label className='block text-sm font-medium text-white/90 mb-2'>
+            Nota del Admin
+            <span className='text-white/50 ml-1'>(opcional)</span>
+          </label>
+          <textarea
+            value={formData.adminNote}
+            onChange={e => handleInputChange('adminNote', e.target.value)}
+            rows={2}
+            className='w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50'
+            placeholder='Agrega una nota interna sobre el producto (ej: stock bajo, descuentos, etc.)'
+          />
         </div>
 
         {/* Estado activo */}

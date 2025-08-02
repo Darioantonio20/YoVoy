@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, ZoomIn, ZoomOut, RotateCw } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCw } from 'lucide-react';
 import Button from '../atoms/Button';
 
 const ProductImageModal = ({ isOpen, onClose, product, productImageUrl }) => {
@@ -52,14 +52,6 @@ const ProductImageModal = ({ isOpen, onClose, product, productImageUrl }) => {
               </p>
             </div>
           </div>
-
-          <Button
-            variant='secondary'
-            onClick={onClose}
-            className='p-1.5 sm:p-2 rounded-full hover:bg-white/10 flex-shrink-0 text-white/70 hover:text-white'
-          >
-            <X className='w-4 h-4 sm:w-5 sm:h-5' />
-          </Button>
         </div>
 
         {/* Image Container */}

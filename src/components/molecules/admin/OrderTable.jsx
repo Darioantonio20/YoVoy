@@ -87,6 +87,9 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
                   Productos
                 </th>
                 <th className='px-6 py-3 text-center text-xs font-medium text-white/70 uppercase tracking-wider'>
+                  Notas
+                </th>
+                <th className='px-6 py-3 text-center text-xs font-medium text-white/70 uppercase tracking-wider'>
                   Total
                 </th>
                 <th className='px-6 py-3 text-center text-xs font-medium text-white/70 uppercase tracking-wider'>
@@ -136,8 +139,39 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
                   <td className='px-6 py-4 text-center'>
                     <div className='text-sm text-white'>
                       {order.products.map((product, index) => (
-                        <div key={index} className='mb-1'>
-                          {product.quantity}x {product.name}
+                        <div key={index} className='mb-2 last:mb-0'>
+                          <div className='flex items-center gap-1 justify-center'>
+                            <span>{product.quantity}x</span>
+                            <span className='font-medium'>{product.name}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </td>
+                  <td className='px-6 py-4'>
+                    <div className='text-sm space-y-2'>
+                      {order.products.map((product, index) => (
+                        <div key={index} className='flex items-start gap-2'>
+                          <div className='w-5 h-5 flex-shrink-0 mt-0.5'>
+                            {product.note ? (
+                              <div className='w-5 h-5 bg-orange-500/20 rounded-full flex items-center justify-center border border-orange-500/30'>
+                                <span className='text-orange-400 text-sm'>📝</span>
+                              </div>
+                            ) : (
+                              <div className='w-5 h-5 bg-white/5 rounded-full flex items-center justify-center border border-white/10'>
+                                <span className='text-white/30 text-xs'>-</span>
+                              </div>
+                            )}
+                          </div>
+                          {product.note ? (
+                            <p className='text-orange-300/90 text-sm italic'>
+                              "{product.note}"
+                            </p>
+                          ) : (
+                            <p className='text-white/30 text-sm'>
+                              Sin nota
+                            </p>
+                          )}
                         </div>
                       ))}
                     </div>
