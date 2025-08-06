@@ -50,7 +50,9 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
                   className='flex justify-between items-center'
                 >
                   <div className='flex items-center space-x-2 sm:space-x-3'>
-                    <span className='text-xl sm:text-2xl'>{item.image}</span>
+                    <div className='w-8 h-8 sm:w-10 sm:h-10 bg-white/10 rounded-lg flex items-center justify-center'>
+                      <span className='text-lg sm:text-xl'>🛍️</span>
+                    </div>
                     <div className='text-left'>
                       <p className='text-sm sm:text-base font-medium text-white'>{item.name}</p>
                       <p className='text-xs sm:text-sm text-white/70'>

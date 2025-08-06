@@ -62,19 +62,19 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
           <div style="display: flex; flex-direction: column; gap: 16px;">
             <div>
               <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Nombre Completo</p>
-              <p style="color: white; font-weight: 600; margin: 0;">${order.customer}</p>
+              <p style="color: white; font-weight: 600; margin: 0;">${order.customer?.name || order.customer || 'Cliente'}</p>
             </div>
             <div>
               <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Correo Electrónico</p>
-              <p style="color: white; font-weight: 600; margin: 0;">${order.email}</p>
+              <p style="color: white; font-weight: 600; margin: 0;">${order.customer?.email || order.email || 'Sin email'}</p>
             </div>
             <div>
               <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Número Telefónico</p>
-              <p style="color: white; font-weight: 600; margin: 0;">${order.phone || 'No especificado'}</p>
+              <p style="color: white; font-weight: 600; margin: 0;">${order.customer?.phone || order.phone || 'No especificado'}</p>
             </div>
             <div>
               <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Ubicación para Envío</p>
-              <p style="color: white; font-weight: 600; margin: 0;">${order.shippingAddress || 'No especificada'}</p>
+              <p style="color: white; font-weight: 600; margin: 0;">${order.customer?.location?.alias || order.shippingAddress || 'No especificada'}</p>
             </div>
           </div>
         </div>
@@ -122,7 +122,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
                   ${product.adminNote ? `<p style="font-size: 11px; color: #3b82f6; margin: 4px 0 0 0; font-style: italic;">Nota Admin: "${product.adminNote}"</p>` : ''}
                 </div>
               </div>
-              <p style="font-weight: bold; color: #f97316; margin: 0;">$${(product.price * product.quantity).toFixed(2)}</p>
+              <p style="font-weight: bold; color: #f97316; margin: 0;">$${((product.price || 0) * (product.quantity || 1)).toFixed(2)}</p>
             </div>
           `
             )
@@ -136,7 +136,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
         <div style="display: flex; flex-direction: column; gap: 12px;">
           <div style="display: flex; justify-content: space-between;">
             <span style="color: #eab308;">Subtotal:</span>
-            <span style="font-weight: 600; color: white;">$${order.subtotal?.toFixed(2) || (order.total - 9.99).toFixed(2)}</span>
+            <span style="font-weight: 600; color: white;">$${(order.subtotal || (order.total || order.totals?.total || 0) - 9.99).toFixed(2)}</span>
           </div>
           <div style="display: flex; justify-content: space-between;">
             <span style="color: #eab308;">Envío:</span>
@@ -145,7 +145,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
           <div style="border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 12px;">
             <div style="display: flex; justify-content: space-between;">
               <span style="font-size: 18px; font-weight: bold; color: white;">Total:</span>
-              <span style="font-size: 18px; font-weight: bold; color: #f97316;">$${order.total.toFixed(2)}</span>
+              <span style="font-size: 18px; font-weight: bold; color: #f97316;">$${(order.total || order.totals?.total || 0).toFixed(2)}</span>
             </div>
           </div>
         </div>
@@ -160,15 +160,15 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
           <div>
             <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Cliente:</p>
-            <p style="color: white; font-weight: bold; margin: 0;">${order.customer}</p>
+            <p style="color: white; font-weight: bold; margin: 0;">${order.customer?.name || order.customer || 'Cliente'}</p>
           </div>
           <div>
             <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Teléfono:</p>
-            <p style="color: white; font-weight: bold; margin: 0;">${order.phone || 'No especificado'}</p>
+            <p style="color: white; font-weight: bold; margin: 0;">${order.customer?.phone || order.phone || 'No especificado'}</p>
           </div>
           <div style="grid-column: 1 / -1;">
             <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Dirección de Entrega:</p>
-            <p style="color: white; font-weight: bold; margin: 0;">${order.shippingAddress || 'No especificada'}</p>
+            <p style="color: white; font-weight: bold; margin: 0;">${order.customer?.location?.alias || order.shippingAddress || 'No especificada'}</p>
           </div>
         </div>
       </div>
@@ -207,8 +207,8 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
       <!-- Footer -->
       <div style="margin-top: 32px; padding-top: 24px; border-top: 2px solid #f97316; text-align: center;">
         <p style="color: #eab308; font-size: 12px; margin: 0;">
-          Orden #${order.id} - Generada el ${new Date(
-            order.date
+          Orden #${order.id || order._id || order.orderNumber || 'N/A'} - Generada el ${new Date(
+            order.date || order.createdAt || new Date()
           ).toLocaleDateString('es-ES', {
             year: 'numeric',
             month: 'long',

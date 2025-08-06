@@ -35,6 +35,19 @@ export default function Cart() {
   };
 
   const handleConfirmPurchase = () => {
+    // Verificar si el usuario está autenticado
+    if (!user || !user._id) {
+      Alert.confirm(
+        '🔐 Inicia sesión requerido',
+        'Para realizar tu compra necesitas iniciar sesión o crear una cuenta. ¿Te gustaría ir al login ahora?'
+      ).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/');
+        }
+      });
+      return;
+    }
+
     const deliveryInfo = calculateDeliveryFee();
     const shipping = cartItems.length > 0 ? deliveryInfo.totalFee : 0;
     const total = getSubtotal() + shipping;

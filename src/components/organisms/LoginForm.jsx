@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { User, ArrowLeft } from 'lucide-react';
+import { User, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
 import { useAuth } from '../../hooks/useAuth';
@@ -7,6 +7,10 @@ import { useAuth } from '../../hooks/useAuth';
 const LoginForm = memo(({ onBack }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [isStore, setIsStore] = useState(false);
+
+  // Estados para controlar visibilidad de contraseñas
+  const [showClientPassword, setShowClientPassword] = useState(false);
+  const [showStorePassword, setShowStorePassword] = useState(false);
 
   
   // Estados para cliente
@@ -398,7 +402,7 @@ const LoginForm = memo(({ onBack }) => {
         </div>
       )}
 
-      <div className='space-y-6 sm:space-y-8'>
+      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className='space-y-6 sm:space-y-8'>
         {isLogin ? (
           // Formulario de Login
           <>
@@ -414,6 +418,7 @@ const LoginForm = memo(({ onBack }) => {
                 className={`w-full p-4 sm:p-4 border-b-2 bg-transparent outline-none focus:border-b-2 text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base ${
                   errors.email ? 'border-red-400' : 'border-white/50 focus:border-white'
                 }`}
+                autoComplete='email'
                 disabled={isLoading}
               />
               {errors.email && (
@@ -426,16 +431,32 @@ const LoginForm = memo(({ onBack }) => {
               <label className='block mb-3 sm:mb-3 text-gray-50 text-sm sm:text-base font-medium'>
                 Contraseña
               </label>
-              <input
-                type='password'
-                placeholder='••••••••'
-                value={clientData.password}
-                onChange={(e) => setClientData(prev => ({ ...prev, password: e.target.value }))}
-                className={`w-full p-4 sm:p-4 border-b-2 bg-transparent outline-none focus:border-b-2 text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base ${
-                  errors.password ? 'border-red-400' : 'border-white/50 focus:border-white'
-                }`}
-                disabled={isLoading}
-              />
+              <div className='relative'>
+                <input
+                  type={showClientPassword ? 'text' : 'password'}
+                  placeholder='••••••••'
+                  value={clientData.password}
+                  onChange={(e) => setClientData(prev => ({ ...prev, password: e.target.value }))}
+                  className={`w-full p-4 sm:p-4 pr-12 border-b-2 bg-transparent outline-none focus:border-b-2 text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base ${
+                    errors.password ? 'border-red-400' : 'border-white/50 focus:border-white'
+                  }`}
+                  autoComplete='current-password'
+                  disabled={isLoading}
+                />
+                <button
+                  type='button'
+                  onClick={() => setShowClientPassword(!showClientPassword)}
+                  className='absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-400 hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40 rounded'
+                  disabled={isLoading}
+                  aria-label={showClientPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                >
+                  {showClientPassword ? (
+                    <EyeOff size={20} className='text-gray-400 hover:text-gray-300' />
+                  ) : (
+                    <Eye size={20} className='text-gray-400 hover:text-gray-300' />
+                  )}
+                </button>
+              </div>
               {errors.password && (
                 <Text variant='body' size='xs' className='text-red-400 mt-1'>
                   {errors.password}
@@ -476,6 +497,7 @@ const LoginForm = memo(({ onBack }) => {
                       value={storeData.email}
                       onChange={(e) => setStoreData(prev => ({ ...prev, email: e.target.value }))}
                       className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                      autoComplete='email'
                       disabled={isLoading}
                     />
                   </div>
@@ -483,14 +505,30 @@ const LoginForm = memo(({ onBack }) => {
                     <label className='block mb-2 text-gray-50 text-sm font-medium'>
                       3. Contraseña
                     </label>
-                    <input
-                      type='password'
-                      placeholder='••••••••'
-                      value={storeData.password}
-                      onChange={(e) => setStoreData(prev => ({ ...prev, password: e.target.value }))}
-                      className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
-                      disabled={isLoading}
-                    />
+                    <div className='relative'>
+                      <input
+                        type={showStorePassword ? 'text' : 'password'}
+                        placeholder='••••••••'
+                        value={storeData.password}
+                        onChange={(e) => setStoreData(prev => ({ ...prev, password: e.target.value }))}
+                        className='w-full p-3 pr-12 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                        autoComplete='new-password'
+                        disabled={isLoading}
+                      />
+                      <button
+                        type='button'
+                        onClick={() => setShowStorePassword(!showStorePassword)}
+                        className='absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-400 hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40 rounded'
+                        disabled={isLoading}
+                        aria-label={showStorePassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                      >
+                        {showStorePassword ? (
+                          <EyeOff size={18} className='text-gray-400 hover:text-gray-300' />
+                        ) : (
+                          <Eye size={18} className='text-gray-400 hover:text-gray-300' />
+                        )}
+                      </button>
+                    </div>
                   </div>
                   <div>
                     <label className='block mb-2 text-gray-50 text-sm font-medium'>
@@ -951,6 +989,7 @@ const LoginForm = memo(({ onBack }) => {
                     value={clientData.email}
                     onChange={(e) => setClientData(prev => ({ ...prev, email: e.target.value }))}
                     className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                    autoComplete='email'
                     disabled={isLoading}
                   />
                 </div>
@@ -958,14 +997,30 @@ const LoginForm = memo(({ onBack }) => {
                   <label className='block mb-2 text-gray-50 text-sm font-medium'>
                     3. Contraseña
                   </label>
-                  <input
-                    type='password'
-                    placeholder='••••••••'
-                    value={clientData.password}
-                    onChange={(e) => setClientData(prev => ({ ...prev, password: e.target.value }))}
-                    className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
-                    disabled={isLoading}
-                  />
+                  <div className='relative'>
+                    <input
+                      type={showClientPassword ? 'text' : 'password'}
+                      placeholder='••••••••'
+                      value={clientData.password}
+                      onChange={(e) => setClientData(prev => ({ ...prev, password: e.target.value }))}
+                      className='w-full p-3 pr-12 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                      autoComplete='new-password'
+                      disabled={isLoading}
+                    />
+                    <button
+                      type='button'
+                      onClick={() => setShowClientPassword(!showClientPassword)}
+                      className='absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-400 hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40 rounded'
+                      disabled={isLoading}
+                      aria-label={showClientPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                    >
+                      {showClientPassword ? (
+                        <EyeOff size={18} className='text-gray-400 hover:text-gray-300' />
+                      ) : (
+                        <Eye size={18} className='text-gray-400 hover:text-gray-300' />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <div>
                   <label className='block mb-2 text-gray-50 text-sm font-medium'>
@@ -1041,7 +1096,7 @@ const LoginForm = memo(({ onBack }) => {
           <Button
             variant='fire'
             className='w-full p-4 sm:p-4 text-sm sm:text-base'
-            onClick={handleSubmit}
+            type='submit'
             disabled={isLoading}
           >
             {isLoading ? (
@@ -1094,7 +1149,7 @@ const LoginForm = memo(({ onBack }) => {
             </button>
           )}
         </div>
-      </div>
+      </form>
     </div>
   );
 });
