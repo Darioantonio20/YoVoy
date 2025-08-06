@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
-const CART_STORAGE_KEY = 'jasai_cart';
+import { useCart } from '../hooks/useCart';
+import Alert from '../components/atoms/Alert';
 
 const CartContext = createContext();
 
@@ -13,108 +13,205 @@ export const useCartContext = () => {
 };
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [currentStoreId, setCurrentStoreId] = useState(null);
   const [previousItemCount, setPreviousItemCount] = useState(0);
+  
+  // Usar el hook useCart que maneja la API
+  const {
+    cart,
+    isLoading,
+    error,
+    fetchCart,
+    addToCart: apiAddToCart,
+    updateCartItem: apiUpdateCartItem,
+    removeFromCart: apiRemoveFromCart,
+    clearCart: apiClearCart,
+    calculateTotals,
+    getItemQuantity,
+    isCartEmpty,
+  } = useCart();
 
-  // Cargar carrito desde localStorage al inicializar
+  // Cargar carrito cuando cambie la tienda
   useEffect(() => {
-    const savedCart = localStorage.getItem(CART_STORAGE_KEY);
-
-    if (savedCart) {
-      try {
-        const parsedCart = JSON.parse(savedCart);
-        setCartItems(parsedCart);
-      } catch (error) {
-        console.error('Error loading cart from localStorage:', error);
-        setCartItems([]);
-      }
+    if (currentStoreId) {
+      fetchCart(currentStoreId);
     }
-    setIsInitialized(true);
-  }, []);
+  }, [currentStoreId, fetchCart]);
 
-  // Guardar carrito en localStorage cada vez que cambie
+  // Actualizar previousItemCount cuando cambie el carrito
   useEffect(() => {
-    if (isInitialized) {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+    const currentItemCount = cart.totalItems || 0;
+    if (currentItemCount !== previousItemCount) {
+      setPreviousItemCount(currentItemCount);
     }
-  }, [cartItems, isInitialized]);
+  }, [cart.totalItems, previousItemCount]);
 
   // Agregar producto al carrito
-  const addToCart = product => {
-    setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === product.id);
+  const addToCart = async (product, quantity = 1, note = '') => {
+    if (!currentStoreId) {
+      Alert.error('Error', 'No se pudo identificar la tienda');
+      return false;
+    }
 
-      if (existingItem) {
-        // Si ya existe, incrementar cantidad
-        return prevItems.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
+    try {
+      const productData = {
+        productId: product._id,
+        quantity,
+        note,
+        storeId: currentStoreId
+      };
+
+      const result = await apiAddToCart(productData);
+      
+      if (result) {
+        Alert.success('¡Agregado!', 'Producto agregado al carrito');
+        return true;
       } else {
-        // Si no existe, agregar nuevo item con nota vacía
-        return [...prevItems, { ...product, quantity: 1, note: '' }];
+        Alert.error('Error', error || 'No se pudo agregar al carrito');
+        return false;
       }
-    });
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      Alert.error('Error', 'Error al agregar al carrito');
+      return false;
+    }
   };
 
   // Remover producto del carrito
-  const removeFromCart = productId => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
+  const removeFromCart = async (productId) => {
+    if (!currentStoreId) {
+      Alert.error('Error', 'No se pudo identificar la tienda');
+      return false;
+    }
+
+    try {
+      const result = await apiRemoveFromCart(productId, currentStoreId);
+      
+      if (result) {
+        Alert.success('¡Eliminado!', 'Producto removido del carrito');
+        return true;
+      } else {
+        Alert.error('Error', error || 'No se pudo remover del carrito');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+      Alert.error('Error', 'Error al remover del carrito');
+      return false;
+    }
   };
 
   // Actualizar cantidad de un producto
-  const updateQuantity = (productId, quantity) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
-      return;
+  const updateQuantity = async (productId, quantity) => {
+    if (!currentStoreId) {
+      Alert.error('Error', 'No se pudo identificar la tienda');
+      return false;
     }
 
-    setCartItems(prevItems =>
-      prevItems.map(item =>
-        item.id === productId ? { ...item, quantity } : item
-      )
-    );
+    if (quantity <= 0) {
+      return await removeFromCart(productId);
+    }
+
+    try {
+      const productData = {
+        productId,
+        quantity,
+        storeId: currentStoreId
+      };
+
+      const result = await apiUpdateCartItem(productData);
+      
+      if (result) {
+        return true;
+      } else {
+        Alert.error('Error', error || 'No se pudo actualizar la cantidad');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+      Alert.error('Error', 'Error al actualizar cantidad');
+      return false;
+    }
+  };
+
+  // Actualizar nota de un producto
+  const updateNote = async (productId, note) => {
+    if (!currentStoreId) {
+      Alert.error('Error', 'No se pudo identificar la tienda');
+      return false;
+    }
+
+    try {
+      const productData = {
+        productId,
+        note,
+        storeId: currentStoreId
+      };
+
+      const result = await apiUpdateCartItem(productData);
+      
+      if (result) {
+        return true;
+      } else {
+        Alert.error('Error', error || 'No se pudo actualizar la nota');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error updating note:', error);
+      Alert.error('Error', 'Error al actualizar nota');
+      return false;
+    }
   };
 
   // Limpiar carrito
-  const clearCart = () => {
-    setCartItems([]);
+  const clearCart = async (showAlert = true) => {
+    if (!currentStoreId) {
+      Alert.error('Error', 'No se pudo identificar la tienda');
+      return false;
+    }
+
+    try {
+      const result = await apiClearCart(currentStoreId);
+      
+      if (result) {
+        // Solo mostrar alerta si se solicita explícitamente
+        if (showAlert) {
+          Alert.success('¡Carrito vaciado!', 'El carrito se ha vaciado correctamente');
+        }
+        return true;
+      } else {
+        Alert.error('Error', error || 'No se pudo vaciar el carrito');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error clearing cart:', error);
+      Alert.error('Error', 'Error al vaciar el carrito');
+      return false;
+    }
   };
 
   // Calcular total de productos
   const getTotalItems = () => {
-    return cartItems.reduce((total, item) => total + item.quantity, 0);
+    return cart.totalItems || 0;
   };
-
-  // Actualizar previousItemCount cuando cambie el carrito
-  useEffect(() => {
-    const currentItemCount = getTotalItems();
-    if (currentItemCount !== previousItemCount) {
-      setPreviousItemCount(currentItemCount);
-    }
-  }, [cartItems]);
 
   // Calcular subtotal
   const getSubtotal = () => {
-    return cartItems.reduce((total, item) => {
-      const price = parseFloat(item.price.replace('$', '').replace(',', ''));
-      return total + price * item.quantity;
-    }, 0);
+    return cart.subtotal || 0;
   };
 
-  // Actualizar nota de un producto
-  const updateNote = (productId, note) => {
-    setCartItems(prevItems =>
-      prevItems.map(item =>
-        item.id === productId ? { ...item, note } : item
-      )
-    );
+  // Establecer tienda actual
+  const setStore = (storeId) => {
+    setCurrentStoreId(storeId);
+  };
+
+  // Obtener cantidad de un producto específico
+  const getItemQuantityFromCart = (productId) => {
+    return getItemQuantity(productId);
   };
 
   const value = {
-    cartItems,
+    cartItems: cart.items || [],
     addToCart,
     removeFromCart,
     updateQuantity,
@@ -122,8 +219,13 @@ export const CartProvider = ({ children }) => {
     clearCart,
     getTotalItems,
     getSubtotal,
-    isInitialized,
+    isLoading,
+    error,
+    setStore,
+    currentStoreId,
     previousItemCount,
+    isCartEmpty: isCartEmpty(),
+    getItemQuantity: getItemQuantityFromCart,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

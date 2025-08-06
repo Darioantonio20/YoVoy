@@ -31,7 +31,39 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
 
   useEffect(() => {
     if (storeData) {
-      setFormData(storeData);
+      // Mapear los datos de la API a la estructura del formulario
+      const mappedData = {
+        name: storeData.ownerId?.name || '',
+        email: storeData.ownerId?.email || '',
+        phone: storeData.ownerId?.phone || '',
+        location: {
+          alias: storeData.ownerId?.location?.alias || '',
+          googleMapsUrl: storeData.ownerId?.location?.googleMapsUrl || ''
+        },
+        store: {
+          name: storeData.name || '',
+          responsibleName: storeData.responsibleName || '',
+          phone: storeData.phone || '',
+          categories: storeData.categories || [],
+          description: storeData.description || '',
+          images: storeData.images || [],
+          location: {
+            alias: storeData.location?.alias || '',
+            googleMapsUrl: storeData.location?.googleMapsUrl || ''
+          },
+          schedule: storeData.schedule || [
+            { day: 'Lunes', openTime: '09:00', closeTime: '18:00', isOpen: true },
+            { day: 'Martes', openTime: '09:00', closeTime: '18:00', isOpen: true },
+            { day: 'Miércoles', openTime: '09:00', closeTime: '18:00', isOpen: true },
+            { day: 'Jueves', openTime: '09:00', closeTime: '18:00', isOpen: true },
+            { day: 'Viernes', openTime: '09:00', closeTime: '18:00', isOpen: true },
+            { day: 'Sábado', openTime: '09:00', closeTime: '14:00', isOpen: true },
+            { day: 'Domingo', openTime: '00:00', closeTime: '00:00', isOpen: false }
+          ]
+        }
+      };
+      
+      setFormData(mappedData);
     }
   }, [storeData]);
 
@@ -74,7 +106,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
   };
 
   const handleScheduleChange = (index, field, value) => {
-    const updatedSchedule = [...formData.store.schedule];
+    const updatedSchedule = [...(formData.store?.schedule || [])];
     updatedSchedule[index] = {
       ...updatedSchedule[index],
       [field]: value
@@ -103,24 +135,40 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+    
+    // Preparar solo los datos de la tienda para el PUT
+    const storeUpdateData = {
+      name: formData.store?.name || '',
+      responsibleName: formData.store?.responsibleName || '',
+      phone: formData.store?.phone || '',
+      categories: formData.store?.categories || [],
+      description: formData.store?.description || '',
+      images: formData.store?.images || [],
+      location: {
+        alias: formData.store?.location?.alias || '',
+        googleMapsUrl: formData.store?.location?.googleMapsUrl || ''
+      },
+      schedule: formData.store?.schedule || []
+    };
+    
+    onSave(storeUpdateData);
   };
 
   const categories = [
-    { id: 'tecnologia', label: 'Tecnología', icon: '💻' },
-    { id: 'moda', label: 'Moda', icon: '👕' },
-    { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
-    { id: 'comida', label: 'Comida', icon: '🍔' },
-    { id: 'hogar', label: 'Hogar', icon: '🏠' },
-    { id: 'jardin', label: 'Jardín', icon: '🌱' },
-    { id: 'mascotas', label: 'Mascotas', icon: '🐕' },
-    { id: 'deportes', label: 'Deportes', icon: '⚽' },
-    { id: 'belleza', label: 'Belleza', icon: '💄' },
-    { id: 'libros', label: 'Libros', icon: '📚' },
-    { id: 'musica', label: 'Música', icon: '🎵' },
-    { id: 'arte', label: 'Arte', icon: '🎨' },
-    { id: 'automotriz', label: 'Automotriz', icon: '🚗' },
-    { id: 'ferreteria', label: 'Ferretería', icon: '🔧' },
+    { id: 'tecnologia', label: 'tecnologia', icon: '💻' },
+    { id: 'moda', label: 'moda', icon: '👕' },
+    { id: 'juguetes', label: 'juguetes', icon: '🧸' },
+    { id: 'comida', label: 'comida', icon: '🍔' },
+    { id: 'hogar', label: 'hogar', icon: '🏠' },
+    { id: 'jardin', label: 'jardin', icon: '🌱' },
+    { id: 'mascotas', label: 'mascotas', icon: '🐕' },
+    { id: 'deportes', label: 'deportes', icon: '⚽' },
+    { id: 'belleza', label: 'belleza', icon: '💄' },
+    { id: 'libros', label: 'libros', icon: '📚' },
+    { id: 'musica', label: 'musica', icon: '🎵' },
+    { id: 'arte', label: 'arte', icon: '🎨' },
+    { id: 'automotriz', label: 'automotriz', icon: '🚗' },
+    { id: 'ferreteria', label: 'ferreteria', icon: '🔧' },
   ];
 
   return (
@@ -176,29 +224,18 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
             
             <div>
               <label className='block text-sm font-medium text-white/90 mb-2'>
-                Teléfono del Administrador
+                Teléfono de la Tienda
               </label>
               <input
                 type='tel'
-                value={formData.phone}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
+                value={formData.store?.phone || ''}
+                onChange={(e) => handleStoreInputChange('phone', e.target.value)}
                 className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
                 placeholder='+1 (555) 123-4567'
               />
             </div>
             
-            <div>
-              <label className='block text-sm font-medium text-white/90 mb-2'>
-                Ubicación del Administrador
-              </label>
-              <input
-                type='text'
-                value={formData.location.alias}
-                onChange={(e) => handleInputChange('location.alias', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
-                placeholder='Ubicación del administrador'
-              />
-            </div>
+
           </div>
         </div>
 
@@ -215,7 +252,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
               </label>
               <input
                 type='text'
-                value={formData.store.name}
+                value={formData.store?.name || ''}
                 onChange={(e) => handleStoreInputChange('name', e.target.value)}
                 className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
                 placeholder='Nombre de la tienda'
@@ -228,23 +265,10 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
               </label>
               <input
                 type='text'
-                value={formData.store.responsibleName}
+                value={formData.store?.responsibleName || ''}
                 onChange={(e) => handleStoreInputChange('responsibleName', e.target.value)}
                 className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
                 placeholder='Nombre del responsable'
-              />
-            </div>
-            
-            <div>
-              <label className='block text-sm font-medium text-white/90 mb-2'>
-                Teléfono de la Tienda
-              </label>
-              <input
-                type='tel'
-                value={formData.store.phone}
-                onChange={(e) => handleStoreInputChange('phone', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
-                placeholder='+1 (555) 123-4567'
               />
             </div>
             
@@ -254,10 +278,23 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
               </label>
               <input
                 type='text'
-                value={formData.store.location.alias}
+                value={formData.store?.location?.alias || ''}
                 onChange={(e) => handleStoreLocationChange('alias', e.target.value)}
                 className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
                 placeholder='Ubicación de la tienda'
+              />
+            </div>
+            
+            <div>
+              <label className='block text-sm font-medium text-white/90 mb-2'>
+                URL de Google Maps
+              </label>
+              <input
+                type='url'
+                value={formData.store?.location?.googleMapsUrl || ''}
+                onChange={(e) => handleStoreLocationChange('googleMapsUrl', e.target.value)}
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                placeholder='https://maps.app.goo.gl/...'
               />
             </div>
           </div>
@@ -267,12 +304,28 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
               Descripción de la Tienda
             </label>
             <textarea
-              value={formData.store.description}
+              value={formData.store?.description || ''}
               onChange={(e) => handleStoreInputChange('description', e.target.value)}
               rows='3'
               className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 resize-none'
               placeholder='Describe tu tienda y los productos que ofreces'
             />
+          </div>
+          
+          <div>
+            <label className='block text-sm font-medium text-white/90 mb-2'>
+              Imágenes de la Tienda
+            </label>
+            <textarea
+              value={formData.store?.images?.join(', ') || ''}
+              onChange={(e) => handleStoreInputChange('images', e.target.value.split(', ').filter(url => url.trim()))}
+              rows='2'
+              className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 resize-none'
+              placeholder='URLs de imágenes separadas por comas (ej: https://i.ibb.co/xxx/logo.png, https://i.ibb.co/yyy/banner.png)'
+            />
+            <p className='text-xs text-white/50 mt-1'>
+              💡 Sube tus imágenes en <a href='https://es.imgbb.com/' target='_blank' rel='noopener noreferrer' className='text-orange-400 hover:text-orange-300 underline'>ImgBB.com</a> y pega las URLs aquí
+            </p>
           </div>
         </div>
 
@@ -290,7 +343,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
               >
                 <input
                   type='checkbox'
-                  checked={formData.store.categories.includes(category.id)}
+                  checked={formData.store?.categories?.includes(category.id) || false}
                   onChange={(e) => handleCategoryChange(category.id, e.target.checked)}
                   className='peer sr-only'
                 />
@@ -329,7 +382,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
               <button
                 type='button'
                 onClick={() => {
-                  const quickSchedule = formData.store.schedule.map(day => ({
+                  const quickSchedule = (formData.store?.schedule || []).map(day => ({
                     ...day,
                     isOpen: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'].includes(day.day),
                     openTime: '09:00',
@@ -344,7 +397,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
               <button
                 type='button'
                 onClick={() => {
-                  const quickSchedule = formData.store.schedule.map(day => ({
+                  const quickSchedule = (formData.store?.schedule || []).map(day => ({
                     ...day,
                     isOpen: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'].includes(day.day),
                     openTime: '08:00',
@@ -359,7 +412,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
               <button
                 type='button'
                 onClick={() => {
-                  const quickSchedule = formData.store.schedule.map(day => ({
+                  const quickSchedule = (formData.store?.schedule || []).map(day => ({
                     ...day,
                     isOpen: false,
                     openTime: '00:00',
@@ -376,7 +429,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
           
           {/* Horarios individuales */}
           <div className='space-y-3'>
-            {formData.store.schedule.map((day, index) => (
+            {(formData.store?.schedule || []).map((day, index) => (
               <div key={day.day} className='flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10'>
                 <div className='flex items-center gap-3 min-w-[140px]'>
                   <input

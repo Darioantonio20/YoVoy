@@ -2,22 +2,45 @@ import React, { useState, useEffect } from 'react';
 import { Eye } from 'lucide-react';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
+import SearchBar from '../../atoms/SearchBar';
 import OrderDetailsModal from './OrderDetailsModal';
-import ordersData from '../../../data/admin/orders.json';
 
 const OrderTable = ({ orders, onUpdateStatus }) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [ordersToDisplay, setOrdersToDisplay] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // Si no se pasan orders como prop, usar los datos del JSON
-    if (orders && orders.length > 0) {
-      setOrdersToDisplay(orders);
-    } else {
-      setOrdersToDisplay(ordersData);
-    }
+    setOrdersToDisplay(orders || []);
   }, [orders]);
+
+  // Filtrar pedidos basado en el término de búsqueda
+  const filteredOrders = ordersToDisplay.filter(order => {
+    const searchLower = searchTerm.toLowerCase();
+    
+    // Buscar por número de orden
+    const orderNumber = (order.id || order._id || order.orderNumber || '').toString().toLowerCase();
+    if (orderNumber.includes(searchLower)) return true;
+    
+    // Buscar por nombre del cliente
+    const customerName = (order.customer?.name || order.customer || '').toLowerCase();
+    if (customerName.includes(searchLower)) return true;
+    
+    // Buscar por email del cliente
+    const customerEmail = (order.customer?.email || order.email || '').toLowerCase();
+    if (customerEmail.includes(searchLower)) return true;
+    
+    // Buscar por estado
+    const status = (order.status || '').toLowerCase();
+    if (status.includes(searchLower)) return true;
+    
+    // Buscar por productos
+    const products = (order.products || []).map(p => p.name).join(' ').toLowerCase();
+    if (products.includes(searchLower)) return true;
+    
+    return false;
+  });
 
   const getStatusColor = status => {
     switch (status) {
@@ -59,6 +82,10 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
     setSelectedOrder(null);
   };
 
+  const handleSearch = () => {
+    // La búsqueda se actualiza automáticamente con el filtro
+  };
+
   return (
     <>
       <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 overflow-hidden'>
@@ -71,6 +98,18 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
           <Text variant='bodyLight' size='sm' className='text-white/70 mt-1'>
             Gestiona todos los pedidos de tu tienda
           </Text>
+        </div>
+
+        {/* Barra de búsqueda */}
+        <div className='px-6 py-4 border-b border-white/10'>
+          <SearchBar
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder='Buscar por cliente, orden, estado, productos...'
+            onSearch={handleSearch}
+            showSearchButton={false}
+            className='mb-0'
+          />
         </div>
 
         <div className='overflow-x-auto'>
@@ -104,9 +143,9 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
               </tr>
             </thead>
             <tbody className='bg-white/5 divide-y divide-white/10'>
-              {ordersToDisplay.map(order => (
+              {filteredOrders.map(order => (
                 <tr
-                  key={order.id}
+                  key={order.id || order._id || order.orderNumber || `order-${Math.random()}`}
                   className='hover:bg-white/5 transition-colors duration-200'
                 >
                   <td className='px-6 py-4 whitespace-nowrap text-center'>
@@ -115,7 +154,7 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
                       size='sm'
                       className='font-medium text-white'
                     >
-                      {order.id}
+                      {order.id || order._id || order.orderNumber || 'N/A'}
                     </Text>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-center'>
@@ -125,21 +164,21 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
                         size='sm'
                         className='font-medium text-white'
                       >
-                        {order.customer}
+                        {order.customer?.name || order.customer || 'Cliente'}
                       </Text>
                       <Text
                         variant='bodyLight'
                         size='xs'
                         className='text-white/70'
                       >
-                        {order.email}
+                        {order.customer?.email || order.email || 'Sin email'}
                       </Text>
                     </div>
                   </td>
                   <td className='px-6 py-4 text-center'>
                     <div className='text-sm text-white'>
-                      {order.products.map((product, index) => (
-                        <div key={index} className='mb-2 last:mb-0'>
+                      {(order.products || []).map((product, index) => (
+                        <div key={`${order.id || order._id}-product-${index}`} className='mb-2 last:mb-0'>
                           <div className='flex items-center gap-1 justify-center'>
                             <span>{product.quantity}x</span>
                             <span className='font-medium'>{product.name}</span>
@@ -150,8 +189,8 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
                   </td>
                   <td className='px-6 py-4'>
                     <div className='text-sm space-y-2'>
-                      {order.products.map((product, index) => (
-                        <div key={index} className='flex items-start gap-2'>
+                      {(order.products || []).map((product, index) => (
+                        <div key={`${order.id || order._id}-note-${index}`} className='flex items-start gap-2'>
                           <div className='w-5 h-5 flex-shrink-0 mt-0.5'>
                             {product.note ? (
                               <div className='w-5 h-5 bg-orange-500/20 rounded-full flex items-center justify-center border border-orange-500/30'>
@@ -182,7 +221,7 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
                       size='sm'
                       className='font-medium text-white'
                     >
-                      ${order.total.toFixed(2)}
+                      ${(order.total || order.totals?.total || 0).toFixed(2)}
                     </Text>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-center'>
@@ -193,12 +232,12 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
                     </span>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-white/70 text-center'>
-                    {new Date(order.date).toLocaleDateString('es-ES')}
+                    {order.date ? new Date(order.date).toLocaleDateString('es-ES') : 'Sin fecha'}
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-center'>
                     <div className='flex space-x-2 justify-center'>
                       {/* Botón de detalles - solo visible si está completado */}
-                      {order.status === 'completado' && (
+                      {(order.status || '') === 'completado' && (
                         <Button
                           variant='success'
                           onClick={() => handleViewDetails(order)}
@@ -211,8 +250,8 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
 
                       {/* Selector de estado */}
                       <select
-                        value={order.status}
-                        onChange={e => onUpdateStatus(order.id, e.target.value)}
+                        value={order.status || 'pendiente'}
+                        onChange={e => onUpdateStatus(order.id || order._id, e.target.value)}
                         className='text-xs border border-white/20 rounded px-2 py-1 bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-orange-400'
                       >
                         <option
@@ -248,10 +287,10 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
           </table>
         </div>
 
-        {ordersToDisplay.length === 0 && (
+        {filteredOrders.length === 0 && (
           <div className='text-center py-8'>
             <Text variant='bodyLight' size='md' className='text-white/70'>
-              No hay pedidos registrados aún
+              {searchTerm ? `No se encontraron pedidos para "${searchTerm}"` : 'No hay pedidos registrados aún'}
             </Text>
           </div>
         )}

@@ -3,7 +3,6 @@ import { Eye, Star, Image as ImageIcon } from 'lucide-react';
 import Button from '../atoms/Button';
 import ProductImageModal from './ProductImageModal';
 import categoryColorsData from '../../data/category-colors.json';
-import productImagesData from '../../data/product-images.json';
 
 const ProductCard = memo(({ product, onAddToCart }) => {
   const [showDesc, setShowDesc] = useState(false);
@@ -18,17 +17,24 @@ const ProductCard = memo(({ product, onAddToCart }) => {
     );
   };
 
-  // Función para obtener imagen del producto desde JSON
-  const getProductImage = (productName, category) => {
-    try {
-      return productImagesData.productImages[category]?.[productName] || null;
-    } catch (error) {
-      console.error('Error getting product image:', error);
-      return null;
+  // Obtener imagen del producto desde la API
+  const getProductImage = () => {
+    if (product.images && product.images.length > 0) {
+      return product.images[0];
     }
+    return null;
   };
 
-  const productImageUrl = getProductImage(product.name, product.category);
+  // Formatear precio
+  const formatPrice = (price) => {
+    if (typeof price === 'number') {
+      return `$${price.toFixed(2)}`;
+    }
+    return price || '$0.00';
+  };
+
+  const productImageUrl = getProductImage();
+  const formattedPrice = formatPrice(product.price);
 
   return (
     <>
@@ -47,20 +53,31 @@ const ProductCard = memo(({ product, onAddToCart }) => {
         />
 
         <div className='p-3 sm:p-4 md:p-6 relative z-10'>
-          {/* Header con categoría y rating */}
+          {/* Header con categoría y stock */}
           <div className='flex items-center justify-between mb-2 sm:mb-3 md:mb-4'>
             <span className='inline-flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white text-[10px] sm:text-xs font-medium px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-white/30 group-hover:bg-white/30 transition-all duration-300'>
               <span className='w-1.5 h-1.5 sm:w-2 sm:h-2 bg-orange-400 rounded-full'></span>
               <span className='hidden sm:inline'>{product.category}</span>
               <span className='sm:hidden'>
-                {product.category.length > 8
+                {product.category && product.category.length > 8
                   ? product.category.substring(0, 8) + '...'
-                  : product.category}
+                  : product.category || 'Sin categoría'}
               </span>
             </span>
-            <div className='flex items-center gap-1 text-yellow-400'>
-              <Star className='w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current' />
-              <span className='text-[10px] sm:text-xs font-medium'>4.8</span>
+            <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+              product.stock > 10 ? 'text-green-400 bg-green-500/20' :
+              product.stock > 0 ? 'text-yellow-400 bg-yellow-500/20' :
+              'text-red-400 bg-red-500/20'
+            }`}>
+              <span className='w-1.5 h-1.5 rounded-full bg-current'></span>
+              <span className='hidden sm:inline'>
+                {product.stock > 10 ? `${product.stock} disponibles` :
+                 product.stock > 0 ? `${product.stock} disponibles` :
+                 'Sin stock'}
+              </span>
+              <span className='sm:hidden'>
+                {product.stock > 0 ? `${product.stock}` : '0'}
+              </span>
             </div>
           </div>
 
@@ -84,15 +101,12 @@ const ProductCard = memo(({ product, onAddToCart }) => {
                 </>
               ) : (
                 <span className='text-xl sm:text-2xl md:text-3xl select-none relative z-10'>
-                  {product.image}
+                  🍕
                 </span>
               )}
             </div>
 
-            {/* Badge de descuento (opcional) */}
-            <div className='absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-gradient-to-r from-red-500 to-pink-500 text-white text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full shadow-lg transform rotate-12'>
-              -15%
-            </div>
+
           </div>
 
           {/* Información del producto */}
@@ -102,13 +116,9 @@ const ProductCard = memo(({ product, onAddToCart }) => {
             </h3>
 
             {/* Precio */}
-            <div className='flex items-center justify-center gap-1 sm:gap-2 mb-2 sm:mb-3'>
+            <div className='flex items-center justify-center mb-2 sm:mb-3'>
               <span className='text-lg sm:text-xl md:text-2xl font-bold text-orange-400 group-hover:text-orange-300 transition-colors duration-300'>
-                {product.price}
-              </span>
-              <span className='text-xs sm:text-sm text-gray-400 line-through hidden sm:block'>
-                $
-                {(parseFloat(product.price.replace('$', '')) * 1.15).toFixed(2)}
+                {formattedPrice}
               </span>
             </div>
           </div>
@@ -119,8 +129,9 @@ const ProductCard = memo(({ product, onAddToCart }) => {
               variant='fire'
               className='flex-1 text-xs sm:text-sm font-medium transition-all duration-300 hover:scale-105 group-hover:shadow-lg group-hover:shadow-orange-500/30 py-1.5 sm:py-2 flex items-center justify-center'
               onClick={() => onAddToCart?.(product)}
+              disabled={!product.stock || product.stock <= 0}
             >
-              +
+              {!product.stock || product.stock <= 0 ? 'Sin stock' : '+'}
             </Button>
 
             <Button
@@ -137,7 +148,7 @@ const ProductCard = memo(({ product, onAddToCart }) => {
             <div className='absolute left-1/2 -translate-x-1/2 top-full mt-2 sm:mt-3 w-64 sm:w-72 bg-gradient-to-br from-black/90 to-gray-900/90 backdrop-blur-md text-white text-xs sm:text-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 z-30 border border-white/20 shadow-2xl'>
               <div className='flex items-start gap-2 sm:gap-3'>
                 <div className='w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center flex-shrink-0'>
-                  <span className='text-xs sm:text-sm'>{product.image}</span>
+                  <span className='text-xs sm:text-sm'>🍕</span>
                 </div>
                 <div className='flex-1'>
                   <h4 className='font-semibold text-orange-300 mb-1 text-xs sm:text-sm'>
@@ -148,7 +159,7 @@ const ProductCard = memo(({ product, onAddToCart }) => {
                   </p>
                   <div className='mt-2 pt-2 border-t border-white/20'>
                     <span className='text-[10px] sm:text-xs text-gray-400'>
-                      Categoría: {product.category}
+                      Categoría: {product.category || 'Sin categoría'}
                     </span>
                   </div>
                 </div>

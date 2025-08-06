@@ -3,7 +3,7 @@ import { Trash2, Plus, Minus, MessageCircle } from 'lucide-react';
 
 const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote }) => {
   const [isEditingNote, setIsEditingNote] = useState(false);
-  const price = parseFloat(item.price.replace('$', '').replace(',', ''));
+  const price = typeof item.price === 'number' ? item.price : parseFloat(item.price?.replace('$', '').replace(',', '') || '0');
   const totalPrice = price * item.quantity;
 
   const handleIncrease = () => {
@@ -19,8 +19,21 @@ const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote }) => {
       {/* Contenedor superior: imagen, nombre y descripción */}
       <div className='flex gap-3 sm:gap-4 w-full'>
         {/* Imagen del producto */}
-        <div className='w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 rounded-full flex items-center justify-center flex-shrink-0 border border-white/10'>
-          <span className='text-xl sm:text-2xl'>{item.image}</span>
+        <div className='w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 rounded-full flex items-center justify-center flex-shrink-0 border border-white/10 overflow-hidden'>
+          {item.image ? (
+            <img 
+              src={item.image} 
+              alt={item.name}
+              className='w-full h-full object-cover'
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+          ) : null}
+          <span className='text-xl sm:text-2xl' style={{ display: item.image ? 'none' : 'flex' }}>
+            🍕
+          </span>
         </div>
 
         {/* Información del producto */}
@@ -58,13 +71,22 @@ const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote }) => {
           <div className='flex flex-col sm:flex-row gap-2 w-full'>
             <input
               type="text"
-              value={item.note}
-              onChange={(e) => onUpdateNote(e.target.value)}
+              defaultValue={item.note || ''}
               placeholder="Agregar nota"
               className='flex-1 h-8 px-3 text-sm bg-white/10 rounded-lg border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  onUpdateNote(e.target.value);
+                  setIsEditingNote(false);
+                }
+              }}
             />
             <button
-              onClick={() => setIsEditingNote(false)}
+              onClick={() => {
+                const input = document.querySelector('input[placeholder="Agregar nota"]');
+                onUpdateNote(input.value);
+                setIsEditingNote(false);
+              }}
               className='h-8 px-3 bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 rounded-lg text-sm font-medium transition-colors flex items-center justify-center whitespace-nowrap'
             >
               Guardar

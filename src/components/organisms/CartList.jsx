@@ -7,11 +7,11 @@ const CartList = memo(({ items, onRemoveItem, onUpdateQuantity, onUpdateNote }) 
       <div className='space-y-4 sm:space-y-6'>
         {items.map(item => (
           <CartItem
-            key={item.id}
+            key={item.productId}
             item={item}
-            onRemove={() => onRemoveItem(item.id)}
-            onUpdateQuantity={quantity => onUpdateQuantity(item.id, quantity)}
-            onUpdateNote={note => onUpdateNote(item.id, note)}
+            onRemove={() => onRemoveItem(item.productId)}
+            onUpdateQuantity={quantity => onUpdateQuantity(item.productId, quantity)}
+            onUpdateNote={note => onUpdateNote(item.productId, note)}
           />
         ))}
       </div>

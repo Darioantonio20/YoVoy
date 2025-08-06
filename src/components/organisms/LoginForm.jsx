@@ -1,12 +1,13 @@
 import { memo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { User, ArrowLeft } from 'lucide-react';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
+import { useAuth } from '../../hooks/useAuth';
 
 const LoginForm = memo(({ onBack }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [isStore, setIsStore] = useState(false);
+
   
   // Estados para cliente
   const [clientData, setClientData] = useState({
@@ -44,46 +45,315 @@ const LoginForm = memo(({ onBack }) => {
     }
   });
   
-  const navigate = useNavigate();
+  const { login, register, isLoading } = useAuth();
+  
+  // Estados para errores
+  const [errors, setErrors] = useState({});
+  const [generalError, setGeneralError] = useState('');
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
+    setErrors({});
+    setGeneralError('');
+  };
+
+  const toggleStoreForm = () => {
+    setIsStore(!isStore);
+    setErrors({});
+    setGeneralError('');
+  };
+
+  // Función para validar email
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Función para validar teléfono
+  const validatePhone = (phone) => {
+    const phoneRegex = /^\+[1-9]\d{1,14}$/;
+    return phoneRegex.test(phone) && phone.length >= 10 && phone.length <= 15;
+  };
+
+  // Función para validar URL de Google Maps
+  const validateGoogleMapsUrl = (url) => {
+    return url.startsWith('https://maps.app.goo.gl/') || url.startsWith('https://goo.gl/maps/');
+  };
+
+  // Función para validar contraseña
+  const validatePassword = (password) => {
+    return password.length >= 6;
+  };
+
+  // Función para validar nombre
+  const validateName = (name) => {
+    return name.length <= 100;
+  };
+
+  // Función para validar alias de ubicación
+  const validateLocationAlias = (alias) => {
+    return alias.length <= 200;
+  };
+
+  // Función para limpiar errores
+  const clearErrors = () => {
+    setErrors({});
+    setGeneralError('');
+  };
+
+  // Función para manejar el login
+  const handleLogin = async () => {
+    clearErrors();
+    
+    // Validar campos requeridos
+    if (!clientData.email.trim() || !clientData.password.trim()) {
+      setGeneralError('Por favor proporciona email y contraseña');
+      return;
+    }
+
+    // Validar formato de email
+    if (!validateEmail(clientData.email)) {
+      setErrors(prev => ({ ...prev, email: 'Por favor agrega un email válido' }));
+      return;
+    }
+
+    const result = await login(clientData.email, clientData.password);
+    
+    if (!result.success) {
+      // Manejar errores específicos del backend
+      if (result.error === 'Credenciales inválidas') {
+        setGeneralError('Credenciales inválidas');
+      } else {
+        setGeneralError(result.error || 'Error al iniciar sesión');
+      }
+    }
+  };
+
+  // Función para manejar el registro de cliente
+  const handleClientRegister = async () => {
+    clearErrors();
+    
+    // Validar campos requeridos
+    if (!clientData.name.trim() || !clientData.email.trim() || !clientData.password.trim() || !clientData.phone.trim()) {
+      setGeneralError('Por favor completa todos los campos requeridos');
+      return;
+    }
+    
+    if (!clientData.location.alias.trim() || !clientData.location.googleMapsUrl.trim()) {
+      setGeneralError('Por favor proporciona el alias y el enlace de Google Maps para la ubicación');
+      return;
+    }
+
+    // Validaciones específicas
+    if (!validateName(clientData.name)) {
+      setErrors(prev => ({ ...prev, name: 'El nombre no puede tener más de 100 caracteres' }));
+      return;
+    }
+
+    if (!validateEmail(clientData.email)) {
+      setErrors(prev => ({ ...prev, email: 'Por favor agrega un email válido' }));
+      return;
+    }
+
+    if (!validatePassword(clientData.password)) {
+      setErrors(prev => ({ ...prev, password: 'La contraseña debe tener al menos 6 caracteres' }));
+      return;
+    }
+
+    if (!validatePhone(clientData.phone)) {
+      setErrors(prev => ({ ...prev, phone: 'El número telefónico debe estar en formato internacional (Ej: +529614795475)' }));
+      return;
+    }
+
+    if (!validateLocationAlias(clientData.location.alias)) {
+      setErrors(prev => ({ ...prev, locationAlias: 'El alias de ubicación no puede tener más de 200 caracteres' }));
+      return;
+    }
+
+    if (!validateGoogleMapsUrl(clientData.location.googleMapsUrl)) {
+      setErrors(prev => ({ ...prev, googleMapsUrl: 'El enlace de Google Maps proporcionado no es válido' }));
+      return;
+    }
+
+    const userData = {
+      name: clientData.name,
+      email: clientData.email,
+      password: clientData.password,
+      phone: clientData.phone,
+      location: clientData.location,
+      role: 'client'
+    };
+
+    const result = await register(userData);
+    
+    if (result.success) {
+      // Limpiar formulario y cambiar a login
+      setClientData({
+        name: '',
+        email: '',
+        password: '',
+        phone: '',
+        location: { alias: '', googleMapsUrl: '' }
+      });
+      setIsLogin(true);
+    } else {
+      // Manejar errores específicos del backend
+      if (result.error.includes('E11000 duplicate key error')) {
+        setErrors(prev => ({ ...prev, email: 'Este email ya está registrado' }));
+      } else {
+        setGeneralError(result.error || 'Error al registrar usuario');
+      }
+    }
+  };
+
+  // Función para manejar el registro de admin/tienda
+  const handleStoreRegister = async () => {
+    clearErrors();
+    
+    // Validar campos requeridos del administrador
+    if (!storeData.name.trim() || !storeData.email.trim() || !storeData.password.trim() || !storeData.phone.trim()) {
+      setGeneralError('Por favor completa todos los campos requeridos');
+      return;
+    }
+    
+    // Validar campos de la tienda
+    if (!storeData.store.name.trim() || !storeData.store.responsibleName.trim()) {
+      setGeneralError('La información de la tienda es requerida para cuentas de administrador');
+      return;
+    }
+    
+    if (!storeData.store.location.alias.trim() || !storeData.store.location.googleMapsUrl.trim()) {
+      setGeneralError('Por favor proporciona el alias y el enlace de Google Maps para la ubicación');
+      return;
+    }
+    
+    if (storeData.store.categories.length === 0) {
+      setGeneralError('Debe seleccionar al menos una categoría para la tienda');
+      return;
+    }
+
+    // Validaciones específicas del administrador
+    if (!validateName(storeData.name)) {
+      setErrors(prev => ({ ...prev, adminName: 'El nombre no puede tener más de 100 caracteres' }));
+      return;
+    }
+
+    if (!validateEmail(storeData.email)) {
+      setErrors(prev => ({ ...prev, adminEmail: 'Por favor agrega un email válido' }));
+      return;
+    }
+
+    if (!validatePassword(storeData.password)) {
+      setErrors(prev => ({ ...prev, adminPassword: 'La contraseña debe tener al menos 6 caracteres' }));
+      return;
+    }
+
+    if (!validatePhone(storeData.phone)) {
+      setErrors(prev => ({ ...prev, adminPhone: 'El número telefónico debe estar en formato internacional (Ej: +529614795475)' }));
+      return;
+    }
+
+    // Validaciones específicas de la tienda
+    if (!validateName(storeData.store.name)) {
+      setErrors(prev => ({ ...prev, storeName: 'El nombre de la tienda no puede tener más de 100 caracteres' }));
+      return;
+    }
+
+    if (!validateName(storeData.store.responsibleName)) {
+      setErrors(prev => ({ ...prev, responsibleName: 'El nombre del responsable no puede tener más de 100 caracteres' }));
+      return;
+    }
+
+    if (!validatePhone(storeData.store.phone)) {
+      setErrors(prev => ({ ...prev, storePhone: 'El número telefónico de la tienda debe estar en formato internacional (Ej: +529614795475)' }));
+      return;
+    }
+
+    if (!validateLocationAlias(storeData.store.location.alias)) {
+      setErrors(prev => ({ ...prev, storeLocationAlias: 'El alias de ubicación no puede tener más de 200 caracteres' }));
+      return;
+    }
+
+    if (!validateGoogleMapsUrl(storeData.store.location.googleMapsUrl)) {
+      setErrors(prev => ({ ...prev, storeGoogleMapsUrl: 'El enlace de Google Maps proporcionado no es válido' }));
+      return;
+    }
+
+    // Validar horario completo
+    if (storeData.store.schedule.length !== 7) {
+      setGeneralError('Debe proporcionar el horario para todos los días de la semana');
+      return;
+    }
+
+    const userData = {
+      name: storeData.name,
+      email: storeData.email,
+      password: storeData.password,
+      phone: storeData.phone,
+      location: storeData.store.location, // Usar la misma ubicación de la tienda
+      role: 'admin',
+      store: {
+        name: storeData.store.name,
+        responsibleName: storeData.store.responsibleName,
+        phone: storeData.store.phone,
+        categories: storeData.store.categories,
+        description: storeData.store.description,
+        images: storeData.store.images,
+        location: storeData.store.location,
+        schedule: storeData.store.schedule
+      }
+    };
+
+    const result = await register(userData);
+    
+    if (result.success) {
+      // Limpiar formulario y cambiar a login
+      setStoreData({
+        name: '',
+        email: '',
+        password: '',
+        phone: '',
+        location: { alias: '', googleMapsUrl: '' },
+        store: {
+          name: '',
+          responsibleName: '',
+          phone: '',
+          categories: [],
+          description: '',
+          images: [],
+          location: { alias: '', googleMapsUrl: '' },
+          schedule: [
+            { day: 'Lunes', openTime: '09:00', closeTime: '18:00', isOpen: true },
+            { day: 'Martes', openTime: '09:00', closeTime: '18:00', isOpen: true },
+            { day: 'Miércoles', openTime: '09:00', closeTime: '18:00', isOpen: true },
+            { day: 'Jueves', openTime: '09:00', closeTime: '18:00', isOpen: true },
+            { day: 'Viernes', openTime: '09:00', closeTime: '18:00', isOpen: true },
+            { day: 'Sábado', openTime: '09:00', closeTime: '14:00', isOpen: true },
+            { day: 'Domingo', openTime: '00:00', closeTime: '00:00', isOpen: false }
+          ]
+        }
+      });
+      setIsLogin(true);
+      setIsStore(false);
+    } else {
+      // Manejar errores específicos del backend
+      if (result.error.includes('E11000 duplicate key error')) {
+        setErrors(prev => ({ ...prev, adminEmail: 'Este email ya está registrado' }));
+      } else {
+        setGeneralError(result.error || 'Error al registrar administrador');
+      }
+    }
   };
 
   const handleSubmit = () => {
-    // Validar campos requeridos
-    if (!isLogin) {
-      if (isStore) {
-        // Validar campos de tienda
-        if (!storeData.store.location.alias.trim() || !storeData.store.location.googleMapsUrl.trim()) {
-          alert('Por favor, completa el nombre y el vínculo de la ubicación de la tienda');
-          return;
-        }
-        if (storeData.store.categories.length === 0) {
-          alert('Por favor, selecciona al menos una categoría');
-          return;
-        }
-        if (!storeData.name.trim() || !storeData.store.name.trim() || !storeData.store.responsibleName.trim()) {
-          alert('Por favor, completa el nombre del administrador, de la tienda y del responsable');
-          return;
-        }
-        console.log('Datos de tienda:', { ...storeData, role: 'admin' });
-        navigate('/admin');
-      } else {
-        // Validar campos de cliente
-        if (!clientData.location.alias.trim() || !clientData.location.googleMapsUrl.trim()) {
-          alert('Por favor, completa el nombre y el vínculo de tu ubicación de entrega');
-          return;
-        }
-        if (!clientData.name.trim() || !clientData.email.trim() || !clientData.password.trim() || !clientData.phone.trim()) {
-          alert('Por favor, completa todos los campos requeridos');
-          return;
-        }
-        console.log('Datos de cliente:', { ...clientData, role: 'client' });
-        navigate('/store');
-      }
+    if (isLogin) {
+      handleLogin();
     } else {
-      navigate('/store');
+      if (isStore) {
+        handleStoreRegister();
+      } else {
+        handleClientRegister();
+      }
     }
   };
 
@@ -119,6 +389,15 @@ const LoginForm = memo(({ onBack }) => {
         </Text>
       </div>
 
+      {/* Mensaje de error general */}
+      {generalError && (
+        <div className='bg-red-500/20 border border-red-400/30 rounded-lg p-4 mb-4'>
+          <Text variant='body' size='sm' className='text-red-300'>
+            {generalError}
+          </Text>
+        </div>
+      )}
+
       <div className='space-y-6 sm:space-y-8'>
         {isLogin ? (
           // Formulario de Login
@@ -132,8 +411,16 @@ const LoginForm = memo(({ onBack }) => {
                 placeholder='tu@email.com'
                 value={clientData.email}
                 onChange={(e) => setClientData(prev => ({ ...prev, email: e.target.value }))}
-                className='w-full p-4 sm:p-4 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                className={`w-full p-4 sm:p-4 border-b-2 bg-transparent outline-none focus:border-b-2 text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base ${
+                  errors.email ? 'border-red-400' : 'border-white/50 focus:border-white'
+                }`}
+                disabled={isLoading}
               />
+              {errors.email && (
+                <Text variant='body' size='xs' className='text-red-400 mt-1'>
+                  {errors.email}
+                </Text>
+              )}
             </div>
             <div>
               <label className='block mb-3 sm:mb-3 text-gray-50 text-sm sm:text-base font-medium'>
@@ -144,8 +431,16 @@ const LoginForm = memo(({ onBack }) => {
                 placeholder='••••••••'
                 value={clientData.password}
                 onChange={(e) => setClientData(prev => ({ ...prev, password: e.target.value }))}
-                className='w-full p-4 sm:p-4 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                className={`w-full p-4 sm:p-4 border-b-2 bg-transparent outline-none focus:border-b-2 text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base ${
+                  errors.password ? 'border-red-400' : 'border-white/50 focus:border-white'
+                }`}
+                disabled={isLoading}
               />
+              {errors.password && (
+                <Text variant='body' size='xs' className='text-red-400 mt-1'>
+                  {errors.password}
+                </Text>
+              )}
             </div>
           </>
         ) : (
@@ -168,6 +463,7 @@ const LoginForm = memo(({ onBack }) => {
                         name: e.target.value
                       }))}
                       className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                      disabled={isLoading}
                     />
                   </div>
                   <div>
@@ -180,6 +476,7 @@ const LoginForm = memo(({ onBack }) => {
                       value={storeData.email}
                       onChange={(e) => setStoreData(prev => ({ ...prev, email: e.target.value }))}
                       className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                      disabled={isLoading}
                     />
                   </div>
                   <div>
@@ -192,6 +489,7 @@ const LoginForm = memo(({ onBack }) => {
                       value={storeData.password}
                       onChange={(e) => setStoreData(prev => ({ ...prev, password: e.target.value }))}
                       className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                      disabled={isLoading}
                     />
                   </div>
                   <div>
@@ -204,9 +502,12 @@ const LoginForm = memo(({ onBack }) => {
                       value={storeData.phone}
                       onChange={(e) => setStoreData(prev => ({ ...prev, phone: e.target.value }))}
                       className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
+                
+
                 
                 {/* Información de la tienda */}
                 <div className='space-y-4'>
@@ -223,6 +524,7 @@ const LoginForm = memo(({ onBack }) => {
                         store: { ...prev.store, name: e.target.value }
                       }))}
                       className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                      disabled={isLoading}
                     />
                   </div>
                   
@@ -239,6 +541,7 @@ const LoginForm = memo(({ onBack }) => {
                         store: { ...prev.store, responsibleName: e.target.value }
                       }))}
                       className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                      disabled={isLoading}
                     />
                   </div>
                   
@@ -255,6 +558,7 @@ const LoginForm = memo(({ onBack }) => {
                       }))}
                       rows='3'
                       className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors resize-none text-sm sm:text-base'
+                      disabled={isLoading}
                     />
                   </div>
                   
@@ -271,18 +575,52 @@ const LoginForm = memo(({ onBack }) => {
                         store: { ...prev.store, phone: e.target.value }
                       }))}
                       className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                      disabled={isLoading}
                     />
                   </div>
                   
                   <div>
                     <label className='block mb-2 text-gray-50 text-sm font-medium'>
-                      9. Ubicación exacta de la tienda
+                      9. Imágenes de la tienda
+                    </label>
+                    <textarea
+                      placeholder='https://i.ibb.co/abc123/imagen-tienda.jpg'
+                      value={storeData.store.images.join(', ')}
+                      onChange={(e) => {
+                        const urls = e.target.value.split(',').map(url => url.trim()).filter(url => url.length > 0);
+                        setStoreData(prev => ({ 
+                          ...prev, 
+                          store: { ...prev.store, images: urls }
+                        }));
+                      }}
+                      rows='3'
+                      className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors resize-none text-sm sm:text-base'
+                      disabled={isLoading}
+                    />
+                    <div className='mt-2 p-2 bg-blue-500/10 border border-blue-500/20 rounded text-xs text-blue-300/90'>
+                      <p className='font-medium text-blue-300'>📸 Instrucciones para subir imágenes:</p>
+                      <div className='space-y-1 mt-1'>
+                        <p>1. Ve a <a href="https://es.imgbb.com/" target="_blank" rel="noopener noreferrer" className='text-orange-400 hover:text-orange-300 underline'>ImgBB.com</a></p>
+                        <p>2. Sube la imagen de tu tienda (arrastra y suelta)</p>
+                        <p>3. Haz clic derecho en la imagen subida</p>
+                        <p>4. Selecciona "Abrir imagen en nueva pestaña"</p>
+                        <p>5. Copia la URL de la nueva pestaña</p>
+                        <p>6. Pega la URL aquí</p>
+                        <p className='text-orange-400 font-medium'>• Ejemplo: https://i.ibb.co/abc123/imagen-tienda.jpg</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className='block mb-2 text-gray-50 text-sm font-medium'>
+                      10. Ubicación exacta de la tienda
                     </label>
                     <div className='mb-3'>
                       <button
                         type='button'
                         onClick={() => window.open('https://www.google.com/maps', '_blank')}
                         className='flex items-center gap-2 px-3 py-2 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded-lg text-orange-300 hover:text-orange-200 transition-colors text-xs'
+                        disabled={isLoading}
                       >
                         <svg className='w-4 h-4' viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
@@ -313,6 +651,7 @@ const LoginForm = memo(({ onBack }) => {
                         }))}
                         placeholder="Nombre de la ubicación (ej: Sucursal Centro, Local Principal)"
                         className='w-full border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                        disabled={isLoading}
                       />
                       <textarea
                         value={storeData.store.location.googleMapsUrl}
@@ -326,31 +665,32 @@ const LoginForm = memo(({ onBack }) => {
                         placeholder='Pega aquí el vínculo de Google Maps'
                         rows='2'
                         className='w-full border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors resize-none text-sm sm:text-base'
+                        disabled={isLoading}
                       />
                     </div>
                   </div>
                   
                   <div>
                     <label className='block mb-3 text-gray-50 text-sm font-medium'>
-                      10. Categorías de productos
+                      11. Categorías de productos
                       <span className='text-gray-400 text-xs ml-2'>(Selecciona las que apliquen)</span>
                     </label>
                     <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3'>
                       {[
-                        { id: 'tecnologia', label: 'Tecnología', icon: '💻' },
-                        { id: 'moda', label: 'Moda', icon: '👕' },
-                        { id: 'juguetes', label: 'Juguetes', icon: '🧸' },
-                        { id: 'comida', label: 'Comida', icon: '🍔' },
-                        { id: 'hogar', label: 'Hogar', icon: '🏠' },
-                        { id: 'jardin', label: 'Jardín', icon: '🌱' },
-                        { id: 'mascotas', label: 'Mascotas', icon: '🐕' },
-                        { id: 'deportes', label: 'Deportes', icon: '⚽' },
-                        { id: 'belleza', label: 'Belleza', icon: '💄' },
-                        { id: 'libros', label: 'Libros', icon: '📚' },
-                        { id: 'musica', label: 'Música', icon: '🎵' },
-                        { id: 'arte', label: 'Arte', icon: '🎨' },
-                        { id: 'automotriz', label: 'Automotriz', icon: '🚗' },
-                        { id: 'ferreteria', label: 'Ferretería', icon: '🔧' },
+                        { id: 'tecnologia', label: 'tecnologia', icon: '💻' },
+                        { id: 'moda', label: 'moda', icon: '👕' },
+                        { id: 'juguetes', label: 'juguetes', icon: '🧸' },
+                        { id: 'comida', label: 'comida', icon: '🍔' },
+                        { id: 'hogar', label: 'hogar', icon: '🏠' },
+                        { id: 'jardin', label: 'jardin', icon: '🌱' },
+                        { id: 'mascotas', label: 'mascotas', icon: '🐕' },
+                        { id: 'deportes', label: 'deportes', icon: '⚽' },
+                        { id: 'belleza', label: 'belleza', icon: '💄' },
+                        { id: 'libros', label: 'libros', icon: '📚' },
+                        { id: 'musica', label: 'musica', icon: '🎵' },
+                        { id: 'arte', label: 'arte', icon: '🎨' },
+                        { id: 'automotriz', label: 'automotriz', icon: '🚗' },
+                        { id: 'ferreteria', label: 'ferreteria', icon: '🔧' },
                       ].map(category => (
                         <label
                           key={category.id}
@@ -381,6 +721,7 @@ const LoginForm = memo(({ onBack }) => {
                               }
                             }}
                             className='peer sr-only'
+                            disabled={isLoading}
                           />
                           <div
                             className='w-7 h-7 rounded-lg bg-transparent border-2 border-orange-500/70 transition-all duration-300 ease-in-out
@@ -406,7 +747,7 @@ const LoginForm = memo(({ onBack }) => {
                   
                   <div>
                     <label className='block mb-3 text-gray-50 text-sm font-medium'>
-                      11. Horarios de la tienda
+                      12. Horarios de la tienda
                       <span className='text-gray-400 text-xs ml-2'>(Configura los horarios de atención en formato 24h)</span>
                     </label>
                     
@@ -429,6 +770,7 @@ const LoginForm = memo(({ onBack }) => {
                             }));
                           }}
                           className='px-3 py-1.5 text-xs bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded text-orange-300 hover:text-orange-200 transition-colors'
+                          disabled={isLoading}
                         >
                           Lunes a Viernes 9:00-18:00
                         </button>
@@ -447,6 +789,7 @@ const LoginForm = memo(({ onBack }) => {
                             }));
                           }}
                           className='px-3 py-1.5 text-xs bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded text-orange-300 hover:text-orange-200 transition-colors'
+                          disabled={isLoading}
                         >
                           Lunes a Sábado 8:00-20:00
                         </button>
@@ -465,6 +808,7 @@ const LoginForm = memo(({ onBack }) => {
                             }));
                           }}
                           className='px-3 py-1.5 text-xs bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded text-red-300 hover:text-red-200 transition-colors'
+                          disabled={isLoading}
                         >
                           Cerrar todos
                         </button>
@@ -497,6 +841,7 @@ const LoginForm = memo(({ onBack }) => {
                                 }));
                               }}
                               className='w-5 h-5 text-orange-500 bg-transparent border-2 border-orange-500/70 rounded focus:ring-orange-500/50 focus:ring-2'
+                              disabled={isLoading}
                             />
                             <span className='text-sm text-white/90 font-medium'>{day.day}</span>
                           </div>
@@ -524,6 +869,7 @@ const LoginForm = memo(({ onBack }) => {
                                     }));
                                   }}
                                   className='px-3 py-2 text-sm bg-white/10 border border-white/20 rounded text-white focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                                  disabled={isLoading}
                                 />
                               </div>
                               <div className='flex items-center gap-2'>
@@ -546,6 +892,7 @@ const LoginForm = memo(({ onBack }) => {
                                     }));
                                   }}
                                   className='px-3 py-2 text-sm bg-white/10 border border-white/20 rounded text-white focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                                  disabled={isLoading}
                                 />
                               </div>
                               <div className='flex items-center gap-2'>
@@ -591,6 +938,7 @@ const LoginForm = memo(({ onBack }) => {
                     value={clientData.name}
                     onChange={(e) => setClientData(prev => ({ ...prev, name: e.target.value }))}
                     className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                    disabled={isLoading}
                   />
                 </div>
                 <div>
@@ -603,6 +951,7 @@ const LoginForm = memo(({ onBack }) => {
                     value={clientData.email}
                     onChange={(e) => setClientData(prev => ({ ...prev, email: e.target.value }))}
                     className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                    disabled={isLoading}
                   />
                 </div>
                 <div>
@@ -615,6 +964,7 @@ const LoginForm = memo(({ onBack }) => {
                     value={clientData.password}
                     onChange={(e) => setClientData(prev => ({ ...prev, password: e.target.value }))}
                     className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                    disabled={isLoading}
                   />
                 </div>
                 <div>
@@ -627,6 +977,7 @@ const LoginForm = memo(({ onBack }) => {
                     value={clientData.phone}
                     onChange={(e) => setClientData(prev => ({ ...prev, phone: e.target.value }))}
                     className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                    disabled={isLoading}
                   />
                 </div>
                 <div className='md:col-span-2'>
@@ -638,6 +989,7 @@ const LoginForm = memo(({ onBack }) => {
                       type='button'
                       onClick={() => window.open('https://www.google.com/maps', '_blank')}
                       className='flex items-center gap-2 px-3 py-2 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded-lg text-orange-300 hover:text-orange-200 transition-colors text-xs'
+                      disabled={isLoading}
                     >
                       <svg className='w-4 h-4' viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
@@ -665,6 +1017,7 @@ const LoginForm = memo(({ onBack }) => {
                       }))}
                       placeholder="Nombre del lugar (ej: Casa, Trabajo, Gimnasio)"
                       className='w-full border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                      disabled={isLoading}
                     />
                     <textarea
                       value={clientData.location.googleMapsUrl}
@@ -675,6 +1028,7 @@ const LoginForm = memo(({ onBack }) => {
                       placeholder='Pega aquí el vínculo de Google Maps'
                       rows='2'
                       className='w-full border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors resize-none text-sm sm:text-base'
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
@@ -688,12 +1042,20 @@ const LoginForm = memo(({ onBack }) => {
             variant='fire'
             className='w-full p-4 sm:p-4 text-sm sm:text-base'
             onClick={handleSubmit}
+            disabled={isLoading}
           >
-            {isLogin
-              ? 'Iniciar Sesión'
-              : isStore
-                ? 'Crear Cuenta'
-                : 'Crear Cuenta'}
+            {isLoading ? (
+              <div className='flex items-center justify-center gap-2'>
+                <div className='w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin'></div>
+                {isLogin ? 'Iniciando Sesión...' : 'Creando Cuenta...'}
+              </div>
+            ) : (
+              isLogin
+                ? 'Iniciar Sesión'
+                : isStore
+                  ? 'Crear Cuenta'
+                  : 'Crear Cuenta'
+            )}
           </Button>
 
           {isLogin && (
@@ -713,6 +1075,7 @@ const LoginForm = memo(({ onBack }) => {
                 variant='minimal'
                 className='w-full p-4 sm:p-4 border-white/50 text-white hover:bg-white hover:text-gray-700 text-sm sm:text-base'
                 onClick={toggleForm}
+                disabled={isLoading}
               >
                 Crear Cuenta
               </Button>
@@ -724,7 +1087,8 @@ const LoginForm = memo(({ onBack }) => {
             <button
               type='button'
               className='block w-full text-sm text-orange-400 mt-2 sm:mt-2 hover:underline text-center'
-              onClick={() => setIsStore(true)}
+              onClick={() => toggleStoreForm()}
+              disabled={isLoading}
             >
               ¿Eres una tienda? Crear cuenta como tienda
             </button>

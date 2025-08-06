@@ -3,9 +3,9 @@ import { CheckCircle, ArrowLeft } from 'lucide-react';
 import Button from '../atoms/Button';
 
 const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
-  if (!isOpen) return null;
+  if (!isOpen || !orderDetails) return null;
 
-  const { items, subtotal, shipping, total } = orderDetails;
+  const { items = [], subtotal = 0, shipping = 0, total = 0 } = orderDetails;
 
   return (
     <div className='fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50'>
@@ -44,9 +44,9 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
 
             {/* Productos */}
             <div className='space-y-3 mb-4 sm:mb-6'>
-              {items.map(item => (
+              {items && items.length > 0 ? items.map((item, index) => (
                 <div
-                  key={item.id}
+                  key={item.productId || item.id || index}
                   className='flex justify-between items-center'
                 >
                   <div className='flex items-center space-x-2 sm:space-x-3'>
@@ -64,14 +64,14 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
                     </div>
                   </div>
                   <p className='text-sm sm:text-base font-semibold text-white'>
-                    $
-                    {(
-                      parseFloat(item.price.replace('$', '').replace(',', '')) *
-                      item.quantity
-                    ).toFixed(2)}
+                    ${((typeof item.price === 'number' ? item.price : parseFloat(item.price?.replace('$', '').replace(',', '') || '0')) * item.quantity).toFixed(2)}
                   </p>
                 </div>
-              ))}
+              )) : (
+                <div className='text-center py-4'>
+                  <p className='text-gray-400'>No hay productos en la orden</p>
+                </div>
+              )}
             </div>
 
             {/* Resumen de costos */}
@@ -99,7 +99,7 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
           <div className='bg-orange-500/10 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 border border-orange-500/20'>
             <p className='text-xs sm:text-sm text-white/70'>Número de orden:</p>
             <p className='text-base sm:text-lg font-bold text-orange-400'>
-              #{Math.random().toString(36).substr(2, 9).toUpperCase()}
+              {orderDetails?.orderNumber || `#${Date.now()}`}
             </p>
           </div>
           {/* Botón */}

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { X, CreditCard, ArrowLeft } from 'lucide-react';
+import { X, ArrowLeft } from 'lucide-react';
 import Button from '../atoms/Button';
 
 const PaymentMethodModal = ({ isOpen, onClose, onConfirm, orderDetails }) => {
-  const [selectedMethod, setSelectedMethod] = useState('card');
+  const [selectedMethod, setSelectedMethod] = useState('efectivo');
 
   if (!isOpen) return null;
 
@@ -29,12 +29,6 @@ const PaymentMethodModal = ({ isOpen, onClose, onConfirm, orderDetails }) => {
         </div>
       ),
       description: 'Transferencia a cuenta bancaria',
-    },
-    {
-      id: 'card',
-      name: 'Tarjeta de Crédito/Débito',
-      icon: <CreditCard className='w-6 h-6' />,
-      description: 'Visa, Mastercard, American Express',
     },
   ];
 

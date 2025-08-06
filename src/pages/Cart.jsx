@@ -8,11 +8,16 @@ import OrderConfirmationModal from '../components/molecules/OrderConfirmationMod
 import BackgroundDecorator from '../components/atoms/BackgroundDecorator';
 import Alert from '../components/atoms/Alert';
 import { useCartContext } from '../context/CartContext';
+import { useOrders } from '../hooks/useOrders';
+import { useAuth } from '../hooks/useAuth';
+import { calculateDeliveryFee } from '../utils/deliveryPricing';
 
 export default function Cart() {
   const navigate = useNavigate();
-  const { cartItems, removeFromCart, updateQuantity, updateNote, clearCart, getSubtotal } =
+  const { cartItems, removeFromCart, updateQuantity, updateNote, clearCart, getSubtotal, currentStoreId } =
     useCartContext();
+  const { createOrderWithUserData, isLoading: orderLoading } = useOrders();
+  const { user } = useAuth();
 
   const [showPaymentMethod, setShowPaymentMethod] = useState(false);
   const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
@@ -30,7 +35,8 @@ export default function Cart() {
   };
 
   const handleConfirmPurchase = () => {
-    const shipping = cartItems.length > 0 ? 9.99 : 0;
+    const deliveryInfo = calculateDeliveryFee();
+    const shipping = cartItems.length > 0 ? deliveryInfo.totalFee : 0;
     const total = getSubtotal() + shipping;
 
     setOrderDetails({
@@ -38,14 +44,62 @@ export default function Cart() {
       subtotal: getSubtotal(),
       shipping,
       total,
+      deliveryInfo,
     });
 
     setShowPaymentMethod(true);
   };
 
-  const handlePaymentConfirm = paymentMethod => {
+  const handlePaymentConfirm = async (paymentMethod) => {
     setShowPaymentMethod(false);
-    setShowOrderConfirmation(true);
+    
+    try {
+      // Preparar datos de la orden
+      const deliveryInfo = calculateDeliveryFee();
+      const orderData = {
+        items: cartItems,
+        paymentMethod: paymentMethod,
+        paymentDetails: `Pago con ${paymentMethod}`,
+        subtotal: getSubtotal(),
+        shipping: deliveryInfo.totalFee,
+        total: getSubtotal() + deliveryInfo.totalFee,
+        storeId: currentStoreId,
+        deliveryInfo: deliveryInfo
+      };
+
+      // Crear la orden
+      const result = await createOrderWithUserData(orderData, user);
+      
+      if (result.success) {
+        // Guardar los datos del carrito antes de limpiarlo
+        const currentCartItems = [...cartItems];
+        const currentSubtotal = getSubtotal();
+        
+        // Actualizar orderDetails con los datos de la orden creada
+        const deliveryInfo = calculateDeliveryFee();
+        setOrderDetails({
+          items: currentCartItems,
+          subtotal: currentSubtotal,
+          shipping: deliveryInfo.totalFee,
+          total: currentSubtotal + deliveryInfo.totalFee,
+          orderNumber: result.data?.orderNumber || `#${Date.now()}`,
+          orderId: result.data?.orderId || '',
+          deliveryInfo: deliveryInfo
+        });
+        
+        setShowOrderConfirmation(true);
+        
+        // Solo limpiar carrito, NO redirigir automáticamente
+        setTimeout(async () => {
+          await clearCart(false); // No mostrar alerta de carrito vaciado
+        }, 100);
+      } else {
+        Alert.error('Error', result.message || 'No se pudo crear la orden');
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+      Alert.error('Error', 'Error al procesar la orden');
+    }
   };
 
   const handlePaymentClose = () => {
@@ -64,21 +118,35 @@ export default function Cart() {
   const handleCloseOrderConfirmation = () => {
     setShowOrderConfirmation(false);
     setOrderDetails(null);
-    clearCart(); // Limpiar el carrito aquí
-    // Mostrar alerta de compra enviada
+    // Mostrar alerta de éxito y redirigir cuando el usuario confirma
     Alert.success(
-      '¡Compra Enviada!',
-      'Tu compra se ha enviado a la tienda. Recibirás una llamada de confirmación con los detalles de tu pedido.'
+      '¡Orden Creada!',
+      'Tu orden se ha creado correctamente. Recibirás una confirmación con los detalles de tu pedido.'
     );
     navigate('/store');
   };
 
-  const shipping = cartItems.length > 0 ? 9.99 : 0;
+  const deliveryInfo = calculateDeliveryFee();
+  const shipping = cartItems.length > 0 ? deliveryInfo.totalFee : 0;
   const total = getSubtotal() + shipping;
 
-  // Si no hay productos, mostrar loading o nada mientras se redirige
-  if (cartItems.length === 0) {
-    return null;
+  // Usar useEffect para manejar la redirección de manera segura
+  useEffect(() => {
+    if (cartItems.length === 0 && !showOrderConfirmation) {
+      navigate('/store');
+    }
+  }, [cartItems.length, showOrderConfirmation, navigate]);
+
+  // Si no hay productos y no hay modal de confirmación abierto, mostrar loading
+  if (cartItems.length === 0 && !showOrderConfirmation) {
+    return (
+      <div className='min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center'>
+        <div className='text-center'>
+          <div className='w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4'></div>
+          <p className='text-white'>Redirigiendo...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -142,6 +210,7 @@ export default function Cart() {
                     total={total}
                     onContinueShopping={handleContinueShopping}
                     onConfirmPurchase={handleConfirmPurchase}
+                    isLoading={orderLoading}
                   />
                 </div>
               </div>

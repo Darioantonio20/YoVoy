@@ -1,100 +1,195 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { apiRequest, API_CONFIG, getCartHeaders } from '../config/api';
 
-const CART_STORAGE_KEY = 'jasai_cart';
+export const useCart = () => {
+  const [cart, setCart] = useState({
+    items: [],
+    totalItems: 0,
+    subtotal: 0
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-const useCart = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [isInitialized, setIsInitialized] = useState(false);
+  // Obtener carrito actual
+  const fetchCart = useCallback(async (storeId) => {
+    if (!storeId) return;
 
-  // Cargar carrito desde localStorage al inicializar
-  useEffect(() => {
-    const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+    setIsLoading(true);
+    setError(null);
 
-    if (savedCart) {
-      try {
-        const parsedCart = JSON.parse(savedCart);
-        setCartItems(parsedCart);
-      } catch (error) {
-        console.error('Error loading cart from localStorage:', error);
-        setCartItems([]);
+    try {
+      const endpoint = `${API_CONFIG.ENDPOINTS.CART.GET}?storeId=${storeId}`;
+      const response = await apiRequest(endpoint, {
+        method: 'GET',
+        headers: getCartHeaders(),
+      });
+
+      if (response.success) {
+        setCart(response.data.data);
+        return response.data.data;
+      } else {
+        setError(response.data.message || 'Error al cargar el carrito');
+        return null;
       }
+    } catch (error) {
+      console.error('Error fetching cart:', error);
+      setError('Error de conexión al cargar el carrito');
+      return null;
+    } finally {
+      setIsLoading(false);
     }
-    setIsInitialized(true);
   }, []);
 
-  // Guardar carrito en localStorage cada vez que cambie
-  useEffect(() => {
-    if (isInitialized) {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
-    }
-  }, [cartItems, isInitialized]);
-
   // Agregar producto al carrito
-  const addToCart = product => {
-    setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === product.id);
+  const addToCart = useCallback(async (productData) => {
+    setIsLoading(true);
+    setError(null);
 
-      if (existingItem) {
-        // Si ya existe, incrementar cantidad
-        return prevItems.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
+    try {
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.CART.ADD, {
+        method: 'POST',
+        headers: getCartHeaders(),
+        body: JSON.stringify(productData),
+      });
+
+      if (response.success) {
+        setCart(response.data.data);
+        return response.data.data;
       } else {
-        // Si no existe, agregar nuevo item
-        return [...prevItems, { ...product, quantity: 1 }];
+        setError(response.data.message || 'Error al agregar producto al carrito');
+        return null;
       }
-    });
-  };
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      setError('Error de conexión al agregar al carrito');
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Actualizar producto en el carrito
+  const updateCartItem = useCallback(async (productData) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.CART.UPDATE, {
+        method: 'PUT',
+        headers: getCartHeaders(),
+        body: JSON.stringify(productData),
+      });
+
+      if (response.success) {
+        setCart(response.data.data);
+        return response.data.data;
+      } else {
+        setError(response.data.message || 'Error al actualizar producto en el carrito');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error updating cart item:', error);
+      setError('Error de conexión al actualizar el carrito');
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   // Remover producto del carrito
-  const removeFromCart = productId => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
-  };
+  const removeFromCart = useCallback(async (productId, storeId) => {
+    setIsLoading(true);
+    setError(null);
 
-  // Actualizar cantidad de un producto
-  const updateQuantity = (productId, quantity) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
-      return;
+    try {
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.CART.REMOVE, {
+        method: 'DELETE',
+        headers: getCartHeaders(),
+        body: JSON.stringify({
+          productId,
+          storeId
+        }),
+      });
+
+      if (response.success) {
+        setCart(response.data.data);
+        return response.data.data;
+      } else {
+        setError(response.data.message || 'Error al remover producto del carrito');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+      setError('Error de conexión al remover del carrito');
+      return null;
+    } finally {
+      setIsLoading(false);
     }
+  }, []);
 
-    setCartItems(prevItems =>
-      prevItems.map(item =>
-        item.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
+  // Vaciar carrito
+  const clearCart = useCallback(async (storeId) => {
+    setIsLoading(true);
+    setError(null);
 
-  // Limpiar carrito
-  const clearCart = () => {
-    setCartItems([]);
-  };
+    try {
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.CART.CLEAR, {
+        method: 'DELETE',
+        headers: getCartHeaders(),
+        body: JSON.stringify({ storeId }),
+      });
 
-  // Calcular total de productos
-  const getTotalItems = () => {
-    return cartItems.reduce((total, item) => total + item.quantity, 0);
-  };
+      if (response.success) {
+        setCart({
+          items: [],
+          totalItems: 0,
+          subtotal: 0
+        });
+        return true;
+      } else {
+        setError(response.data.message || 'Error al vaciar el carrito');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error clearing cart:', error);
+      setError('Error de conexión al vaciar el carrito');
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-  // Calcular subtotal
-  const getSubtotal = () => {
-    return cartItems.reduce((total, item) => {
-      const price = parseFloat(item.price.replace('$', '').replace(',', ''));
-      return total + price * item.quantity;
-    }, 0);
-  };
+  // Calcular totales
+  const calculateTotals = useCallback(() => {
+    const subtotal = cart.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return {
+      subtotal,
+      total: subtotal // Aquí se puede agregar delivery fee si es necesario
+    };
+  }, [cart.items]);
+
+  // Obtener cantidad de un producto específico
+  const getItemQuantity = useCallback((productId) => {
+    const item = cart.items.find(item => item.productId === productId);
+    return item ? item.quantity : 0;
+  }, [cart.items]);
+
+  // Verificar si el carrito está vacío
+  const isCartEmpty = useCallback(() => {
+    return cart.items.length === 0;
+  }, [cart.items]);
 
   return {
-    cartItems,
+    cart,
+    isLoading,
+    error,
+    fetchCart,
     addToCart,
+    updateCartItem,
     removeFromCart,
-    updateQuantity,
     clearCart,
-    getTotalItems,
-    getSubtotal,
-    isInitialized,
+    calculateTotals,
+    getItemQuantity,
+    isCartEmpty,
   };
 };
-
-export default useCart;

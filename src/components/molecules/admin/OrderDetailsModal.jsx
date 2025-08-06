@@ -1,14 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { X, User, CreditCard, CheckCircle, Download } from 'lucide-react';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
 import html2canvas from 'html2canvas';
 import OrderDownloadTemplate from '../../atoms/admin/OrderDownloadTemplate';
+import { calculateDeliveryFee } from '../../../utils/deliveryPricing';
 
 const OrderDetailsModal = ({ isOpen, onClose, order }) => {
   const modalRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
-
+  
   if (!isOpen || !order) return null;
 
   const handleDownloadImage = async () => {
@@ -47,7 +48,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
 
       // Crear el enlace de descarga
       const link = document.createElement('a');
-      link.download = `orden-${order.id}-${new Date().toISOString().split('T')[0]}.png`;
+      link.download = `orden-${order.id || order._id || order.orderNumber || 'N/A'}-${new Date().toISOString().split('T')[0]}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
 
@@ -143,7 +144,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                     size='md'
                     className='font-medium text-white'
                   >
-                    {order.customer}
+                    {order.customer?.name || order.customer || 'Cliente'}
                   </Text>
                 </div>
 
@@ -156,7 +157,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                     size='md'
                     className='font-medium text-white'
                   >
-                    {order.email}
+                    {order.customer?.email || order.email || 'Sin email'}
                   </Text>
                 </div>
 
@@ -169,7 +170,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                     size='md'
                     className='font-medium text-white'
                   >
-                    {order.phone || 'No especificado'}
+                    {order.customer?.phone || order.phone || 'No especificado'}
                   </Text>
                 </div>
 
@@ -182,7 +183,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                     size='md'
                     className='font-medium text-white'
                   >
-                    {order.shippingAddress || 'No especificada'}
+                    {order.customer?.location?.alias || order.shippingAddress || 'No especificada'}
                   </Text>
                 </div>
               </div>
@@ -192,7 +193,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
             <div className='bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10'>
               <div className='flex items-center space-x-2 mb-4'>
                 <div className='w-5 h-5 flex items-center justify-center text-orange-400'>
-                  {getPaymentMethodIcon(order.paymentMethod)}
+                  {getPaymentMethodIcon(order.payment?.method || order.paymentMethod || 'efectivo')}
                 </div>
                 <Text variant='h3' size='lg' className='text-white'>
                   <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
@@ -211,11 +212,11 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                     size='md'
                     className='font-medium text-white'
                   >
-                    {getPaymentMethodText(order.paymentMethod)}
+                    {getPaymentMethodText(order.payment?.method || order.paymentMethod || 'efectivo')}
                   </Text>
                 </div>
 
-                {order.paymentDetails && (
+                {(order.payment?.details || order.paymentDetails) && (
                   <div>
                     <Text
                       variant='bodyLight'
@@ -229,7 +230,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                       size='md'
                       className='font-medium text-white'
                     >
-                      {order.paymentDetails}
+                      {order.payment?.details || order.paymentDetails}
                     </Text>
                   </div>
                 )}
@@ -276,7 +277,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                           {product.note && (
                             <div className='flex items-center gap-1.5'>
                               <span className='px-1.5 py-0.5 text-[10px] bg-orange-500/20 text-orange-300 rounded-full border border-orange-500/30'>
-                                Nota
+                                Nota Cliente
                               </span>
                               <Text
                                 variant='bodyLight'
@@ -284,6 +285,20 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                                 className='text-white/70 italic'
                               >
                                 "{product.note}"
+                              </Text>
+                            </div>
+                          )}
+                          {product.adminNote && (
+                            <div className='flex items-center gap-1.5'>
+                              <span className='px-1.5 py-0.5 text-[10px] bg-blue-500/20 text-blue-300 rounded-full border border-blue-500/30'>
+                                Nota Admin
+                              </span>
+                              <Text
+                                variant='bodyLight'
+                                size='xs'
+                                className='text-white/70 italic'
+                              >
+                                "{product.adminNote}"
                               </Text>
                             </div>
                           )}
@@ -295,7 +310,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                       size='sm'
                       className='font-medium text-white'
                     >
-                      ${(product.price * product.quantity).toFixed(2)}
+                      ${((product.price || 0) * (product.quantity || 1)).toFixed(2)}
                     </Text>
                   </div>
                 ))}
@@ -321,8 +336,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                     className='font-medium text-white'
                   >
                     $
-                    {order.subtotal?.toFixed(2) ||
-                      (order.total - 9.99).toFixed(2)}
+                    {(order.subtotal || (order.total || order.totals?.total || 0) - 9.99).toFixed(2)}
                   </Text>
                 </div>
 
@@ -335,7 +349,11 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                     size='sm'
                     className='font-medium text-white'
                   >
-                    ${order.shipping?.toFixed(2) || '9.99'}
+                    ${(() => {
+                      const orderTime = new Date(order.createdAt || order.date);
+                      const deliveryInfo = calculateDeliveryFee(orderTime);
+                      return deliveryInfo.totalFee.toFixed(2);
+                    })()}
                   </Text>
                 </div>
 
@@ -353,12 +371,90 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                       size='lg'
                       className='font-bold text-orange-400'
                     >
-                      ${order.total.toFixed(2)}
+                      ${(order.total || order.totals?.total || 0).toFixed(2)}
                     </Text>
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Notas de la Orden */}
+            {(order.notes || order.products.some(p => p.note || p.adminNote)) && (
+              <div className='bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10'>
+                <Text variant='h3' size='lg' className='text-white mb-4'>
+                  <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                    Notas de la Orden
+                  </span>
+                </Text>
+
+                <div className='space-y-3'>
+                  {order.notes && (
+                    <div className='p-3 bg-white/5 rounded-lg border border-white/10'>
+                      <div className='flex items-center gap-2 mb-2'>
+                        <span className='px-2 py-1 text-xs bg-purple-500/20 text-purple-300 rounded-full border border-purple-500/30'>
+                          Nota General
+                        </span>
+                      </div>
+                      <Text
+                        variant='bodyLight'
+                        size='sm'
+                        className='text-white/70 italic'
+                      >
+                        "{order.notes}"
+                      </Text>
+                    </div>
+                  )}
+
+                  {order.products.some(p => p.note) && (
+                    <div className='p-3 bg-white/5 rounded-lg border border-white/10'>
+                      <div className='flex items-center gap-2 mb-2'>
+                        <span className='px-2 py-1 text-xs bg-orange-500/20 text-orange-300 rounded-full border border-orange-500/30'>
+                          Notas del Cliente
+                        </span>
+                      </div>
+                      <div className='space-y-2'>
+                        {order.products.filter(p => p.note).map((product, index) => (
+                          <div key={index} className='flex items-start gap-2'>
+                            <span className='text-xs text-white/50'>•</span>
+                            <Text
+                              variant='bodyLight'
+                              size='xs'
+                              className='text-white/70'
+                            >
+                              <strong>{product.name}:</strong> "{product.note}"
+                            </Text>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {order.products.some(p => p.adminNote) && (
+                    <div className='p-3 bg-white/5 rounded-lg border border-white/10'>
+                      <div className='flex items-center gap-2 mb-2'>
+                        <span className='px-2 py-1 text-xs bg-blue-500/20 text-blue-300 rounded-full border border-blue-500/30'>
+                          Notas del Admin
+                        </span>
+                      </div>
+                      <div className='space-y-2'>
+                        {order.products.filter(p => p.adminNote).map((product, index) => (
+                          <div key={index} className='flex items-start gap-2'>
+                            <span className='text-xs text-white/50'>•</span>
+                            <Text
+                              variant='bodyLight'
+                              size='xs'
+                              className='text-white/70'
+                            >
+                              <strong>{product.name}:</strong> "{product.adminNote}"
+                            </Text>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Información Adicional */}
             <div className='bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10'>
@@ -378,13 +474,13 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                     size='sm'
                     className='font-medium text-white'
                   >
-                    {new Date(order.date).toLocaleDateString('es-ES', {
+                    {order.date ? new Date(order.date).toLocaleDateString('es-ES', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
                       hour: '2-digit',
                       minute: '2-digit',
-                    })}
+                    }) : 'Sin fecha'}
                   </Text>
                 </div>
 
@@ -421,7 +517,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                 Cliente:
               </Text>
               <Text variant='body' size='sm' className='text-white'>
-                {order.customer}
+                {order.customer?.name || order.customer || 'Cliente'}
               </Text>
             </div>
             <div>
@@ -433,7 +529,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                 Teléfono:
               </Text>
               <Text variant='body' size='sm' className='text-white'>
-                {order.phone || 'No especificado'}
+                {order.customer?.phone || order.phone || 'No especificado'}
               </Text>
             </div>
             <div className='md:col-span-2'>
@@ -445,7 +541,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                 Dirección de Entrega:
               </Text>
               <Text variant='body' size='sm' className='text-white'>
-                {order.shippingAddress || 'No especificada'}
+                {order.customer?.location?.alias || order.shippingAddress || 'No especificada'}
               </Text>
             </div>
           </div>

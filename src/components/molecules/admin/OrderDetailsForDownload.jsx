@@ -8,6 +8,7 @@ import {
   Download,
 } from 'lucide-react';
 import Text from '../../atoms/Text';
+import { calculateDeliveryFee } from '../../../utils/deliveryPricing';
 
 const OrderDetailsForDownload = ({ order }) => {
   const getPaymentMethodIcon = method => {
@@ -195,7 +196,11 @@ const OrderDetailsForDownload = ({ order }) => {
             <div className='flex justify-between'>
               <span className='text-gray-600'>Envío:</span>
               <span className='font-semibold'>
-                ${order.shipping?.toFixed(2) || '9.99'}
+                ${(() => {
+                  const orderTime = new Date(order.date);
+                  const deliveryInfo = calculateDeliveryFee(orderTime);
+                  return deliveryInfo.totalFee.toFixed(2);
+                })()}
               </span>
             </div>
 

@@ -8,46 +8,62 @@ import ProductForm from '../../molecules/admin/ProductForm';
 import StoreForm from '../../molecules/admin/StoreForm';
 import BackgroundDecorator from '../../atoms/BackgroundDecorator';
 import Alert from '../../atoms/Alert';
-import ordersData from '../../../data/admin/orders.json';
-import productsData from '../../../data/admin/products.json';
+import { useAdmin } from '../../../hooks/useAdmin';
+import { useAuth } from '../../../hooks/useAuth';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('orders');
   const [showProductForm, setShowProductForm] = useState(false);
   const [showStoreForm, setShowStoreForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
-  const [storeData, setStoreData] = useState({
-    name: 'test admin',
-    email: 'admin@test.com',
-    phone: '+529614795475',
-    location: { alias: 'Mi Tienda - Centro Comercial Plaza', googleMapsUrl: 'https://maps.app.goo.gl/9qhiAJQxLjaqDYxZA' },
-    store: {
-      name: 'Nombre de la Tienda',
-      responsibleName: 'Nombre del Responsable',
-      phone: '+529614795475',
-      categories: ['moda', 'hogar'],
-      description: 'Descripción de la tienda',
-      images: [],
-      location: { alias: 'Mi Tienda - Centro Comercial Plaza', googleMapsUrl: 'https://maps.app.goo.gl/9qhiAJQxLjaqDYxZA' },
-      schedule: [
-        { day: 'Lunes', openTime: '09:00', closeTime: '18:00', isOpen: true },
-        { day: 'Martes', openTime: '09:00', closeTime: '18:00', isOpen: true },
-        { day: 'Miércoles', openTime: '09:00', closeTime: '18:00', isOpen: true },
-        { day: 'Jueves', openTime: '09:00', closeTime: '18:00', isOpen: true },
-        { day: 'Viernes', openTime: '09:00', closeTime: '18:00', isOpen: true },
-        { day: 'Sábado', openTime: '09:00', closeTime: '14:00', isOpen: true },
-        { day: 'Domingo', openTime: '00:00', closeTime: '00:00', isOpen: false }
-      ]
-    }
-  });
+  const [products, setProducts] = useState([]);
+  const [storeData, setStoreData] = useState(null);
+  const [productTableKey, setProductTableKey] = useState(0);
+  
+  // Hooks para admin
+  const { user } = useAuth();
+  const { 
+    isLoading: adminLoading,
+    getMyStore,
+    updateStore,
+    getMyProducts,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+    getAdminOrders,
+    updateOrderStatus,
+    getAdminStats
+  } = useAdmin();
 
-  // Cargar datos iniciales desde JSON
+  // Cargar datos iniciales
   useEffect(() => {
-    setOrders(ordersData);
-    setProducts(productsData);
-  }, []);
+    const loadInitialData = async () => {
+      if (user?._id) {
+        // Cargar datos de la tienda
+        const store = await getMyStore(user._id);
+        if (store) {
+          setStoreData(store);
+          
+          // Cargar productos solo si tenemos la tienda
+          const productsData = await getMyProducts(store._id);
+          if (productsData) {
+            setProducts(productsData.data || []);
+          }
+        }
+        
+        // Cargar pedidos
+        const ordersData = await getAdminOrders();
+        if (ordersData) {
+          setOrders(ordersData.orders || []);
+        }
+      }
+    };
+    
+    loadInitialData();
+  }, [user?._id]); // Solo dependencia del user
+
+
 
   const handleCreateProduct = () => {
     setEditingProduct(null);
@@ -59,18 +75,32 @@ const AdminDashboard = () => {
     setShowProductForm(true);
   };
 
-  const handleSaveProduct = productData => {
+  const handleSaveProduct = async (productData) => {
+    let result;
+    
     if (editingProduct) {
       // Actualizar producto existente
-      setProducts(prev =>
-        prev.map(p => (p.id === editingProduct.id ? productData : p))
-      );
+      result = await updateProduct(storeData._id, editingProduct._id, productData);
+      
+      if (result) {
+        setShowProductForm(false);
+        setEditingProduct(null);
+        // Actualizar el producto en el estado local en lugar de recargar todo
+        setProducts(prevProducts => 
+          prevProducts.map(p => p._id === editingProduct._id ? { ...p, ...productData } : p)
+        );
+      }
     } else {
       // Crear nuevo producto
-      setProducts(prev => [...prev, productData]);
+      result = await createProduct(storeData._id, productData);
+      
+      if (result) {
+        setShowProductForm(false);
+        setEditingProduct(null);
+        // Agregar el nuevo producto al estado local
+        setProducts(prevProducts => [...prevProducts, result]);
+      }
     }
-    setShowProductForm(false);
-    setEditingProduct(null);
   };
 
   const handleCancelProductForm = () => {
@@ -78,10 +108,14 @@ const AdminDashboard = () => {
     setEditingProduct(null);
   };
 
-  const handleSaveStore = (updatedStoreData) => {
-    setStoreData(updatedStoreData);
-    setShowStoreForm(false);
-    Alert.success('Información Actualizada', 'Los datos de la tienda se han actualizado correctamente');
+  const handleSaveStore = async (updatedStoreData) => {
+    if (storeData?._id) {
+      const result = await updateStore(storeData._id, updatedStoreData);
+      if (result) {
+        setShowStoreForm(false);
+        setStoreData(result);
+      }
+    }
   };
 
   const handleCancelStoreForm = () => {
@@ -89,23 +123,21 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteProduct = productId => {
-    if (
-      window.confirm('¿Estás seguro de que quieres eliminar este producto?')
-    ) {
-      setProducts(prev => prev.filter(p => p.id !== productId));
+    // Esta función ahora se maneja directamente en ProductTable
+  };
+
+
+
+  const handleUpdateOrderStatus = async (orderId, newStatus) => {
+    const result = await updateOrderStatus(orderId, newStatus);
+    if (result) {
+      // Actualizar solo el pedido específico en el estado local
+      setOrders(prevOrders => 
+        prevOrders.map(order => 
+          order._id === orderId ? { ...order, status: newStatus } : order
+        )
+      );
     }
-  };
-
-  const handleToggleProductStatus = productId => {
-    setProducts(prev =>
-      prev.map(p => (p.id === productId ? { ...p, isActive: !p.isActive } : p))
-    );
-  };
-
-  const handleUpdateOrderStatus = (orderId, newStatus) => {
-    setOrders(prev =>
-      prev.map(o => (o.id === orderId ? { ...o, status: newStatus } : o))
-    );
   };
 
   const handleLogout = async () => {
@@ -126,7 +158,8 @@ const AdminDashboard = () => {
 
   const getStats = () => {
     const totalProducts = products.length;
-    const activeProducts = products.filter(p => p.isActive).length;
+    // Los productos activos son todos los que están en la lista (no hay campo isActive en la API)
+    const activeProducts = products.length;
     const totalOrders = orders.length;
     const pendingOrders = orders.filter(o => o.status === 'pendiente').length;
 
@@ -327,10 +360,12 @@ const AdminDashboard = () => {
 
               {/* Tabla de productos */}
               <ProductTable
+                key={productTableKey}
                 products={products}
                 onEdit={handleEditProduct}
                 onDelete={handleDeleteProduct}
-                onToggleStatus={handleToggleProductStatus}
+                onDeleteProduct={(productId) => deleteProduct(storeData._id, productId)}
+                isLoading={adminLoading}
               />
             </div>
           )}
@@ -381,130 +416,159 @@ const AdminDashboard = () => {
               ) : (
                 /* Vista previa de la información */
                 <>
-                  <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-                    {/* Información básica */}
-                    <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6'>
-                      <Text variant='h3' size='lg' className='text-white/90 mb-4'>
-                        Datos de la Tienda
+                  {adminLoading ? (
+                    <div className='flex items-center justify-center py-12'>
+                      <div className='w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin'></div>
+                      <Text variant='body' size='base' className='text-white/70 ml-3'>
+                        Cargando datos de la tienda...
                       </Text>
-                      <div className='space-y-3'>
-                        <div>
-                          <Text variant='bodyLight' size='sm' className='text-white/70'>
-                            Nombre de la Tienda
-                          </Text>
-                          <Text variant='body' size='base' className='text-white'>
-                            {storeData.store.name}
-                          </Text>
-                        </div>
-                        <div>
-                          <Text variant='bodyLight' size='sm' className='text-white/70'>
-                            Responsable
-                          </Text>
-                          <Text variant='body' size='base' className='text-white'>
-                            {storeData.store.responsibleName}
-                          </Text>
-                        </div>
-                        <div>
-                          <Text variant='bodyLight' size='sm' className='text-white/70'>
-                            Teléfono
-                          </Text>
-                          <Text variant='body' size='base' className='text-white'>
-                            {storeData.store.phone}
-                          </Text>
-                        </div>
-                        <div>
-                          <Text variant='bodyLight' size='sm' className='text-white/70'>
-                            Ubicación
-                          </Text>
-                          <Text variant='body' size='base' className='text-white'>
-                            {storeData.store.location.alias}
-                          </Text>
-                        </div>
-                        <div>
-                          <Text variant='bodyLight' size='sm' className='text-white/70'>
-                            Descripción
-                          </Text>
-                          <Text variant='body' size='base' className='text-white'>
-                            {storeData.store.description}
-                          </Text>
-                        </div>
-                      </div>
                     </div>
-
-                    {/* Horarios */}
-                    <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6'>
-                      <Text variant='h3' size='lg' className='text-white/90 mb-4'>
-                        Horarios de Atención
-                      </Text>
-                      <div className='space-y-2'>
-                        {storeData.store.schedule.map((day) => (
-                          <div key={day.day} className='flex justify-between items-center py-2 border-b border-white/10 last:border-b-0'>
-                            <Text variant='body' size='sm' className='text-white/90'>
-                              {day.day}
-                            </Text>
-                            <div className='flex items-center gap-2'>
-                              {day.isOpen ? (
-                                <>
-                                  <Text variant='body' size='sm' className='text-green-400'>
-                                    {day.openTime}
-                                  </Text>
-                                  <Text variant='body' size='sm' className='text-white/50'>
-                                    -
-                                  </Text>
-                                  <Text variant='body' size='sm' className='text-green-400'>
-                                    {day.closeTime}
-                                  </Text>
-                                </>
-                              ) : (
-                                <Text variant='body' size='sm' className='text-red-400'>
-                                  Cerrado
-                                </Text>
-                              )}
+                  ) : storeData ? (
+                    <>
+                      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+                        {/* Información básica */}
+                        <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6'>
+                          <Text variant='h3' size='lg' className='text-white/90 mb-4'>
+                            Datos de la Tienda
+                          </Text>
+                          <div className='space-y-3'>
+                            <div>
+                              <Text variant='bodyLight' size='sm' className='text-white/70'>
+                                Nombre de la Tienda
+                              </Text>
+                              <Text variant='body' size='base' className='text-white'>
+                                {storeData.name || 'Sin nombre'}
+                              </Text>
+                            </div>
+                            <div>
+                              <Text variant='bodyLight' size='sm' className='text-white/70'>
+                                Responsable
+                              </Text>
+                              <Text variant='body' size='base' className='text-white'>
+                                {storeData.responsibleName || 'Sin responsable'}
+                              </Text>
+                            </div>
+                            <div>
+                              <Text variant='bodyLight' size='sm' className='text-white/70'>
+                                Teléfono
+                              </Text>
+                              <Text variant='body' size='base' className='text-white'>
+                                {storeData.phone || 'Sin teléfono'}
+                              </Text>
+                            </div>
+                            <div>
+                              <Text variant='bodyLight' size='sm' className='text-white/70'>
+                                Ubicación
+                              </Text>
+                              <Text variant='body' size='base' className='text-white'>
+                                {storeData.location?.alias || 'No especificada'}
+                              </Text>
+                            </div>
+                            <div>
+                              <Text variant='bodyLight' size='sm' className='text-white/70'>
+                                Descripción
+                              </Text>
+                              <Text variant='body' size='base' className='text-white'>
+                                {storeData.description || 'Sin descripción'}
+                              </Text>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                        </div>
 
-                  {/* Categorías */}
-                  <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6'>
-                    <Text variant='h3' size='lg' className='text-white/90 mb-4'>
-                      Categorías de Productos
-                    </Text>
-                    <div className='flex flex-wrap gap-2'>
-                      {storeData.store.categories.map((category) => {
-                        const categoryInfo = {
-                          tecnologia: { label: 'Tecnología', icon: '💻' },
-                          moda: { label: 'Moda', icon: '👕' },
-                          juguetes: { label: 'Juguetes', icon: '🧸' },
-                          comida: { label: 'Comida', icon: '🍔' },
-                          hogar: { label: 'Hogar', icon: '🏠' },
-                          jardin: { label: 'Jardín', icon: '🌱' },
-                          mascotas: { label: 'Mascotas', icon: '🐕' },
-                          deportes: { label: 'Deportes', icon: '⚽' },
-                          belleza: { label: 'Belleza', icon: '💄' },
-                          libros: { label: 'Libros', icon: '📚' },
-                          musica: { label: 'Música', icon: '🎵' },
-                          arte: { label: 'Arte', icon: '🎨' },
-                          automotriz: { label: 'Automotriz', icon: '🚗' },
-                          ferreteria: { label: 'Ferretería', icon: '🔧' },
-                        }[category];
-
-                        return (
-                          <div
-                            key={category}
-                            className='flex items-center gap-2 px-3 py-2 bg-orange-500/20 border border-orange-500/30 rounded-lg'
-                          >
-                            <span className='text-lg'>{categoryInfo?.icon}</span>
-                            <Text variant='body' size='sm' className='text-orange-300'>
-                              {categoryInfo?.label}
-                            </Text>
+                        {/* Horarios */}
+                        <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6'>
+                          <Text variant='h3' size='lg' className='text-white/90 mb-4'>
+                            Horarios de Atención
+                          </Text>
+                          <div className='space-y-2'>
+                            {storeData.schedule?.length > 0 ? (
+                              storeData.schedule.map((day) => (
+                                <div key={day.day} className='flex justify-between items-center py-2 border-b border-white/10 last:border-b-0'>
+                                  <Text variant='body' size='sm' className='text-white/90'>
+                                    {day.day}
+                                  </Text>
+                                  <div className='flex items-center gap-2'>
+                                    {day.isOpen ? (
+                                      <>
+                                        <Text variant='body' size='sm' className='text-green-400'>
+                                          {day.openTime}
+                                        </Text>
+                                        <Text variant='body' size='sm' className='text-white/50'>
+                                          -
+                                        </Text>
+                                        <Text variant='body' size='sm' className='text-green-400'>
+                                          {day.closeTime}
+                                        </Text>
+                                      </>
+                                    ) : (
+                                      <Text variant='body' size='sm' className='text-red-400'>
+                                        Cerrado
+                                      </Text>
+                                    )}
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <Text variant='body' size='sm' className='text-white/50 italic'>
+                                No hay horarios configurados
+                              </Text>
+                            )}
                           </div>
-                        );
-                      })}
+                        </div>
+                      </div>
+
+                      {/* Categorías */}
+                      <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6'>
+                        <Text variant='h3' size='lg' className='text-white/90 mb-4'>
+                          Categorías de Productos
+                        </Text>
+                        <div className='flex flex-wrap gap-2'>
+                          {storeData.categories?.length > 0 ? (
+                            storeData.categories.map((category) => {
+                              const categoryInfo = {
+                                tecnologia: { label: 'tecnologia', icon: '💻' },
+                                moda: { label: 'moda', icon: '👕' },
+                                juguetes: { label: 'juguetes', icon: '🧸' },
+                                comida: { label: 'comida', icon: '🍔' },
+                                hogar: { label: 'hogar', icon: '🏠' },
+                                jardin: { label: 'jardin', icon: '🌱' },
+                                mascotas: { label: 'mascotas', icon: '🐕' },
+                                deportes: { label: 'deportes', icon: '⚽' },
+                                belleza: { label: 'belleza', icon: '💄' },
+                                libros: { label: 'libros', icon: '📚' },
+                                musica: { label: 'musica', icon: '🎵' },
+                                arte: { label: 'arte', icon: '🎨' },
+                                automotriz: { label: 'automotriz', icon: '🚗' },
+                                ferreteria: { label: 'ferreteria', icon: '🔧' },
+                              }[category];
+
+                              return (
+                                <div
+                                  key={category}
+                                  className='flex items-center gap-2 px-3 py-2 bg-orange-500/20 border border-orange-500/30 rounded-lg'
+                                >
+                                  <span className='text-lg'>{categoryInfo?.icon}</span>
+                                  <Text variant='body' size='sm' className='text-orange-300'>
+                                    {categoryInfo?.label}
+                                  </Text>
+                                </div>
+                              );
+                            })
+                          ) : (
+                            <Text variant='body' size='sm' className='text-white/50 italic'>
+                              No hay categorías configuradas
+                            </Text>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className='flex items-center justify-center py-12'>
+                      <Text variant='body' size='base' className='text-white/70'>
+                        No se pudieron cargar los datos de la tienda
+                      </Text>
                     </div>
-                  </div>
+                  )}
                 </>
               )}
             </div>

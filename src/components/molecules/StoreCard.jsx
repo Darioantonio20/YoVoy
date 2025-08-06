@@ -2,24 +2,73 @@ import { useState } from 'react';
 import { MapPin, Star, Clock, Eye } from 'lucide-react';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
-import storesImagesData from '../../data/stores-images.json';
 
 const StoreCard = ({ store, onSelect }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  // Obtener datos de la imagen de la tienda
-  const getStoreImageData = storeId => {
-    return (
-      storesImagesData.stores[storeId] || {
-        image:
-          'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-        location: 'Ubicación no disponible',
-        address: 'Dirección no disponible',
-      }
-    );
+  // Obtener imagen de la tienda desde la API
+  const getStoreImage = () => {
+    if (store.images && store.images.length > 0) {
+      return store.images[0];
+    }
+    // Imagen por defecto si no hay imágenes
+    return 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
   };
 
-  const storeImageData = getStoreImageData(store.id);
+  // Obtener ubicación de la tienda
+  const getStoreLocation = () => {
+    if (store.location && store.location.alias) {
+      return store.location.alias;
+    }
+    return 'Ubicación no disponible';
+  };
+
+  // Obtener dirección de la tienda
+  const getStoreAddress = () => {
+    if (store.location && store.location.googleMapsUrl) {
+      return store.location.googleMapsUrl;
+    }
+    return 'Dirección no disponible';
+  };
+
+  // Obtener categorías de la tienda
+  const getStoreCategories = () => {
+    if (store.categories && store.categories.length > 0) {
+      return store.categories[0]; // Mostrar solo la primera categoría
+    }
+    return 'Sin categoría';
+  };
+
+  // Verificar si la tienda está abierta
+  const isStoreOpen = () => {
+    if (!store.schedule || store.schedule.length === 0) {
+      return true; // Si no hay horario, asumir que está abierta
+    }
+
+    const now = new Date();
+    const currentDay = now.toLocaleDateString('es-ES', { weekday: 'long' });
+    const currentTime = now.toLocaleTimeString('en-US', { 
+      hour12: false, 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });
+
+    const todaySchedule = store.schedule.find(s => 
+      s.day.toLowerCase() === currentDay.toLowerCase()
+    );
+
+    if (!todaySchedule || !todaySchedule.isOpen) {
+      return false;
+    }
+
+    return currentTime >= todaySchedule.openTime && currentTime <= todaySchedule.closeTime;
+  };
+
+  const storeImage = getStoreImage();
+  const storeLocation = getStoreLocation();
+  const storeAddress = getStoreAddress();
+  const storeCategory = getStoreCategories();
+  const isOpen = isStoreOpen();
 
   return (
     <div
@@ -29,7 +78,7 @@ const StoreCard = ({ store, onSelect }) => {
       {/* Imagen de fondo */}
       <div
         className='absolute inset-0 bg-cover bg-center bg-no-repeat group-hover:scale-110 transition-transform duration-700'
-        style={{ backgroundImage: `url(${storeImageData.image})` }}
+        style={{ backgroundImage: `url(${storeImage})` }}
       >
         {/* Overlay gradiente para mejor legibilidad */}
         <div className='absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent'></div>
@@ -47,7 +96,7 @@ const StoreCard = ({ store, onSelect }) => {
         {/* Header con categoría */}
         <div className='flex justify-between items-start'>
           <span className='inline-block bg-orange-500/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full border border-orange-400/50'>
-            {store.category}
+            {storeCategory}
           </span>
 
           {/* Rating */}
@@ -64,24 +113,28 @@ const StoreCard = ({ store, onSelect }) => {
             {store.name}
           </h3>
 
+          {/* Descripción */}
+          {store.description && (
+            <Text className='text-white/80 text-sm mb-3 line-clamp-2'>
+              {store.description}
+            </Text>
+          )}
+
           {/* Ubicación */}
           <div className='flex items-center space-x-2 mb-3'>
             <MapPin className='w-4 h-4 text-orange-400' />
             <Text className='text-white/90 text-sm font-medium'>
-              {storeImageData.location}
+              {storeLocation}
             </Text>
           </div>
-
-          {/* Dirección */}
-          <Text className='text-white/70 text-xs mb-4 line-clamp-2'>
-            {storeImageData.address}
-          </Text>
 
           {/* Footer con botón y horario */}
           <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0'>
             <div className='flex items-center space-x-2 text-white/70 text-xs justify-center'>
               <Clock className='w-3 h-3' />
-              <span>Abierto</span>
+              <span className={isOpen ? 'text-green-400' : 'text-red-400'}>
+                {isOpen ? 'Abierto' : 'Cerrado'}
+              </span>
             </div>
 
             <div className='flex justify-center sm:justify-end'>
@@ -105,7 +158,7 @@ const StoreCard = ({ store, onSelect }) => {
 
       {/* Imagen oculta para precargar */}
       <img
-        src={storeImageData.image}
+        src={storeImage}
         alt={store.name}
         className='hidden'
         onLoad={() => setImageLoaded(true)}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/atoms/Button';
 import PageHeader from '../components/molecules/PageHeader';
@@ -13,7 +13,7 @@ import UserProfileButton from '../components/atoms/UserProfileButton';
 import BackgroundDecorator from '../components/atoms/BackgroundDecorator';
 import useSpinner from '../hooks/useSpinner';
 import { useCartContext } from '../context/CartContext';
-import storesData from '../data/stores.json';
+import { useStores } from '../hooks/useStores';
 import categoriesData from '../data/categories.json';
 
 export default function Store() {
@@ -22,12 +22,32 @@ export default function Store() {
   const [searchStores, setSearchStores] = useState('');
   const [searchProducts, setSearchProducts] = useState('');
   const [currentView, setCurrentView] = useState('search'); // "search", "stores", "products"
-  const { isLoading } = useSpinner(1500);
-  const { addToCart, getTotalItems, previousItemCount } = useCartContext();
+  const { isLoading: spinnerLoading } = useSpinner(1500);
+  const { addToCart, getTotalItems, previousItemCount, setStore } = useCartContext();
+  
+  // Hook para manejar tiendas desde la API
+  const { 
+    stores, 
+    products, 
+    isLoading: storesLoading, 
+    error: storesError,
+    pagination,
+    hasMoreProducts,
+    fetchStores,
+    fetchProducts,
+    setCurrentStoreData,
+    changePage,
+    clearProducts
+  } = useStores();
 
-  // Obtener categorías únicas para el buscador
+  // Cargar tiendas al montar el componente
+  useEffect(() => {
+    fetchStores({ limit: 50 }); // Cargar hasta 50 tiendas
+  }, [fetchStores]);
+
+  // Obtener categorías únicas de las tiendas cargadas
   const categories = [
-    ...new Set(storesData.stores.map(store => store.category)),
+    ...new Set(stores.flatMap(store => store.categories || []))
   ];
 
   // Filtrar categorías por búsqueda
@@ -36,27 +56,24 @@ export default function Store() {
   );
 
   // Filtrar tiendas por categoría buscada
-  const storesInCategory = storesData.stores.filter(store =>
-    store.category.toLowerCase().includes(searchCategory.toLowerCase())
+  const storesInCategory = stores.filter(store =>
+    store.categories?.some(cat => 
+      cat.toLowerCase().includes(searchCategory.toLowerCase())
+    )
   );
 
   // Filtrar tiendas por búsqueda adicional
   const filteredStores = storesInCategory.filter(
     store =>
       store.name.toLowerCase().includes(searchStores.toLowerCase()) ||
-      store.description.toLowerCase().includes(searchStores.toLowerCase())
+      (store.description && store.description.toLowerCase().includes(searchStores.toLowerCase()))
   );
 
-  // Obtener productos de la tienda seleccionada
-  const allProducts = selectedStore
-    ? storesData.products.filter(p => p.storeId === selectedStore.id)
-    : [];
-
   // Filtrar productos por búsqueda
-  const products = allProducts.filter(
+  const filteredProducts = products.filter(
     product =>
       product.name.toLowerCase().includes(searchProducts.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchProducts.toLowerCase())
+      (product.description && product.description.toLowerCase().includes(searchProducts.toLowerCase()))
   );
 
   const handleCategorySearch = category => {
@@ -69,16 +86,26 @@ export default function Store() {
     }, 150);
   };
 
-  const handleStoreSelect = store => {
+  const handleStoreSelect = async (store) => {
     setSelectedStore(store);
     setCurrentView('products');
     setSearchProducts('');
+    
+    // Establecer la tienda actual en el contexto del carrito
+    setStore(store._id);
+    
+    // Establecer la tienda actual en el hook
+    setCurrentStoreData(store);
+    
+    // Cargar productos de la tienda seleccionada (primera página)
+    await fetchProducts(store._id, { page: 1, limit: 10 });
   };
 
   const handleBackToStores = () => {
     setSelectedStore(null);
     setCurrentView('stores');
     setSearchProducts('');
+    clearProducts(); // Limpiar productos al volver
   };
 
   const handleBackToSearch = () => {
@@ -86,10 +113,18 @@ export default function Store() {
     setSelectedStore(null);
     setCurrentView('search');
     setSearchStores('');
+    clearProducts(); // Limpiar productos al volver
   };
 
   const handleAddToCart = product => {
     addToCart(product);
+  };
+
+  // Función para manejar cambio de página
+  const handlePageChange = async (newPage) => {
+    if (selectedStore) {
+      await changePage(newPage, selectedStore._id);
+    }
   };
 
   // Función para obtener datos de categoría desde JSON
@@ -106,10 +141,39 @@ export default function Store() {
     );
   };
 
+  // Mostrar spinner si está cargando
+  if (spinnerLoading || storesLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+        <Spinner message={spinnerLoading ? 'Cargando animaciones 3D...' : 'Cargando tiendas...'} />
+      </div>
+    );
+  }
+
+  // Mostrar error si hay problema cargando tiendas
+  if (storesError && currentView === 'search') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-24 h-24 mx-auto mb-4 bg-red-500/20 rounded-full flex items-center justify-center">
+            <span className="text-4xl">⚠️</span>
+          </div>
+          <Text className="text-white text-lg mb-2">Error al cargar las tiendas</Text>
+          <Text className="text-white/70 text-sm mb-4">{storesError}</Text>
+          <Button 
+            variant="fire" 
+            onClick={() => fetchStores({ limit: 50 })}
+            className="px-6 py-3"
+          >
+            Reintentar
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
-      {isLoading && <Spinner message='Cargando tiendas y productos...' />}
-
       {/* Carrito flotante */}
       <FloatingCart
         itemCount={getTotalItems()}
@@ -183,7 +247,7 @@ export default function Store() {
                           <span>
                             {
                               storesInCategory.filter(
-                                store => store.category === category
+                                store => store.categories?.includes(category)
                               ).length
                             }{' '}
                             tiendas
@@ -247,10 +311,10 @@ export default function Store() {
                 placeholder='Buscar tienda por nombre...'
                 showSearchButton={false}
               />
-              <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12'>
+              <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12'>
                 {filteredStores.map(store => (
                   <StoreCard
-                    key={store.id}
+                    key={store._id}
                     store={store}
                     onSelect={handleStoreSelect}
                   />
@@ -280,8 +344,8 @@ export default function Store() {
               </div>
               <PageHeader
                 title={selectedStore.name}
-                subtitle={`Productos de ${selectedStore.category} - ${selectedStore.description}`}
-                icon={<span className='text-3xl'>{selectedStore.logo}</span>}
+                subtitle={`${selectedStore.description || 'Productos disponibles'} - ${selectedStore.categories?.join(', ') || 'Sin categoría'}`}
+                icon={<span className='text-3xl'>🏪</span>}
                 textColor='text-white'
               />
               <SearchBar
@@ -290,21 +354,20 @@ export default function Store() {
                 placeholder='Buscar productos...'
                 showSearchButton={false}
               />
-              <ProductGrid products={products} onAddToCart={handleAddToCart} />
-              {products.length === 0 && (
+              <ProductGrid 
+                products={filteredProducts} 
+                onAddToCart={handleAddToCart}
+                pagination={pagination}
+                onPageChange={handlePageChange}
+                isLoading={storesLoading}
+              />
+              {filteredProducts.length === 0 && !storesLoading && (
                 <Text className='text-white/70 mb-8'>
                   {searchProducts
                     ? `No se encontraron productos para "${searchProducts}".`
                     : 'Esta tienda no tiene productos disponibles.'}
                 </Text>
               )}
-              <div className='text-center'>
-                <Link to='/cart'>
-                  <Button className='text-lg px-8 py-4'>
-                    🛒 Ver Carrito ({getTotalItems()} productos)
-                  </Button>
-                </Link>
-              </div>
             </>
           )}
         </div>

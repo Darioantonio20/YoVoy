@@ -7,39 +7,45 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
     name: '',
     description: '',
     price: '',
-    image: '👧', // Emoji por defecto
-    category: 'juguetes',
+    category: 'tecnologia',
     stock: '',
-    isActive: true,
+    images: [],
     adminNote: '',
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (product && isEditing) {
       setFormData({
         name: product.name || '',
         description: product.description || '',
-        price: product.price ? product.price.replace('$', '') : '',
-        image: product.image || '👧',
-        category: product.category || 'juguetes',
-        stock: product.stock || '',
-        isActive: product.isActive !== undefined ? product.isActive : true,
+        price: product.price ? product.price.toString() : '',
+        category: product.category || 'tecnologia',
+        stock: product.stock ? product.stock.toString() : '',
+        images: product.images || [],
         adminNote: product.adminNote || '',
       });
     }
   }, [product, isEditing]);
 
   const categories = [
-    { value: 'juguetes', label: 'Juguetes' },
-    { value: 'ropa', label: 'Ropa' },
-    { value: 'electronica', label: 'Electrónica' },
-    { value: 'hogar', label: 'Hogar' },
-    { value: 'deportes', label: 'Deportes' },
+    { value: 'tecnologia', label: 'tecnologia' },
+    { value: 'moda', label: 'moda' },
+    { value: 'juguetes', label: 'juguetes' },
+    { value: 'comida', label: 'comida' },
+    { value: 'hogar', label: 'hogar' },
+    { value: 'jardin', label: 'jardin' },
+    { value: 'mascotas', label: 'mascotas' },
+    { value: 'deportes', label: 'deportes' },
+    { value: 'belleza', label: 'belleza' },
+    { value: 'libros', label: 'libros' },
+    { value: 'musica', label: 'musica' },
+    { value: 'arte', label: 'arte' },
+    { value: 'automotriz', label: 'automotriz' },
+    { value: 'ferreteria', label: 'ferreteria' },
   ];
-
-  const emojis = ['👧', '🚗', '🧸', '🎮', '📱', '👕', '👟', '🏠', '⚽', '🎨'];
 
   const validateForm = () => {
     const newErrors = {};
@@ -64,18 +70,27 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     if (validateForm()) {
+      setIsSubmitting(true);
+      
       const productData = {
-        ...formData,
-        price: `$${parseFloat(formData.price).toFixed(2)}`,
+        name: formData.name,
+        description: formData.description,
+        price: parseFloat(formData.price),
         stock: parseInt(formData.stock),
-        id: isEditing ? product.id : Date.now().toString(),
+        category: formData.category,
+        images: formData.images,
+        adminNote: formData.adminNote.trim(),
       };
 
-      onSave(productData);
+      try {
+        await onSave(productData);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -223,74 +238,71 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
           </select>
         </div>
 
-        {/* Imagen (Emoji) */}
+        {/* Imágenes */}
         <div>
           <label className='block text-sm font-medium text-white/90 mb-2'>
-            Imagen (Emoji)
+            Imágenes del Producto
           </label>
-          <div className='grid grid-cols-5 gap-2'>
-            {emojis.map(emoji => (
-              <button
-                key={emoji}
-                type='button'
-                onClick={() => handleInputChange('image', emoji)}
-                className={`w-12 h-12 text-2xl rounded-lg border-2 flex items-center justify-center transition-all ${
-                  formData.image === emoji
-                    ? 'border-orange-400 bg-orange-500/20'
-                    : 'border-white/20 hover:border-white/40 bg-white/5'
-                }`}
-              >
-                {emoji}
-              </button>
-            ))}
-          </div>
+          <textarea
+            value={formData.images.join(', ')}
+            onChange={e => handleInputChange('images', e.target.value.split(', ').filter(url => url.trim()))}
+            rows='3'
+            className='w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50 resize-none'
+            placeholder='URLs de imágenes separadas por comas (ej: https://i.ibb.co/xxx/producto1.jpg, https://i.ibb.co/yyy/producto2.jpg)'
+          />
+          <p className='text-xs text-white/50 mt-1'>
+            💡 Sube tus imágenes en <a href='https://es.imgbb.com/' target='_blank' rel='noopener noreferrer' className='text-orange-400 hover:text-orange-300 underline'>ImgBB.com</a> y pega las URLs aquí
+          </p>
         </div>
 
         {/* Nota del Admin */}
         <div>
           <label className='block text-sm font-medium text-white/90 mb-2'>
             Nota del Admin
-            <span className='text-white/50 ml-1'>(opcional)</span>
+            <span className='text-white/50 ml-1'>(opcional, máximo 200 caracteres)</span>
           </label>
           <textarea
             value={formData.adminNote}
             onChange={e => handleInputChange('adminNote', e.target.value)}
             rows={2}
+            maxLength={200}
             className='w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50'
             placeholder='Agrega una nota interna sobre el producto (ej: stock bajo, descuentos, etc.)'
           />
+          <div className='flex justify-between items-center mt-1'>
+            <Text variant='bodyLight' size='xs' className='text-white/50'>
+              💡 Esta nota será visible para los clientes
+            </Text>
+            <Text variant='bodyLight' size='xs' className='text-white/50'>
+              {formData.adminNote.length}/200
+            </Text>
+          </div>
         </div>
 
-        {/* Estado activo */}
-        <div className='flex items-center'>
-          <input
-            type='checkbox'
-            id='isActive'
-            checked={formData.isActive}
-            onChange={e => handleInputChange('isActive', e.target.checked)}
-            className='h-4 w-4 text-orange-400 focus:ring-orange-400 border-white/30 rounded bg-white/5'
-          />
-          <label
-            htmlFor='isActive'
-            className='ml-2 block text-sm text-white/90'
-          >
-            Producto activo (disponible para venta)
-          </label>
-        </div>
+
 
         {/* Botones */}
         <div className='flex space-x-4 pt-4'>
           <Button
             type='submit'
             variant='success'
+            disabled={isSubmitting}
             className='flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600'
           >
-            {isEditing ? 'Actualizar Producto' : 'Crear Producto'}
+            {isSubmitting ? (
+              <div className='flex items-center gap-2'>
+                <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
+                <span>{isEditing ? 'Actualizando...' : 'Creando...'}</span>
+              </div>
+            ) : (
+              isEditing ? 'Actualizar Producto' : 'Crear Producto'
+            )}
           </Button>
           <Button
             type='button'
             variant='secondary'
             onClick={onCancel}
+            disabled={isSubmitting}
             className='flex-1 bg-white/10 hover:bg-white/20 border border-white/20'
           >
             Cancelar

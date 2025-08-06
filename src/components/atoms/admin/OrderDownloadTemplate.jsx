@@ -1,4 +1,36 @@
 const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
+  // Calcular tarifa de envío dinámica
+  const orderTime = new Date(order.date);
+  const deliveryInfo = (() => {
+    const hour = orderTime.getHours();
+    let additionalFee = 0;
+    let timeSlotName = '';
+    
+    if (hour >= 6 && hour <= 19) {
+      // 6 AM - 7 PM: tarifa base sin adicional
+      additionalFee = 0;
+      timeSlotName = 'Día';
+    } else if (hour >= 20 && hour <= 23) {
+      // 8 PM - 11 PM: $5 adicional
+      additionalFee = 5;
+      timeSlotName = 'Noche';
+    } else if (hour === 0) {
+      // 12 AM (medianoche): $5 adicional
+      additionalFee = 5;
+      timeSlotName = 'Medianoche';
+    } else if (hour >= 1 && hour <= 5) {
+      // 1 AM - 5 AM: $5 por cada hora de madrugada
+      additionalFee = hour * 5;
+      timeSlotName = `Madrugada (${hour}:00)`;
+    }
+    
+    return {
+      baseFee: 10,
+      additionalFee: additionalFee,
+      totalFee: 10 + additionalFee,
+      timeSlot: timeSlotName
+    };
+  })();
   return `
     <div style="border: 4px solid #f97316; border-radius: 12px; padding: 32px; background: linear-gradient(135deg, #1f2937 0%, #111827 100%); font-family: Arial, sans-serif; color: white;">
       <!-- Header -->
@@ -86,6 +118,8 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
                 <div>
                   <p style="font-weight: 600; color: white; margin: 0;">${product.name}</p>
                   <p style="font-size: 12px; color: #eab308; margin: 0;">Cantidad: ${product.quantity}</p>
+                  ${product.note ? `<p style="font-size: 11px; color: #f97316; margin: 4px 0 0 0; font-style: italic;">Nota Cliente: "${product.note}"</p>` : ''}
+                  ${product.adminNote ? `<p style="font-size: 11px; color: #3b82f6; margin: 4px 0 0 0; font-style: italic;">Nota Admin: "${product.adminNote}"</p>` : ''}
                 </div>
               </div>
               <p style="font-weight: bold; color: #f97316; margin: 0;">$${(product.price * product.quantity).toFixed(2)}</p>
@@ -106,7 +140,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
           </div>
           <div style="display: flex; justify-content: space-between;">
             <span style="color: #eab308;">Envío:</span>
-            <span style="font-weight: 600; color: white;">$${order.shipping?.toFixed(2) || '9.99'}</span>
+            <span style="font-weight: 600; color: white;">$${deliveryInfo.totalFee.toFixed(2)}</span>
           </div>
           <div style="border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 12px;">
             <div style="display: flex; justify-content: space-between;">
@@ -138,6 +172,37 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
           </div>
         </div>
       </div>
+
+      ${(order.notes || order.products.some(p => p.note || p.adminNote)) ? `
+      <!-- Notas de la Orden -->
+      <div style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 24px; margin-bottom: 32px; border: 1px solid rgba(255, 255, 255, 0.1);">
+        <h2 style="font-size: 18px; font-weight: bold; color: #f97316; margin: 0 0 16px 0;">Notas de la Orden</h2>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          ${order.notes ? `
+          <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid #a855f7; border-radius: 8px; padding: 12px;">
+            <p style="color: #a855f7; font-weight: 600; font-size: 12px; margin: 0 0 4px 0;">Nota General:</p>
+            <p style="color: white; font-style: italic; margin: 0;">"${order.notes}"</p>
+          </div>
+          ` : ''}
+          ${order.products.some(p => p.note) ? `
+          <div style="background: rgba(249, 115, 22, 0.1); border: 1px solid #f97316; border-radius: 8px; padding: 12px;">
+            <p style="color: #f97316; font-weight: 600; font-size: 12px; margin: 0 0 4px 0;">Notas del Cliente:</p>
+            ${order.products.filter(p => p.note).map(product => `
+            <p style="color: white; font-size: 12px; margin: 4px 0; font-style: italic;">• <strong>${product.name}:</strong> "${product.note}"</p>
+            `).join('')}
+          </div>
+          ` : ''}
+          ${order.products.some(p => p.adminNote) ? `
+          <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; border-radius: 8px; padding: 12px;">
+            <p style="color: #3b82f6; font-weight: 600; font-size: 12px; margin: 0 0 4px 0;">Notas del Admin:</p>
+            ${order.products.filter(p => p.adminNote).map(product => `
+            <p style="color: white; font-size: 12px; margin: 4px 0; font-style: italic;">• <strong>${product.name}:</strong> "${product.adminNote}"</p>
+            `).join('')}
+          </div>
+          ` : ''}
+        </div>
+      </div>
+      ` : ''}
 
       <!-- Footer -->
       <div style="margin-top: 32px; padding-top: 24px; border-top: 2px solid #f97316; text-align: center;">

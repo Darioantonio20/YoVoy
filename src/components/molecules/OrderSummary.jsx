@@ -2,7 +2,7 @@ import { memo } from 'react';
 import Button from '../atoms/Button';
 
 const OrderSummary = memo(
-  ({ subtotal, shipping, total, onContinueShopping, onConfirmPurchase }) => {
+  ({ subtotal, shipping, total, onContinueShopping, onConfirmPurchase, isLoading = false }) => {
     return (
       <div className='bg-white/5 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/10 p-6 lg:p-8'>
         <div className='grid gap-4 mb-6'>
@@ -41,8 +41,9 @@ const OrderSummary = memo(
               variant='success'
               className='flex-1 h-11 text-base font-medium'
               onClick={onConfirmPurchase}
+              disabled={isLoading}
             >
-              Continuar
+              {isLoading ? 'Procesando...' : 'Continuar'}
             </Button>
           </div>
         </div>
