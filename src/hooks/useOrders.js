@@ -21,9 +21,10 @@ export const useOrders = () => {
       if (response.success) {
         return { success: true, data: response.data };
       } else {
-        setError(response.data?.message || 'Error al crear la orden');
-        Alert.error('Error', response.data?.message || 'No se pudo crear la orden');
-        return { success: false, message: response.data?.message };
+        const errorMessage = response.data?.error || response.data?.message || 'Error al crear la orden';
+        setError(errorMessage);
+        Alert.error('Error', errorMessage);
+        return { success: false, message: errorMessage };
       }
     } catch (error) {
       setError('Error de conexión al crear la orden');

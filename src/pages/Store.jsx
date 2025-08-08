@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/atoms/Button';
 import PageHeader from '../components/molecules/PageHeader';
-import { ShoppingBag, ArrowLeft } from 'lucide-react';
+import { ShoppingBag, ArrowLeft, AlertTriangle } from 'lucide-react';
 import ProductGrid from '../components/organisms/ProductGrid';
 import StoreCard from '../components/molecules/StoreCard';
 import Text from '../components/atoms/Text';
@@ -135,7 +135,7 @@ export default function Store() {
         name: category,
         image:
           'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-        icon: '🛍️',
+        icon: 'shopping-bag',
         description: 'Productos y servicios variados',
       }
     );
@@ -156,7 +156,7 @@ export default function Store() {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-24 h-24 mx-auto mb-4 bg-red-500/20 rounded-full flex items-center justify-center">
-            <span className="text-4xl">⚠️</span>
+            <AlertTriangle size={48} className="text-red-400" />
           </div>
           <Text className="text-white text-lg mb-2">Error al cargar las tiendas</Text>
           <Text className="text-white/70 text-sm mb-4">{storesError}</Text>

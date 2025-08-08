@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, X } from 'lucide-react';
+import { Save, X, Monitor, Shirt, Baby, Utensils, Home, Sprout, Dog, Trophy, Palette, BookOpen, Music, Palette as Art, Car, Wrench, Lightbulb, Zap, Smartphone } from 'lucide-react';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
 
@@ -25,7 +25,12 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
         { day: 'Viernes', openTime: '09:00', closeTime: '18:00', isOpen: true },
         { day: 'Sábado', openTime: '09:00', closeTime: '14:00', isOpen: true },
         { day: 'Domingo', openTime: '00:00', closeTime: '00:00', isOpen: false }
-      ]
+      ],
+      socialMedia: {
+        tiktok: '',
+        facebook: '',
+        instagram: ''
+      }
     }
   });
 
@@ -59,7 +64,12 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
             { day: 'Viernes', openTime: '09:00', closeTime: '18:00', isOpen: true },
             { day: 'Sábado', openTime: '09:00', closeTime: '14:00', isOpen: true },
             { day: 'Domingo', openTime: '00:00', closeTime: '00:00', isOpen: false }
-          ]
+          ],
+          socialMedia: storeData.socialMedia || {
+            tiktok: '',
+            facebook: '',
+            instagram: ''
+          }
         }
       };
       
@@ -100,6 +110,19 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
         location: {
           ...prev.store.location,
           [field]: value
+        }
+      }
+    }));
+  };
+
+  const handleSocialMediaChange = (platform, value) => {
+    setFormData(prev => ({
+      ...prev,
+      store: {
+        ...prev.store,
+        socialMedia: {
+          ...prev.store.socialMedia,
+          [platform]: value
         }
       }
     }));
@@ -148,27 +171,32 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
         alias: formData.store?.location?.alias || '',
         googleMapsUrl: formData.store?.location?.googleMapsUrl || ''
       },
-      schedule: formData.store?.schedule || []
+      schedule: formData.store?.schedule || [],
+      socialMedia: formData.store?.socialMedia || {
+        tiktok: '',
+        facebook: '',
+        instagram: ''
+      }
     };
     
     onSave(storeUpdateData);
   };
 
   const categories = [
-    { id: 'tecnologia', label: 'tecnologia', icon: '💻' },
-    { id: 'moda', label: 'moda', icon: '👕' },
-    { id: 'juguetes', label: 'juguetes', icon: '🧸' },
-    { id: 'comida', label: 'comida', icon: '🍔' },
-    { id: 'hogar', label: 'hogar', icon: '🏠' },
-    { id: 'jardin', label: 'jardin', icon: '🌱' },
-    { id: 'mascotas', label: 'mascotas', icon: '🐕' },
-    { id: 'deportes', label: 'deportes', icon: '⚽' },
-    { id: 'belleza', label: 'belleza', icon: '💄' },
-    { id: 'libros', label: 'libros', icon: '📚' },
-    { id: 'musica', label: 'musica', icon: '🎵' },
-    { id: 'arte', label: 'arte', icon: '🎨' },
-    { id: 'automotriz', label: 'automotriz', icon: '🚗' },
-    { id: 'ferreteria', label: 'ferreteria', icon: '🔧' },
+    { id: 'tecnologia', label: 'tecnologia', icon: Monitor, color: 'text-blue-400' },
+    { id: 'moda', label: 'moda', icon: Shirt, color: 'text-pink-400' },
+    { id: 'juguetes', label: 'juguetes', icon: Baby, color: 'text-yellow-400' },
+    { id: 'comida', label: 'comida', icon: Utensils, color: 'text-orange-400' },
+    { id: 'hogar', label: 'hogar', icon: Home, color: 'text-green-400' },
+    { id: 'jardin', label: 'jardin', icon: Sprout, color: 'text-emerald-400' },
+    { id: 'mascotas', label: 'mascotas', icon: Dog, color: 'text-amber-400' },
+    { id: 'deportes', label: 'deportes', icon: Trophy, color: 'text-purple-400' },
+    { id: 'belleza', label: 'belleza', icon: Palette, color: 'text-rose-400' },
+    { id: 'libros', label: 'libros', icon: BookOpen, color: 'text-indigo-400' },
+    { id: 'musica', label: 'musica', icon: Music, color: 'text-violet-400' },
+    { id: 'arte', label: 'arte', icon: Art, color: 'text-cyan-400' },
+    { id: 'automotriz', label: 'automotriz', icon: Car, color: 'text-red-400' },
+    { id: 'ferreteria', label: 'ferreteria', icon: Wrench, color: 'text-gray-400' },
   ];
 
   return (
@@ -323,8 +351,9 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
               className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 resize-none'
               placeholder='URLs de imágenes separadas por comas (ej: https://i.ibb.co/xxx/logo.png, https://i.ibb.co/yyy/banner.png)'
             />
-            <p className='text-xs text-white/50 mt-1'>
-              💡 Sube tus imágenes en <a href='https://es.imgbb.com/' target='_blank' rel='noopener noreferrer' className='text-orange-400 hover:text-orange-300 underline'>ImgBB.com</a> y pega las URLs aquí
+            <p className='text-xs text-white/50 mt-1 flex items-center gap-1'>
+              <Lightbulb size={12} className='text-orange-400' />
+              Sube tus imágenes en <a href='https://es.imgbb.com/' target='_blank' rel='noopener noreferrer' className='text-orange-400 hover:text-orange-300 underline'>ImgBB.com</a> y pega las URLs aquí
             </p>
           </div>
         </div>
@@ -359,7 +388,12 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                     hover:shadow-[0_0_15px_rgba(251,146,60,0.5)]'
                 ></div>
                 <div className='flex items-center gap-2 ml-3'>
-                  <span className='text-lg'>{category.icon}</span>
+                  {category.icon && (
+                    <category.icon 
+                      size={18} 
+                      className={`${category.color} flex-shrink-0`} 
+                    />
+                  )}
                   <span className='text-sm text-white/90 group-hover:text-white transition-colors'>
                     {category.label}
                   </span>
@@ -377,7 +411,10 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
           
           {/* Botones de configuración rápida */}
           <div className='p-3 bg-orange-500/10 border border-orange-500/20 rounded-lg'>
-            <p className='text-xs text-orange-300/90 mb-2 font-medium'>⚡ Configuración rápida:</p>
+            <p className='text-xs text-orange-300/90 mb-2 font-medium flex items-center gap-1'>
+              <Zap size={12} className='text-orange-300' />
+              Configuración rápida:
+            </p>
             <div className='flex flex-wrap gap-2'>
               <button
                 type='button'
@@ -477,6 +514,68 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                 )}
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Redes Sociales */}
+        <div className='space-y-4'>
+          <Text variant='h3' size='lg' className='text-white/90 border-b border-white/20 pb-2'>
+            Redes Sociales
+          </Text>
+          
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div>
+              <label className='block text-sm font-medium text-white/90 mb-2'>
+                TikTok
+              </label>
+              <input
+                type='url'
+                value={formData.store?.socialMedia?.tiktok || ''}
+                onChange={(e) => handleSocialMediaChange('tiktok', e.target.value)}
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                placeholder='https://www.tiktok.com/@tu_tienda'
+              />
+            </div>
+            
+            <div>
+              <label className='block text-sm font-medium text-white/90 mb-2'>
+                Facebook
+              </label>
+              <input
+                type='url'
+                value={formData.store?.socialMedia?.facebook || ''}
+                onChange={(e) => handleSocialMediaChange('facebook', e.target.value)}
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                placeholder='https://www.facebook.com/tu_tienda'
+              />
+            </div>
+            
+            <div>
+              <label className='block text-sm font-medium text-white/90 mb-2'>
+                Instagram
+              </label>
+              <input
+                type='url'
+                value={formData.store?.socialMedia?.instagram || ''}
+                onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                placeholder='https://www.instagram.com/tu_tienda'
+              />
+            </div>
+          </div>
+          
+          {/* Información sobre redes sociales */}
+          <div className='p-3 bg-purple-500/10 border border-purple-500/20 rounded-lg'>
+            <p className='text-xs text-purple-300/90 mb-2 font-medium flex items-center gap-1'>
+              <Smartphone size={12} className='text-purple-300' />
+              Redes Sociales:
+            </p>
+            <ul className='text-xs text-purple-300/80 space-y-1'>
+              <li>• Agrega los enlaces de tus redes sociales para conectar con tus clientes</li>
+              <li>• Los clientes podrán seguirte directamente desde las cards de tienda</li>
+              <li>• Puedes dejarlos vacíos si no tienes redes sociales</li>
+              <li>• Asegúrate de que las URLs sean válidas (ej: https://www.tiktok.com/@tu_cuenta)</li>
+            </ul>
           </div>
         </div>
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { X, User, CreditCard, CheckCircle, Download } from 'lucide-react';
+import { X, User, CreditCard, CheckCircle, Download, Package } from 'lucide-react';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
 import html2canvas from 'html2canvas';
@@ -256,7 +256,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                   >
                     <div className='flex items-center space-x-3'>
                       <div className='w-8 h-8 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 border border-orange-400/30 rounded-full flex items-center justify-center'>
-                        <span className='text-sm'>📦</span>
+                        <Package size={16} className='text-gray-400' />
                       </div>
                       <div>
                         <Text

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle, ArrowLeft } from 'lucide-react';
+import { CheckCircle, ArrowLeft, ShoppingBag } from 'lucide-react';
 import Button from '../atoms/Button';
 
 const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
@@ -50,9 +50,9 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
                   className='flex justify-between items-center'
                 >
                   <div className='flex items-center space-x-2 sm:space-x-3'>
-                    <div className='w-8 h-8 sm:w-10 sm:h-10 bg-white/10 rounded-lg flex items-center justify-center'>
-                      <span className='text-lg sm:text-xl'>🛍️</span>
-                    </div>
+                                  <div className='w-8 h-8 sm:w-10 sm:h-10 bg-white/10 rounded-lg flex items-center justify-center'>
+                <ShoppingBag size={20} className='text-white' />
+              </div>
                     <div className='text-left'>
                       <p className='text-sm sm:text-base font-medium text-white'>{item.name}</p>
                       <p className='text-xs sm:text-sm text-white/70'>

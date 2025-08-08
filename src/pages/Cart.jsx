@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Lock } from 'lucide-react';
 import PageHeader from '../components/molecules/PageHeader';
 import CartList from '../components/organisms/CartList';
 import OrderSummary from '../components/molecules/OrderSummary';
@@ -38,7 +39,7 @@ export default function Cart() {
     // Verificar si el usuario está autenticado
     if (!user || !user._id) {
       Alert.confirm(
-        '🔐 Inicia sesión requerido',
+        'Inicia sesión requerido',
         'Para realizar tu compra necesitas iniciar sesión o crear una cuenta. ¿Te gustaría ir al login ahora?'
       ).then((result) => {
         if (result.isConfirmed) {

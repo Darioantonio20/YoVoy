@@ -63,8 +63,9 @@ export const useAuth = () => {
 
         return { success: true };
       } else {
-        Alert.error('Error de Login', response.data.message || 'Credenciales incorrectas');
-        return { success: false, message: response.data.message };
+        const errorMessage = response.data?.error || response.data?.message || 'Credenciales incorrectas';
+        Alert.error('Error de Login', errorMessage);
+        return { success: false, message: errorMessage };
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -110,8 +111,9 @@ export const useAuth = () => {
 
         return { success: true };
       } else {
-        Alert.error('Error de Registro', response.data.message || 'No se pudo crear la cuenta');
-        return { success: false, message: response.data.message };
+        const errorMessage = response.data?.error || response.data?.message || 'No se pudo crear la cuenta';
+        Alert.error('Error de Registro', errorMessage);
+        return { success: false, message: errorMessage };
       }
     } catch (error) {
       console.error('Register error:', error);

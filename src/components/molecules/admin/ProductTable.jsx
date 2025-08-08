@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Package } from 'lucide-react';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
 import SearchBar from '../../atoms/SearchBar';
@@ -191,9 +192,7 @@ const ProductTable = ({ products, onEdit, onDelete, onDeleteProduct, isLoading }
                           }}
                         />
                       ) : null}
-                      <span className='text-xl' style={{ display: product.images && product.images.length > 0 ? 'none' : 'flex' }}>
-                        📦
-                      </span>
+                      <Package size={20} className='text-white/70' style={{ display: product.images && product.images.length > 0 ? 'none' : 'flex' }} />
                     </div>
                     <div>
                       <Text

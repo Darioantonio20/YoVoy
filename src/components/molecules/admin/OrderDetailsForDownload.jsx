@@ -1,13 +1,11 @@
 import React from 'react';
 import {
   User,
-  Phone,
-  MapPin,
   CreditCard,
   CheckCircle,
-  Download,
+  ShoppingCart,
+  Package,
 } from 'lucide-react';
-import Text from '../../atoms/Text';
 import { calculateDeliveryFee } from '../../../utils/deliveryPricing';
 
 const OrderDetailsForDownload = ({ order }) => {
@@ -48,7 +46,7 @@ const OrderDetailsForDownload = ({ order }) => {
         <div className='text-center mb-8 pb-6 border-b-2 border-blue-200'>
           <div className='flex items-center justify-center space-x-3 mb-4'>
             <div className='w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center'>
-              <span className='text-white text-xl'>🛒</span>
+              <ShoppingCart size={24} className='text-white' />
             </div>
             <div>
               <h1 className='text-3xl font-bold text-blue-800'>Jasai</h1>
@@ -160,7 +158,7 @@ const OrderDetailsForDownload = ({ order }) => {
               >
                 <div className='flex items-center space-x-3'>
                   <div className='w-8 h-8 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center'>
-                    <span className='text-sm'>📦</span>
+                    <Package size={16} className='text-gray-600' />
                   </div>
                   <div>
                     <p className='font-semibold text-gray-900'>

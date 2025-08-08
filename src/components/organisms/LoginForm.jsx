@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { User, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { User, ArrowLeft, Eye, EyeOff, Monitor, Shirt, Baby, Utensils, Home, Sprout, Dog, Trophy, Palette, BookOpen, Music, Palette as Art, Car, Wrench, Zap, Lightbulb, Smartphone } from 'lucide-react';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
 import { useAuth } from '../../hooks/useAuth';
@@ -45,7 +45,12 @@ const LoginForm = memo(({ onBack }) => {
         { day: 'Viernes', openTime: '09:00', closeTime: '18:00', isOpen: true },
         { day: 'Sábado', openTime: '09:00', closeTime: '14:00', isOpen: true },
         { day: 'Domingo', openTime: '00:00', closeTime: '00:00', isOpen: false }
-      ]
+      ],
+      socialMedia: {
+        tiktok: '',
+        facebook: '',
+        instagram: ''
+      }
     }
   });
   
@@ -99,6 +104,24 @@ const LoginForm = memo(({ onBack }) => {
     return alias.length <= 200;
   };
 
+  // Función para validar URL de TikTok
+  const validateTikTokUrl = (url) => {
+    if (!url) return true; // URL vacía es válida (opcional)
+    return url.startsWith('https://www.tiktok.com/') || url.startsWith('https://tiktok.com/');
+  };
+
+  // Función para validar URL de Facebook
+  const validateFacebookUrl = (url) => {
+    if (!url) return true; // URL vacía es válida (opcional)
+    return url.startsWith('https://www.facebook.com/') || url.startsWith('https://facebook.com/');
+  };
+
+  // Función para validar URL de Instagram
+  const validateInstagramUrl = (url) => {
+    if (!url) return true; // URL vacía es válida (opcional)
+    return url.startsWith('https://www.instagram.com/') || url.startsWith('https://instagram.com/');
+  };
+
   // Función para limpiar errores
   const clearErrors = () => {
     setErrors({});
@@ -128,7 +151,7 @@ const LoginForm = memo(({ onBack }) => {
       if (result.error === 'Credenciales inválidas') {
         setGeneralError('Credenciales inválidas');
       } else {
-        setGeneralError(result.error || 'Error al iniciar sesión');
+        setGeneralError(result.error || 'Error al iniciar sesión, verifique sus credenciales o conexión a internet');
       }
     }
   };
@@ -283,6 +306,22 @@ const LoginForm = memo(({ onBack }) => {
       return;
     }
 
+    // Validar URLs de redes sociales si están proporcionadas
+    if (storeData.store.socialMedia?.tiktok && !validateTikTokUrl(storeData.store.socialMedia.tiktok)) {
+      setErrors(prev => ({ ...prev, tiktokUrl: 'El enlace de TikTok debe ser una URL válida de TikTok' }));
+      return;
+    }
+
+    if (storeData.store.socialMedia?.facebook && !validateFacebookUrl(storeData.store.socialMedia.facebook)) {
+      setErrors(prev => ({ ...prev, facebookUrl: 'El enlace de Facebook debe ser una URL válida de Facebook' }));
+      return;
+    }
+
+    if (storeData.store.socialMedia?.instagram && !validateInstagramUrl(storeData.store.socialMedia.instagram)) {
+      setErrors(prev => ({ ...prev, instagramUrl: 'El enlace de Instagram debe ser una URL válida de Instagram' }));
+      return;
+    }
+
     // Validar horario completo
     if (storeData.store.schedule.length !== 7) {
       setGeneralError('Debe proporcionar el horario para todos los días de la semana');
@@ -304,7 +343,12 @@ const LoginForm = memo(({ onBack }) => {
         description: storeData.store.description,
         images: storeData.store.images,
         location: storeData.store.location,
-        schedule: storeData.store.schedule
+        schedule: storeData.store.schedule,
+        socialMedia: storeData.store.socialMedia || {
+          tiktok: '',
+          facebook: '',
+          instagram: ''
+        }
       }
     };
 
@@ -334,7 +378,12 @@ const LoginForm = memo(({ onBack }) => {
             { day: 'Viernes', openTime: '09:00', closeTime: '18:00', isOpen: true },
             { day: 'Sábado', openTime: '09:00', closeTime: '14:00', isOpen: true },
             { day: 'Domingo', openTime: '00:00', closeTime: '00:00', isOpen: false }
-          ]
+          ],
+          socialMedia: {
+            tiktok: '',
+            facebook: '',
+            instagram: ''
+          }
         }
       });
       setIsLogin(true);
@@ -619,7 +668,7 @@ const LoginForm = memo(({ onBack }) => {
                   
                   <div>
                     <label className='block mb-2 text-gray-50 text-sm font-medium'>
-                      9. Imágenes de la tienda
+                      9. Imágen de la tienda
                     </label>
                     <textarea
                       placeholder='https://i.ibb.co/abc123/imagen-tienda.jpg'
@@ -715,20 +764,20 @@ const LoginForm = memo(({ onBack }) => {
                     </label>
                     <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3'>
                       {[
-                        { id: 'tecnologia', label: 'tecnologia', icon: '💻' },
-                        { id: 'moda', label: 'moda', icon: '👕' },
-                        { id: 'juguetes', label: 'juguetes', icon: '🧸' },
-                        { id: 'comida', label: 'comida', icon: '🍔' },
-                        { id: 'hogar', label: 'hogar', icon: '🏠' },
-                        { id: 'jardin', label: 'jardin', icon: '🌱' },
-                        { id: 'mascotas', label: 'mascotas', icon: '🐕' },
-                        { id: 'deportes', label: 'deportes', icon: '⚽' },
-                        { id: 'belleza', label: 'belleza', icon: '💄' },
-                        { id: 'libros', label: 'libros', icon: '📚' },
-                        { id: 'musica', label: 'musica', icon: '🎵' },
-                        { id: 'arte', label: 'arte', icon: '🎨' },
-                        { id: 'automotriz', label: 'automotriz', icon: '🚗' },
-                        { id: 'ferreteria', label: 'ferreteria', icon: '🔧' },
+                        { id: 'tecnologia', label: 'tecnologia', icon: Monitor, color: 'text-blue-400' },
+                        { id: 'moda', label: 'moda', icon: Shirt, color: 'text-pink-400' },
+                        { id: 'juguetes', label: 'juguetes', icon: Baby, color: 'text-yellow-400' },
+                        { id: 'comida', label: 'comida', icon: Utensils, color: 'text-orange-400' },
+                        { id: 'hogar', label: 'hogar', icon: Home, color: 'text-green-400' },
+                        { id: 'jardin', label: 'jardin', icon: Sprout, color: 'text-emerald-400' },
+                        { id: 'mascotas', label: 'mascotas', icon: Dog, color: 'text-amber-400' },
+                        { id: 'deportes', label: 'deportes', icon: Trophy, color: 'text-purple-400' },
+                        { id: 'belleza', label: 'belleza', icon: Palette, color: 'text-rose-400' },
+                        { id: 'libros', label: 'libros', icon: BookOpen, color: 'text-indigo-400' },
+                        { id: 'musica', label: 'musica', icon: Music, color: 'text-violet-400' },
+                        { id: 'arte', label: 'arte', icon: Art, color: 'text-cyan-400' },
+                        { id: 'automotriz', label: 'automotriz', icon: Car, color: 'text-red-400' },
+                        { id: 'ferreteria', label: 'ferreteria', icon: Wrench, color: 'text-gray-400' },
                       ].map(category => (
                         <label
                           key={category.id}
@@ -773,7 +822,12 @@ const LoginForm = memo(({ onBack }) => {
                               hover:shadow-[0_0_15px_rgba(251,146,60,0.5)]'
                           ></div>
                           <div className='flex items-center gap-2 ml-3'>
-                            <span className='text-xl'>{category.icon}</span>
+                            {category.icon && (
+                              <category.icon 
+                                size={20} 
+                                className={`${category.color} flex-shrink-0`} 
+                              />
+                            )}
                             <span className='text-sm text-white/90 group-hover:text-white transition-colors'>
                               {category.label}
                             </span>
@@ -791,7 +845,10 @@ const LoginForm = memo(({ onBack }) => {
                     
                     {/* Botones de configuración rápida */}
                     <div className='mb-4 p-3 bg-orange-500/10 border border-orange-500/20 rounded-lg'>
-                      <p className='text-xs text-orange-300/90 mb-2 font-medium'>⚡ Configuración rápida:</p>
+                      <p className='text-xs text-orange-300/90 mb-2 font-medium flex items-center gap-1'>
+                        <Zap size={12} className='text-orange-300' />
+                        Configuración rápida:
+                      </p>
                       <div className='flex flex-wrap gap-2'>
                         <button
                           type='button'
@@ -953,12 +1010,116 @@ const LoginForm = memo(({ onBack }) => {
                     
                     {/* Información adicional */}
                     <div className='mt-3 p-2 bg-blue-500/10 border border-blue-500/20 rounded text-xs text-blue-300/90'>
-                      <p className='font-medium text-blue-300'>💡 Consejos:</p>
+                      <p className='font-medium text-blue-300 flex items-center gap-1'>
+                        <Lightbulb size={14} className='text-blue-300' />
+                        Consejos:
+                      </p>
                       <ul className='mt-1 space-y-1 text-blue-300/80'>
                         <li>• Usa formato 24 horas (ej: 14:30 para 2:30 PM)</li>
                         <li>• Los horarios se guardan automáticamente</li>
                         <li>• Puedes usar los botones de configuración rápida</li>
                       </ul>
+                    </div>
+                  </div>
+
+                  {/* Redes Sociales */}
+                  <div>
+                    <label className='block mb-3 text-gray-50 text-sm font-medium'>
+                      13. Redes Sociales
+                      <span className='text-gray-400 text-xs ml-2'>(Opcional)</span>
+                    </label>
+                    
+                    <div className='space-y-4'>
+                      {/* TikTok */}
+                      <div>
+                        <label className='block mb-2 text-gray-50 text-sm font-medium'>
+                          TikTok
+                        </label>
+                        <input
+                          type='url'
+                          placeholder='https://www.tiktok.com/@tu_tienda'
+                          value={storeData.store.socialMedia.tiktok}
+                          onChange={(e) => setStoreData(prev => ({ 
+                            ...prev, 
+                            store: { 
+                              ...prev.store, 
+                              socialMedia: { ...prev.store.socialMedia, tiktok: e.target.value }
+                            }
+                          }))}
+                          className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                          disabled={isLoading}
+                        />
+                        {errors.tiktokUrl && (
+                          <Text variant='body' size='xs' className='text-red-400 mt-1'>
+                            {errors.tiktokUrl}
+                          </Text>
+                        )}
+                      </div>
+
+                      {/* Facebook */}
+                      <div>
+                        <label className='block mb-2 text-gray-50 text-sm font-medium'>
+                          Facebook
+                        </label>
+                        <input
+                          type='url'
+                          placeholder='https://www.facebook.com/tu_tienda'
+                          value={storeData.store.socialMedia.facebook}
+                          onChange={(e) => setStoreData(prev => ({ 
+                            ...prev, 
+                            store: { 
+                              ...prev.store, 
+                              socialMedia: { ...prev.store.socialMedia, facebook: e.target.value }
+                            }
+                          }))}
+                          className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                          disabled={isLoading}
+                        />
+                        {errors.facebookUrl && (
+                          <Text variant='body' size='xs' className='text-red-400 mt-1'>
+                            {errors.facebookUrl}
+                          </Text>
+                        )}
+                      </div>
+
+                      {/* Instagram */}
+                      <div>
+                        <label className='block mb-2 text-gray-50 text-sm font-medium'>
+                          Instagram
+                        </label>
+                        <input
+                          type='url'
+                          placeholder='https://www.instagram.com/tu_tienda'
+                          value={storeData.store.socialMedia.instagram}
+                          onChange={(e) => setStoreData(prev => ({ 
+                            ...prev, 
+                            store: { 
+                              ...prev.store, 
+                              socialMedia: { ...prev.store.socialMedia, instagram: e.target.value }
+                            }
+                          }))}
+                          className='w-full p-3 border-b-2 border-white/50 bg-transparent outline-none focus:border-b-2 focus:border-white text-gray-50 placeholder-gray-500 transition-colors text-sm sm:text-base'
+                          disabled={isLoading}
+                        />
+                        {errors.instagramUrl && (
+                          <Text variant='body' size='xs' className='text-red-400 mt-1'>
+                            {errors.instagramUrl}
+                          </Text>
+                        )}
+                      </div>
+
+                      {/* Información sobre redes sociales */}
+                      <div className='mt-3 p-2 bg-purple-500/10 border border-purple-500/20 rounded text-xs text-purple-300/90'>
+                        <p className='font-medium text-purple-300 flex items-center gap-1'>
+                          <Smartphone size={14} className='text-purple-300' />
+                          Redes Sociales:
+                        </p>
+                        <ul className='mt-1 space-y-1 text-purple-300/80'>
+                          <li>• Agrega los enlaces de tus redes sociales</li>
+                          <li>• Los clientes podrán seguirte directamente</li>
+                          <li>• Puedes dejarlos vacíos si no tienes redes sociales</li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>

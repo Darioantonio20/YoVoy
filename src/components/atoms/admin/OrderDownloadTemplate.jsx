@@ -37,7 +37,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
       <div style="text-align: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 2px solid #f97316;">
         <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px;">
           <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f97316 0%, #eab308 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-            <span style="color: white; font-size: 20px;">🛒</span>
+                            <span style="color: white; font-size: 20px;">📋</span>
           </div>
           <div>
             <h1 style="font-size: 24px; font-weight: bold; color: #f97316; margin: 0;">Jasai</h1>
@@ -46,7 +46,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
         </div>
         <div style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; border-radius: 8px; padding: 12px; display: inline-block;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: #22c55e; font-size: 20px;">✅</span>
+                            <span style="color: #22c55e; font-size: 20px;">✓</span>
             <span style="color: #22c55e; font-weight: 600;">Orden Completada</span>
           </div>
         </div>
@@ -113,7 +113,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
             <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
               <div style="display: flex; align-items: center; gap: 12px;">
                 <div style="width: 32px; height: 32px; background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(234, 179, 8, 0.2) 100%); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 12px;">📦</span>
+                  <span style="font-size: 12px;">📋</span>
                 </div>
                 <div>
                   <p style="font-weight: 600; color: white; margin: 0;">${product.name}</p>

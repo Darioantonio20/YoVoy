@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Lightbulb } from 'lucide-react';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
 
@@ -250,9 +251,10 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
             className='w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50 resize-none'
             placeholder='URLs de imágenes separadas por comas (ej: https://i.ibb.co/xxx/producto1.jpg, https://i.ibb.co/yyy/producto2.jpg)'
           />
-          <p className='text-xs text-white/50 mt-1'>
-            💡 Sube tus imágenes en <a href='https://es.imgbb.com/' target='_blank' rel='noopener noreferrer' className='text-orange-400 hover:text-orange-300 underline'>ImgBB.com</a> y pega las URLs aquí
-          </p>
+                      <p className='text-xs text-white/50 mt-1 flex items-center gap-1'>
+              <Lightbulb size={12} className='text-orange-400' />
+              Sube tus imágenes en <a href='https://es.imgbb.com/' target='_blank' rel='noopener noreferrer' className='text-orange-400 hover:text-orange-300 underline'>ImgBB.com</a> y pega las URLs aquí
+            </p>
         </div>
 
         {/* Nota del Admin */}
@@ -270,8 +272,9 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
             placeholder='Agrega una nota interna sobre el producto (ej: stock bajo, descuentos, etc.)'
           />
           <div className='flex justify-between items-center mt-1'>
-            <Text variant='bodyLight' size='xs' className='text-white/50'>
-              💡 Esta nota será visible para los clientes
+            <Text variant='bodyLight' size='xs' className='text-white/50 flex items-center gap-1'>
+              <Lightbulb size={12} className='text-orange-400' />
+              Esta nota será visible para los clientes
             </Text>
             <Text variant='bodyLight' size='xs' className='text-white/50'>
               {formData.adminNote.length}/200

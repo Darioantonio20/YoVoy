@@ -23,8 +23,8 @@ export const useAdmin = () => {
       if (response.success) {
         return response.data.data;
       } else {
-        setError(response.data?.message || 'Error al cargar la tienda');
-        Alert.error('Error', response.data?.message || 'No se pudo cargar la tienda');
+        setError(response.data?.error || response.data?.message || 'Error al cargar la tienda');
+        Alert.error('Error', response.data?.error || response.data?.message || 'No se pudo cargar la tienda');
         return null;
       }
     } catch (error) {
@@ -54,8 +54,8 @@ export const useAdmin = () => {
         Alert.success('Tienda Actualizada', 'La información de la tienda se ha actualizado correctamente');
         return response.data.data;
       } else {
-        setError(response.data?.message || 'Error al actualizar la tienda');
-        Alert.error('Error', response.data?.message || 'No se pudo actualizar la tienda');
+        setError(response.data?.error || response.data?.message || 'Error al actualizar la tienda');
+        Alert.error('Error', response.data?.error || response.data?.message || 'No se pudo actualizar la tienda');
         return null;
       }
     } catch (error) {
@@ -93,8 +93,8 @@ export const useAdmin = () => {
       if (response.success) {
         return response.data;
       } else {
-        setError(response.data?.message || 'Error al cargar los productos');
-        Alert.error('Error', response.data?.message || 'No se pudieron cargar los productos');
+        setError(response.data?.error || response.data?.message || 'Error al cargar los productos');
+        Alert.error('Error', response.data?.error || response.data?.message || 'No se pudieron cargar los productos');
         return null;
       }
     } catch (error) {
@@ -124,8 +124,8 @@ export const useAdmin = () => {
         Alert.success('Producto Creado', 'El producto se ha creado correctamente');
         return response.data.data;
       } else {
-        setError(response.data?.message || 'Error al crear el producto');
-        Alert.error('Error', response.data?.message || 'No se pudo crear el producto');
+        setError(response.data?.error || response.data?.message || 'Error al crear el producto');
+        Alert.error('Error', response.data?.error || response.data?.message || 'No se pudo crear el producto');
         return null;
       }
     } catch (error) {
@@ -155,8 +155,8 @@ export const useAdmin = () => {
         Alert.success('Producto Actualizado', 'El producto se ha actualizado correctamente');
         return response.data.data;
       } else {
-        setError(response.data?.message || 'Error al actualizar el producto');
-        Alert.error('Error', response.data?.message || 'No se pudo actualizar el producto');
+        setError(response.data?.error || response.data?.message || 'Error al actualizar el producto');
+        Alert.error('Error', response.data?.error || response.data?.message || 'No se pudo actualizar el producto');
         return null;
       }
     } catch (error) {
@@ -185,8 +185,8 @@ export const useAdmin = () => {
         Alert.success('Producto Eliminado', 'El producto se ha eliminado correctamente');
         return true;
       } else {
-        setError(response.data?.message || 'Error al eliminar el producto');
-        Alert.error('Error', response.data?.message || 'No se pudo eliminar el producto');
+        setError(response.data?.error || response.data?.message || 'Error al eliminar el producto');
+        Alert.error('Error', response.data?.error || response.data?.message || 'No se pudo eliminar el producto');
         return false;
       }
     } catch (error) {
@@ -222,8 +222,8 @@ export const useAdmin = () => {
       if (response.success) {
         return response.data.data;
       } else {
-        setError(response.data?.message || 'Error al cargar los pedidos');
-        Alert.error('Error', response.data?.message || 'No se pudieron cargar los pedidos');
+        setError(response.data?.error || response.data?.message || 'Error al cargar los pedidos');
+        Alert.error('Error', response.data?.error || response.data?.message || 'No se pudieron cargar los pedidos');
         return null;
       }
     } catch (error) {
@@ -251,8 +251,8 @@ export const useAdmin = () => {
       if (response.success) {
         return response.data.data.order;
       } else {
-        setError(response.data?.message || 'Error al cargar el pedido');
-        Alert.error('Error', response.data?.message || 'No se pudo cargar el pedido');
+        setError(response.data?.error || response.data?.message || 'Error al cargar el pedido');
+        Alert.error('Error', response.data?.error || response.data?.message || 'No se pudo cargar el pedido');
         return null;
       }
     } catch (error) {
@@ -286,8 +286,8 @@ export const useAdmin = () => {
         Alert.success('Estado Actualizado', 'El estado del pedido se ha actualizado correctamente');
         return response.data.data.order;
       } else {
-        setError(response.data?.message || 'Error al actualizar el estado');
-        Alert.error('Error', response.data?.message || 'No se pudo actualizar el estado del pedido');
+        setError(response.data?.error || response.data?.message || 'Error al actualizar el estado');
+        Alert.error('Error', response.data?.error || response.data?.message || 'No se pudo actualizar el estado del pedido');
         return null;
       }
     } catch (error) {
@@ -315,8 +315,8 @@ export const useAdmin = () => {
       if (response.success) {
         return response.data.data;
       } else {
-        setError(response.data?.message || 'Error al cargar las estadísticas');
-        Alert.error('Error', response.data?.message || 'No se pudieron cargar las estadísticas');
+        setError(response.data?.error || response.data?.message || 'Error al cargar las estadísticas');
+        Alert.error('Error', response.data?.error || response.data?.message || 'No se pudieron cargar las estadísticas');
         return null;
       }
     } catch (error) {
