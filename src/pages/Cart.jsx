@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock } from 'lucide-react';
+import { Lock, MapPin, Star, ChevronDown, X } from 'lucide-react';
 import PageHeader from '../components/molecules/PageHeader';
 import CartList from '../components/organisms/CartList';
 import OrderSummary from '../components/molecules/OrderSummary';
@@ -8,10 +8,13 @@ import PaymentMethodModal from '../components/molecules/PaymentMethodModal';
 import OrderConfirmationModal from '../components/molecules/OrderConfirmationModal';
 import BackgroundDecorator from '../components/atoms/BackgroundDecorator';
 import Alert from '../components/atoms/Alert';
+import Text from '../components/atoms/Text';
+import Button from '../components/atoms/Button';
 import { useCartContext } from '../context/CartContext';
 import { useOrders } from '../hooks/useOrders';
 import { useAuth } from '../hooks/useAuth';
 import { calculateDeliveryFee } from '../utils/deliveryPricing';
+import { apiRequest, API_CONFIG } from '../config/api';
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -23,6 +26,17 @@ export default function Cart() {
   const [showPaymentMethod, setShowPaymentMethod] = useState(false);
   const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
   const [orderDetails, setOrderDetails] = useState(null);
+  const [showLocationSelector, setShowLocationSelector] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [userLocations, setUserLocations] = useState([]);
+  const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
+
+  // Cargar ubicaciones del usuario cuando el componente se monta
+  useEffect(() => {
+    if (user) {
+      loadUserLocations();
+    }
+  }, [user]);
 
   // Manejar redirección cuando el carrito está vacío
   useEffect(() => {
@@ -30,6 +44,53 @@ export default function Cart() {
       navigate('/store');
     }
   }, [cartItems.length, showOrderConfirmation, navigate]);
+
+  // Función para cargar ubicaciones del usuario
+  const loadUserLocations = async () => {
+    try {
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.AUTH.GET_PROFILE, {
+        method: 'GET',
+      });
+
+      if (response.success) {
+        const userData = response.data.data;
+        const locations = userData.locations || [];
+        const currentIndex = userData.currentLocationIndex || 0;
+        
+        setUserLocations(locations);
+        setCurrentLocationIndex(currentIndex);
+        
+        // Establecer la ubicación actual como seleccionada por defecto
+        if (locations.length > 0) {
+          setSelectedLocation(locations[currentIndex]);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading user locations:', error);
+    }
+  };
+
+  // Función para cambiar ubicación actual
+  const handleSetCurrentLocation = async (locationId) => {
+    try {
+      const endpoint = API_CONFIG.ENDPOINTS.AUTH.LOCATIONS.SET_CURRENT.replace(':id', locationId);
+      const response = await apiRequest(endpoint, {
+        method: 'PUT',
+      });
+
+      if (response.success) {
+        const newIndex = response.data.data.currentLocationIndex;
+        setCurrentLocationIndex(newIndex);
+        setSelectedLocation(userLocations[newIndex]);
+        await Alert.success('Ubicación Actual', 'La ubicación de entrega ha sido actualizada.');
+      } else {
+        await Alert.error('Error al Cambiar', response.data.message || 'No se pudo cambiar la ubicación actual.');
+      }
+    } catch (error) {
+      console.error('Error setting current location:', error);
+      await Alert.error('Error de Conexión', 'No se pudo conectar con el servidor.');
+    }
+  };
 
   const handleContinueShopping = () => {
     navigate('/store');
@@ -211,7 +272,53 @@ export default function Cart() {
 
             {/* OrderSummary - sidebar en desktop */}
             <div className='xl:col-span-4'>
-              <div className='sticky top-4'>
+              <div className='sticky top-4 space-y-6'>
+                {/* Selector de ubicación */}
+                {user && userLocations.length > 0 && (
+                  <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-4 sm:p-6'>
+                    <div className='mb-4'>
+                      <h3 className='text-lg font-bold text-white mb-2 flex items-center'>
+                        <MapPin className='w-5 h-5 text-orange-400 mr-2' />
+                        <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                          Ubicación de entrega
+                        </span>
+                      </h3>
+                      <div className='w-16 h-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full'></div>
+                    </div>
+
+                    {/* Ubicación actual */}
+                    <div className='mb-4'>
+                      <div className='flex items-center justify-between p-3 bg-orange-500/20 border border-orange-500/30 rounded-lg'>
+                        <div className='flex items-center gap-2'>
+                          <MapPin className='w-4 h-4 text-orange-400' />
+                          <div>
+                            <Text variant='bodyBold' size='sm' className='text-orange-300'>
+                              {selectedLocation?.alias || 'Sin ubicación'}
+                            </Text>
+                            <Text variant='caption' size='xs' className='text-orange-200/70 truncate'>
+                              {selectedLocation?.googleMapsUrl || ''}
+                            </Text>
+                          </div>
+                        </div>
+                        <Star className='w-4 h-4 text-orange-300' fill='currentColor' />
+                      </div>
+                    </div>
+
+                    {/* Botón para cambiar ubicación */}
+                    {userLocations.length > 1 && (
+                      <Button
+                        onClick={() => setShowLocationSelector(true)}
+                        variant='secondary'
+                        className='w-full flex items-center justify-center gap-2'
+                      >
+                        <ChevronDown className='w-4 h-4' />
+                        Cambiar ubicación
+                      </Button>
+                    )}
+                  </div>
+                )}
+
+                {/* Resumen de compra */}
                 <div className='bg-white/10 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8'>
                   <div className='mb-6'>
                     <h3 className='text-xl font-bold text-white mb-2 flex items-center'>
@@ -244,6 +351,78 @@ export default function Cart() {
         onConfirm={handlePaymentConfirm}
         orderDetails={orderDetails}
       />
+
+      {/* Modal de selección de ubicación */}
+      {showLocationSelector && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-700 p-4 sm:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            {/* Header del modal */}
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-700">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-white" />
+                </div>
+                <Text variant="h3" size="base" className="text-white">Seleccionar Ubicación</Text>
+              </div>
+              <Button onClick={() => setShowLocationSelector(false)} variant="minimal" className="p-2 text-red-400 hover:bg-gray-700 border-none bg-transparent">
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+
+            {/* Lista de ubicaciones */}
+            <div className="space-y-3">
+              {userLocations.map((location, index) => (
+                <div
+                  key={location._id}
+                  className={`flex items-center justify-between p-3 rounded-lg border transition-colors cursor-pointer ${
+                    index === currentLocationIndex
+                      ? 'bg-orange-500/20 border-orange-500/30' 
+                      : 'bg-gray-800 border-gray-600 hover:bg-gray-700'
+                  }`}
+                  onClick={() => handleSetCurrentLocation(location._id)}
+                >
+                  <div className="flex items-center gap-3">
+                    <MapPin className={`w-4 h-4 flex-shrink-0 self-center ${index === currentLocationIndex ? 'text-orange-300' : 'text-orange-400'}`} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                        <div className="flex items-center gap-2">
+                          <Text variant="body" size="sm" className={`font-medium ${index === currentLocationIndex ? 'text-orange-300' : 'text-white'}`}>
+                            {location.alias}
+                          </Text>
+                          {index === currentLocationIndex && (
+                            <Star className="w-3 h-3 text-orange-300" fill="currentColor" />
+                          )}
+                        </div>
+                        <Text variant="body" size="xs" className="text-white/70 truncate">
+                          {location.googleMapsUrl}
+                        </Text>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Indicador de selección */}
+                  <div className="flex items-center gap-1 self-center">
+                    {index === currentLocationIndex && (
+                      <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Botón de cerrar */}
+            <div className="mt-6 pt-4 border-t border-gray-700">
+              <Button
+                onClick={() => setShowLocationSelector(false)}
+                variant="secondary"
+                className="w-full"
+              >
+                Cerrar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal de confirmación de orden */}
       <OrderConfirmationModal

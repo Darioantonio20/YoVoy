@@ -156,42 +156,7 @@ const ProductCard = memo(({ product, onAddToCart }) => {
             </Button>
           </div>
 
-          {/* Descripción elegante */}
-          {showDesc && (product.description || product.adminNote) && (
-            <div className='absolute left-1/2 -translate-x-1/2 top-full mt-2 sm:mt-3 w-64 sm:w-72 bg-gradient-to-br from-black/90 to-gray-900/90 backdrop-blur-md text-white text-xs sm:text-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 z-30 border border-white/20 shadow-2xl'>
-              <div className='flex items-start gap-2 sm:gap-3'>
-                <div className='w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center flex-shrink-0'>
-                  <span className='text-xs sm:text-sm'>🍕</span>
-                </div>
-                <div className='flex-1'>
-                  <h4 className='font-semibold text-orange-300 mb-1 text-xs sm:text-sm'>
-                    {product.name}
-                  </h4>
-                  {product.description && (
-                    <p className='text-gray-300 leading-relaxed text-xs sm:text-sm mb-2'>
-                      {product.description}
-                    </p>
-                  )}
-                  {product.adminNote && (
-                    <div className='mb-2 p-2 bg-orange-500/20 border border-orange-500/30 rounded-lg'>
-                      <div className='flex items-center gap-1 mb-1'>
-                        <FileText size={12} className='text-orange-400' />
-                        <span className='text-orange-300 text-xs font-medium'>Nota del vendedor:</span>
-                      </div>
-                      <p className='text-orange-200 text-xs leading-relaxed'>
-                        {product.adminNote}
-                      </p>
-                    </div>
-                  )}
-                  <div className='mt-2 pt-2 border-t border-white/20'>
-                    <span className='text-[10px] sm:text-xs text-gray-400'>
-                      Categoría: {product.category || 'Sin categoría'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+         
         </div>
       </div>
 
