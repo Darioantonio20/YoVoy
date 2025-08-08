@@ -122,18 +122,22 @@ const ProductCard = memo(({ product, onAddToCart }) => {
               </span>
             </div>
 
-            {/* Nota del admin - Mini sección */}
-            {product.adminNote && (
-              <div className='mb-2 p-1.5 sm:p-2 bg-orange-500/20 border border-orange-500/30 rounded-lg'>
-                <div className='flex items-center gap-1 mb-1'>
-                  <FileText size={10} className='text-orange-400 flex-shrink-0' />
-                  <span className='text-orange-300 text-[10px] sm:text-xs font-medium'>Nota del vendedor:</span>
+            {/* Nota del admin - Mini sección (siempre reserva espacio) */}
+            <div className='mb-2 h-[52px] sm:h-[56px]'>
+              {product.adminNote ? (
+                <div className='h-full p-1.5 sm:p-2 bg-orange-500/20 border border-orange-500/30 rounded-lg'>
+                  <div className='flex items-center gap-1 mb-1'>
+                    <FileText size={10} className='text-orange-400 flex-shrink-0' />
+                    <span className='text-orange-300 text-[10px] sm:text-xs font-medium'>Nota del vendedor:</span>
+                  </div>
+                  <p className='text-orange-200 text-[10px] sm:text-xs leading-relaxed line-clamp-2'>
+                    {product.adminNote}
+                  </p>
                 </div>
-                <p className='text-orange-200 text-[10px] sm:text-xs leading-relaxed line-clamp-2'>
-                  {product.adminNote}
-                </p>
-              </div>
-            )}
+              ) : (
+                <div className='h-full'></div>
+              )}
+            </div>
           </div>
 
           {/* Botones de acción */}

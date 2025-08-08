@@ -678,7 +678,7 @@ const UserProfileButton = ({ className = '' }) => {
                         <Button
                           onClick={() => handleEditLocation(location)}
                           variant="minimal"
-                          className="p-1 text-blue-500 hover:text-blue-500 bg-blue-500/20 hover:bg-blue-400/30 border-none"
+                          className="p-1 text-blue-200/70 hover:text-blue-500 bg-blue-500/20 hover:bg-blue-300/30 border-none"
                           disabled={isLoadingLocations}
                         >
                           <Edit3 size={14} />
