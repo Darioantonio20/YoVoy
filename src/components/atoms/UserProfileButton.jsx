@@ -678,7 +678,7 @@ const UserProfileButton = ({ className = '' }) => {
                         <Button
                           onClick={() => handleEditLocation(location)}
                           variant="minimal"
-                          className="p-1 text-blue-200 hover:text-blue-300 bg-blue-500/20 hover:bg-blue-500/30 border-none"
+                          className="p-1 text-blue-500 hover:text-blue-500 bg-blue-500/20 hover:bg-blue-400/30 border-none"
                           disabled={isLoadingLocations}
                         >
                           <Edit3 size={14} />
@@ -687,7 +687,7 @@ const UserProfileButton = ({ className = '' }) => {
                           <Button
                             onClick={() => handleDeleteLocation(location._id)}
                             variant="minimal"
-                            className="p-1 text-red-200 hover:text-red-300 bg-red-500/20 hover:bg-red-500/30 border-none"
+                            className="p-1 text-red-400 hover:text-red-500 bg-red-500/20 hover:bg-red-500/30 border-none"
                             disabled={isLoadingLocations}
                           >
                             <Trash2 size={14} />
