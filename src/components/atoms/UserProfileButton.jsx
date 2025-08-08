@@ -597,18 +597,18 @@ const UserProfileButton = ({ className = '' }) => {
                   {userData.locations.map((location, index) => (
                     <div 
                       key={location._id} 
-                      className={`flex items-center gap-2 p-2 sm:p-3 rounded-lg border transition-colors ${
+                      className={`flex flex-col sm:flex-row items-start sm:items-center gap-2 p-2 sm:p-3 rounded-lg border transition-colors ${
                         index === userData.currentLocationIndex
                           ? 'bg-orange-500/20 border-orange-500/30' 
                           : 'bg-gray-800 border-gray-600'
                       }`}
                     >
-                      <MapPin className={`w-4 h-4 flex-shrink-0 ${index === userData.currentLocationIndex ? 'text-orange-300' : 'text-orange-400'}`} />
+                      <MapPin className={`w-4 h-4 flex-shrink-0 self-center ${index === userData.currentLocationIndex ? 'text-orange-300' : 'text-orange-400'}`} />
                       
                       {/* Contenido de la ubicación */}
                       {editingLocation === location._id ? (
                         // Modo edición
-                        <div className="flex-1">
+                        <div className="flex-1 w-full">
                           <div className="space-y-2">
                             <input
                               type="text"
@@ -625,11 +625,11 @@ const UserProfileButton = ({ className = '' }) => {
                               className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
                               placeholder="Pega el vínculo de Google Maps"
                             />
-                            <div className="flex gap-2">
+                            <div className="flex flex-col sm:flex-row gap-2">
                               <Button
                                 onClick={() => handleUpdateLocation(location._id)}
                                 variant="minimal"
-                                className="flex-1 p-1 text-green-400 hover:text-green-300 bg-green-400/20 hover:bg-green-400/30 border-none"
+                                className="flex-1 p-2 sm:p-1 text-green-400 hover:text-green-300 bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 hover:border-green-400/50"
                                 disabled={isLoadingLocations}
                               >
                                 <Text variant="caption" size="sm">✓ Guardar</Text>
@@ -637,7 +637,7 @@ const UserProfileButton = ({ className = '' }) => {
                               <Button
                                 onClick={handleCancelEditLocation}
                                 variant="minimal"
-                                className="flex-1 p-1 text-gray-400 hover:text-gray-300 bg-gray-400/20 hover:bg-gray-400/30 border-none"
+                                className="flex-1 p-2 sm:p-1 text-red-400 hover:text-red-300 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 hover:border-red-400/50"
                               >
                                 <Text variant="caption" size="sm">✗ Cancelar</Text>
                               </Button>
@@ -647,51 +647,53 @@ const UserProfileButton = ({ className = '' }) => {
                       ) : (
                         // Modo visualización
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <Text variant="body" size="sm" className={`font-medium ${index === userData.currentLocationIndex ? 'text-orange-300' : 'text-white'}`}>
-                              {location.alias}
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                            <div className="flex items-center gap-2">
+                              <Text variant="body" size="sm" className={`font-medium ${index === userData.currentLocationIndex ? 'text-orange-300' : 'text-white'}`}>
+                                {location.alias}
+                              </Text>
+                              {index === userData.currentLocationIndex && (
+                                <Star className="w-3 h-3 text-orange-300" fill="currentColor" />
+                              )}
+                            </div>
+                            <Text variant="body" size="xs" className="text-white/70 truncate">
+                              {location.googleMapsUrl}
                             </Text>
-                            {index === userData.currentLocationIndex && (
-                              <Star className="w-3 h-3 text-orange-300" fill="currentColor" />
-                            )}
                           </div>
-                          <Text variant="body" size="xs" className="text-white/70 truncate">
-                            {location.googleMapsUrl}
-                          </Text>
                         </div>
                       )}
                       
-                                               {/* Botones de acción */}
-                         <div className="flex items-center gap-1">
-                           {index !== userData.currentLocationIndex && (
-                             <Button
-                               onClick={() => handleSetCurrentLocation(location._id)}
-                               variant="minimal"
-                               className="p-1 text-orange-400 hover:text-orange-300 border-none bg-transparent"
-                               disabled={isLoadingLocations}
-                             >
-                               <Star size={14} />
-                             </Button>
-                           )}
-                           <Button
-                             onClick={() => handleEditLocation(location)}
-                             variant="minimal"
-                             className="p-1 text-white hover:text-white/80 border-none bg-transparent"
-                             disabled={isLoadingLocations}
-                           >
-                             <Edit3 size={14} />
-                           </Button>
-                           {userData.locations.length > 1 && (
-                             <Button
-                               onClick={() => handleDeleteLocation(location._id)}
-                               variant="minimal"
-                               className="p-1 text-red-400 hover:text-red-300 border-none bg-transparent"
-                               disabled={isLoadingLocations}
-                             >
-                               <Trash2 size={14} />
-                             </Button>
-                           )}
-                         </div>
+                                                                     {/* Botones de acción */}
+                      <div className="flex items-center gap-1 self-center">
+                        {index !== userData.currentLocationIndex && (
+                          <Button
+                            onClick={() => handleSetCurrentLocation(location._id)}
+                            variant="minimal"
+                            className="p-1 text-orange-400 hover:text-orange-300 bg-orange-500/20 hover:bg-orange-500/30 border-none"
+                            disabled={isLoadingLocations}
+                          >
+                            <Star size={14} />
+                          </Button>
+                        )}
+                        <Button
+                          onClick={() => handleEditLocation(location)}
+                          variant="minimal"
+                          className="p-1 text-blue-200 hover:text-blue-300 bg-blue-500/20 hover:bg-blue-500/30 border-none"
+                          disabled={isLoadingLocations}
+                        >
+                          <Edit3 size={14} />
+                        </Button>
+                        {userData.locations.length > 1 && (
+                          <Button
+                            onClick={() => handleDeleteLocation(location._id)}
+                            variant="minimal"
+                            className="p-1 text-red-200 hover:text-red-300 bg-red-500/20 hover:bg-red-500/30 border-none"
+                            disabled={isLoadingLocations}
+                          >
+                            <Trash2 size={14} />
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
