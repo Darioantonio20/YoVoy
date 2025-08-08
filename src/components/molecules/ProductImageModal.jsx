@@ -1,5 +1,5 @@
 import React from 'react';
-import { ZoomIn, ZoomOut, RotateCw } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCw, FileText } from 'lucide-react';
 import Button from '../atoms/Button';
 
 const ProductImageModal = ({ isOpen, onClose, product, productImageUrl }) => {
@@ -50,6 +50,17 @@ const ProductImageModal = ({ isOpen, onClose, product, productImageUrl }) => {
               <p className='text-xs sm:text-sm text-white/70 truncate'>
                 {product.category}
               </p>
+              {product.adminNote && (
+                <div className='mt-1 p-2 bg-orange-500/20 border border-orange-500/30 rounded-lg'>
+                  <div className='flex items-center gap-1 mb-1'>
+                    <FileText size={12} className='text-orange-400' />
+                    <span className='text-orange-300 text-xs font-medium'>Nota del vendedor:</span>
+                  </div>
+                  <p className='text-orange-200 text-xs leading-relaxed'>
+                    {product.adminNote}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

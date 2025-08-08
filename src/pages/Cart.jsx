@@ -15,7 +15,7 @@ import { calculateDeliveryFee } from '../utils/deliveryPricing';
 
 export default function Cart() {
   const navigate = useNavigate();
-  const { cartItems, removeFromCart, updateQuantity, updateNote, clearCart, getSubtotal, currentStoreId } =
+  const { cartItems, removeFromCart, updateQuantity, updateNote, clearCart, getSubtotal, currentStoreId, originalProducts } =
     useCartContext();
   const { createOrderWithUserData, isLoading: orderLoading } = useOrders();
   const { user } = useAuth();
@@ -70,6 +70,9 @@ export default function Cart() {
     try {
       // Preparar datos de la orden
       const deliveryInfo = calculateDeliveryFee();
+      
+
+      
       const orderData = {
         items: cartItems,
         paymentMethod: paymentMethod,
@@ -201,6 +204,7 @@ export default function Cart() {
                   onRemoveItem={handleRemoveItem}
                   onUpdateQuantity={handleUpdateQuantity}
                   onUpdateNote={updateNote}
+                  originalProducts={originalProducts}
                 />
               </div>
             </div>

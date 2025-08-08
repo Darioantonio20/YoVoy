@@ -114,6 +114,8 @@ export const useStores = () => {
         const productsData = response.data.data || [];
         const paginationData = response.data.pagination || {};
         
+
+        
         // Siempre reemplazar productos (no acumular)
         setProducts(productsData);
         

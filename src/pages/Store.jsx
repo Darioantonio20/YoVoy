@@ -98,7 +98,7 @@ export default function Store() {
     setCurrentStoreData(store);
     
     // Cargar productos de la tienda seleccionada (primera página)
-    await fetchProducts(store._id, { page: 1, limit: 10 });
+    const result = await fetchProducts(store._id, { page: 1, limit: 10 });
   };
 
   const handleBackToStores = () => {

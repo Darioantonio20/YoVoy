@@ -1,7 +1,7 @@
 import { memo, useState } from 'react';
-import { Trash2, Plus, Minus, MessageCircle } from 'lucide-react';
+import { Trash2, Plus, Minus, MessageCircle, FileText } from 'lucide-react';
 
-const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote }) => {
+const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote, originalProduct }) => {
   const [isEditingNote, setIsEditingNote] = useState(false);
   const price = typeof item.price === 'number' ? item.price : parseFloat(item.price?.replace('$', '').replace(',', '') || '0');
   const totalPrice = price * item.quantity;
@@ -42,13 +42,13 @@ const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote }) => {
             {item.name}
           </h3>
           <p className='text-white/70 text-sm'>{item.description}</p>
-          {item.adminNote && (
+          {(item.adminNote || (originalProduct && originalProduct.adminNote)) && (
             <div className='flex items-center gap-2 mt-2'>
               <div className='w-5 h-5 bg-yellow-500/20 rounded-full flex items-center justify-center border border-yellow-500/30'>
-                <span className='text-yellow-400 text-xs'>📝</span>
+                <FileText size={12} className='text-yellow-400' />
               </div>
               <p className='text-sm text-yellow-300/90 italic'>
-                {item.adminNote}
+                {item.adminNote || originalProduct?.adminNote}
               </p>
             </div>
           )}

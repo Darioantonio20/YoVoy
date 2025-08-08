@@ -15,6 +15,7 @@ export const useCartContext = () => {
 export const CartProvider = ({ children }) => {
   const [currentStoreId, setCurrentStoreId] = useState(null);
   const [previousItemCount, setPreviousItemCount] = useState(0);
+  const [originalProducts, setOriginalProducts] = useState({}); // Para mantener referencia a productos originales
   
   // Usar el hook useCart que maneja la API
   const {
@@ -64,6 +65,12 @@ export const CartProvider = ({ children }) => {
       const result = await apiAddToCart(productData);
       
       if (result) {
+        // Guardar referencia al producto original para poder mostrar adminNote
+        setOriginalProducts(prev => ({
+          ...prev,
+          [product._id]: product
+        }));
+        
         Alert.success('¡Agregado!', 'Producto agregado al carrito');
         return true;
       } else {
@@ -210,8 +217,29 @@ export const CartProvider = ({ children }) => {
     return getItemQuantity(productId);
   };
 
+  // Función para obtener items del carrito con información completa
+  const getCartItemsWithNotes = () => {
+    const items = cart.items || [];
+    const itemsWithNotes = items.map(item => {
+      const originalProduct = originalProducts[item.productId];
+      const itemWithNotes = {
+        ...item,
+        // Incluir adminNote del producto original si existe
+        adminNote: originalProduct?.adminNote || item.adminNote,
+        // Asegurar que la nota del cliente esté presente
+        note: item.note || ''
+      };
+      
+
+      
+      return itemWithNotes;
+    });
+    
+    return itemsWithNotes;
+  };
+
   const value = {
-    cartItems: cart.items || [],
+    cartItems: getCartItemsWithNotes(),
     addToCart,
     removeFromCart,
     updateQuantity,
@@ -226,6 +254,7 @@ export const CartProvider = ({ children }) => {
     previousItemCount,
     isCartEmpty: isCartEmpty(),
     getItemQuantity: getItemQuantityFromCart,
+    originalProducts, // Exponer productos originales
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

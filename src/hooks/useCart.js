@@ -25,6 +25,8 @@ export const useCart = () => {
       });
 
       if (response.success) {
+
+        
         setCart(response.data.data);
         return response.data.data;
       } else {
@@ -46,6 +48,8 @@ export const useCart = () => {
     setError(null);
 
     try {
+
+      
       const response = await apiRequest(API_CONFIG.ENDPOINTS.CART.ADD, {
         method: 'POST',
         headers: getCartHeaders(),
@@ -53,6 +57,8 @@ export const useCart = () => {
       });
 
       if (response.success) {
+
+        
         setCart(response.data.data);
         return response.data.data;
       } else {

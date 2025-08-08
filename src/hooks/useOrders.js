@@ -50,7 +50,8 @@ export const useOrders = () => {
         name: item.name,
         quantity: item.quantity,
         price: item.price,
-        note: item.note || ''
+        note: item.note || '',
+        adminNote: item.adminNote || '' // Incluir también la nota del admin
       })),
       payment: {
         method: orderData.paymentMethod || 'efectivo',
