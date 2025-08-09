@@ -16,6 +16,7 @@ const UserProfileButton = ({ className = '' }) => {
   const [userData, setUserData] = useState({
     name: '',
     phone: '',
+    profileImageUrl: '',
     locations: [],
     currentLocationIndex: 0
   });
@@ -30,6 +31,7 @@ const UserProfileButton = ({ className = '' }) => {
   const [showOrderDetailModal, setShowOrderDetailModal] = useState(false);
   const [searchOrders, setSearchOrders] = useState('');
   const [filteredOrders, setFilteredOrders] = useState([]);
+  const [avatarLoadError, setAvatarLoadError] = useState(false);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { 
@@ -51,6 +53,7 @@ const UserProfileButton = ({ className = '' }) => {
       setUserData({
         name: user.name || '',
         phone: user.phone || '',
+        profileImageUrl: user.profileImageUrl || '',
         locations: locations,
         currentLocationIndex: currentLocationIndex
       });
@@ -90,6 +93,7 @@ const UserProfileButton = ({ className = '' }) => {
         setUserData({
           name: updatedUserData.name || '',
           phone: updatedUserData.phone || '',
+          profileImageUrl: updatedUserData.profileImageUrl || '',
           locations: locations,
           currentLocationIndex: currentLocationIndex
         });
@@ -185,6 +189,11 @@ const UserProfileButton = ({ className = '' }) => {
     filterOrders(searchOrders);
   }, [orders, searchOrders]);
 
+  // Resetear error de carga del avatar cuando cambia la URL
+  useEffect(() => {
+    setAvatarLoadError(false);
+  }, [userData.profileImageUrl]);
+
   const handleSettings = async () => {
     setIsOpen(false);
     await Alert.info(
@@ -194,15 +203,36 @@ const UserProfileButton = ({ className = '' }) => {
   };
 
   const handleSaveProfile = async () => {
+    // Validación de profileImageUrl (opcional, máx 500, http/https)
+    const validateProfileImageUrl = (url) => {
+      const trimmed = (url || '').trim();
+      if (!trimmed) return { valid: true };
+      if (trimmed.length > 500) return { valid: false, message: 'La URL de la imagen no debe exceder 500 caracteres.' };
+      if (!/^https?:\/\//i.test(trimmed)) return { valid: false, message: 'La URL debe iniciar con http:// o https://.' };
+      return { valid: true };
+    };
+
+    const { valid, message } = validateProfileImageUrl(userData.profileImageUrl);
+    if (!valid) {
+      await Alert.error('URL inválida', message);
+      return;
+    }
+
     setIsLoading(true);
     try {
+      const body = {
+        name: userData.name,
+        phone: userData.phone
+        // location se maneja por separado
+      };
+      const trimmedUrl = (userData.profileImageUrl || '').trim();
+      if (trimmedUrl) {
+        body.profileImageUrl = trimmedUrl;
+      }
+
       const response = await apiRequest(API_CONFIG.ENDPOINTS.AUTH.UPDATE_PROFILE, {
         method: 'PUT',
-        body: JSON.stringify({
-          name: userData.name,
-          phone: userData.phone
-          // ❌ Removed location - ahora se maneja por separado con los endpoints de locations
-        }),
+        body: JSON.stringify(body),
       });
 
       if (response.success) {
@@ -257,6 +287,7 @@ const UserProfileButton = ({ className = '' }) => {
       setUserData({
         name: user.name || '',
         phone: user.phone || '',
+        profileImageUrl: user.profileImageUrl || '',
         locations: locations,
         currentLocationIndex: currentLocationIndex
       });
@@ -372,6 +403,7 @@ const UserProfileButton = ({ className = '' }) => {
           setUserData({
             name: updatedUserData.name || '',
             phone: updatedUserData.phone || '',
+            profileImageUrl: updatedUserData.profileImageUrl || '',
             locations: locations,
             currentLocationIndex: currentLocationIndex
           });
@@ -434,6 +466,8 @@ const UserProfileButton = ({ className = '' }) => {
   }
 
   const currentLocation = userData.locations[userData.currentLocationIndex];
+  const profileUrl = (userData.profileImageUrl || '').trim();
+  const isProfileUrlValid = Boolean(profileUrl) && profileUrl.length <= 500 && /^https?:\/\//i.test(profileUrl) && !avatarLoadError;
 
   return (
     <>
@@ -444,7 +478,16 @@ const UserProfileButton = ({ className = '' }) => {
             onClick={() => setIsOpen(!isOpen)}
             className={`w-14 h-14 bg-gradient-to-br from-orange-500 via-orange-600 to-red-500 hover:from-orange-600 hover:via-orange-700 hover:to-red-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 backdrop-blur-sm active:scale-95 ${isOpen ? 'ring-4 ring-orange-400 ring-opacity-75' : ''}`}
           >
-            <User className='w-6 h-6 text-white drop-shadow-sm' />
+            {isProfileUrlValid ? (
+              <img
+                src={profileUrl}
+                alt="Avatar"
+                className='w-full h-full rounded-full object-cover'
+                onError={() => setAvatarLoadError(true)}
+              />
+            ) : (
+              <User className='w-6 h-6 text-white drop-shadow-sm' />
+            )}
           </button>
 
           <div className={`absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-br from-orange-400 to-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${isOpen ? 'rotate-180' : ''}`}>
@@ -460,8 +503,17 @@ const UserProfileButton = ({ className = '' }) => {
             {/* Header del menú */}
             <div className='flex items-center justify-between mb-4 pb-3 border-b border-gray-700'>
               <div className='flex items-center gap-3'>
-                <div className='w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center'>
-                  <User className='w-5 h-5 text-white' />
+                <div className='w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center overflow-hidden'>
+                  {isProfileUrlValid ? (
+                    <img
+                      src={profileUrl}
+                      alt='Avatar'
+                      className='w-full h-full object-cover'
+                      onError={() => setAvatarLoadError(true)}
+                    />
+                  ) : (
+                    <User className='w-5 h-5 text-white' />
+                  )}
                 </div>
                 <div>
                   <Text variant='h3' size='base' className='text-white'>{user.name || 'Mi Perfil'}</Text>
@@ -587,6 +639,62 @@ const UserProfileButton = ({ className = '' }) => {
                 />
                 <Text variant="caption" size="xs" className="text-gray-500 mt-1">El email no se puede modificar por seguridad</Text>
               </div>
+
+              {/* Imagen de Perfil (solo clientes) */}
+              {user?.role === 'client' && (
+                <div>
+                  <Text variant="bodyBold" size="sm" className="text-white mb-2">Imagen de Perfil</Text>
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-14 h-14 rounded-full overflow-hidden bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center border border-gray-600">
+                        {userData.profileImageUrl?.trim() ? (
+                          <img
+                            src={userData.profileImageUrl}
+                            alt="Avatar"
+                            className="w-full h-full object-cover"
+                            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                          />
+                        ) : (
+                          <User className="w-6 h-6 text-white" />
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <input
+                        type="url"
+                        value={userData.profileImageUrl}
+                        onChange={(e) => handleUpdateUserData('profileImageUrl', e.target.value)}
+                        className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm sm:text-base"
+                        placeholder="https://cdn.site.com/avatars/cliente-demo.png"
+                      />
+                      <div className="mt-1">
+                        {(() => {
+                          const val = (userData.profileImageUrl || '').trim();
+                          if (!val) {
+                            return (
+                              <Text variant="caption" size="xs" className="text-gray-500">
+                                Opcional. Debe iniciar con http:// o https:// y tener máximo 500 caracteres.
+                              </Text>
+                            );
+                          }
+                          const tooLong = val.length > 500;
+                          const invalidProto = !/^https?:\/\//i.test(val);
+                          if (tooLong || invalidProto) {
+                            return (
+                              <Text variant="caption" size="xs" className="text-red-400">
+                                {tooLong ? 'La URL excede 500 caracteres. ' : ''}{invalidProto ? 'La URL debe iniciar con http:// o https://.' : ''}
+                              </Text>
+                            );
+                          }
+                          return (
+                            <Text variant="caption" size="xs" className="text-green-300">URL válida</Text>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Ubicaciones */}
               <div>
