@@ -76,7 +76,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
              <div>
                <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Ubicación para Envío</p>
                <p style="color: white; font-weight: 600; margin: 0;">${order.customerDefaultLocation?.alias || order.customer?.shippingAddress || order.customer?.location?.alias || order.shippingAddress || 'No especificada'}</p>
-               ${order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl ? `<a href="${order.customerDefaultLocation?.googleMapsUrl || order.customer.location.googleMapsUrl}" target="_blank" rel="noopener noreferrer" style="color: #fbbf24; font-size: 12px; text-decoration: underline;">Ver en Google Maps</a>` : ''}
+               ${order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl ? `<span style="color: #fbbf24; font-size: 12px; word-break: break-all;">${order.customerDefaultLocation?.googleMapsUrl || order.customer.location.googleMapsUrl}</span>` : ''}
              </div>
           </div>
         </div>
@@ -171,7 +171,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
            <div style="grid-column: 1 / -1;">
             <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Dirección de Entrega:</p>
              <p style="color: white; font-weight: bold; margin: 0;">${order.customerDefaultLocation?.alias || order.customer?.shippingAddress || order.customer?.location?.alias || order.shippingAddress || 'No especificada'}</p>
-             ${order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl ? `<a href="${order.customerDefaultLocation?.googleMapsUrl || order.customer.location.googleMapsUrl}" target="_blank" rel="noopener noreferrer" style="color: #fbbf24; font-size: 12px; text-decoration: underline;">Ver en Google Maps</a>` : ''}
+              ${order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl ? `<span style="color: #fbbf24; font-size: 12px; word-break: break-all;">${order.customerDefaultLocation?.googleMapsUrl || order.customer.location.googleMapsUrl}</span>` : ''}
           </div>
         </div>
       </div>

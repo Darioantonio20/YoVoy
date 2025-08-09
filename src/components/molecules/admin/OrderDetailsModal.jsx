@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { X, User, CreditCard, CheckCircle, Download, Package, MapPin, ExternalLink } from 'lucide-react';
+import { X, User, CreditCard, CheckCircle, Download, Package, MapPin, ExternalLink, Copy } from 'lucide-react';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
+import Alert from '../../atoms/Alert';
 import html2canvas from 'html2canvas';
 import OrderDownloadTemplate from '../../atoms/admin/OrderDownloadTemplate';
 import { calculateDeliveryFee } from '../../../utils/deliveryPricing';
@@ -9,6 +10,17 @@ import { calculateDeliveryFee } from '../../../utils/deliveryPricing';
 const OrderDetailsModal = ({ isOpen, onClose, order }) => {
   const modalRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const mapsUrl = order?.customerDefaultLocation?.googleMapsUrl || order?.customer?.location?.googleMapsUrl || '';
+
+  const handleCopyMapsUrl = async () => {
+    if (!mapsUrl) return;
+    try {
+      await navigator.clipboard.writeText(mapsUrl);
+      await Alert.success('Copiado', 'El enlace de Google Maps se copió al portapapeles.');
+    } catch (_) {
+      await Alert.error('Error', 'No se pudo copiar el enlace.');
+    }
+  };
   
   if (!isOpen || !order) return null;
 
@@ -185,15 +197,21 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                         {order.customerDefaultLocation?.alias || order.customer?.shippingAddress || order.customer?.location?.alias || order.shippingAddress || 'No especificada'}
                       </Text>
                     </div>
-                    {(order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl) && (
-                      <a
-                        href={(order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl)}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='inline-flex items-center gap-1 text-xs text-orange-300 hover:text-orange-200'
-                      >
-                        <ExternalLink className='w-3 h-3' /> Ver en Google Maps
-                      </a>
+                    {mapsUrl && (
+                      <div className='flex items-center gap-2'>
+                        <a
+                          href={mapsUrl}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          referrerPolicy='no-referrer'
+                          className='text-xs text-orange-300 hover:text-orange-200 break-all'
+                        >
+                          {mapsUrl}
+                        </a>
+                        <button onClick={handleCopyMapsUrl} title='Copiar enlace' className='text-xs text-white/60 hover:text-white'>
+                          <Copy className='w-3.5 h-3.5' />
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -554,15 +572,21 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                 <Text variant='body' size='sm' className='text-white'>
                   {order.customerDefaultLocation?.alias || order.customer?.shippingAddress || order.customer?.location?.alias || order.shippingAddress || 'No especificada'}
                 </Text>
-                {(order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl) && (
-                  <a
-                    href={(order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl)}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='inline-flex items-center gap-1 text-xs text-orange-300 hover:text-orange-200'
-                  >
-                    <ExternalLink className='w-3 h-3' /> Ver en Google Maps
-                  </a>
+                {mapsUrl && (
+                  <div className='flex items-center gap-2'>
+                    <a
+                      href={mapsUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      referrerPolicy='no-referrer'
+                      className='text-xs text-orange-300 hover:text-orange-200 break-all'
+                    >
+                      {mapsUrl}
+                    </a>
+                    <button onClick={handleCopyMapsUrl} title='Copiar enlace' className='text-xs text-white/60 hover:text-white'>
+                      <Copy className='w-3.5 h-3.5' />
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
