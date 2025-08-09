@@ -1,6 +1,6 @@
 const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
   // Calcular tarifa de envío dinámica
-  const orderTime = new Date(order.date);
+  const orderTime = new Date(order.createdAt || order.date || Date.now());
   const deliveryInfo = (() => {
     const hour = orderTime.getHours();
     let additionalFee = 0;
@@ -42,6 +42,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
           <div>
             <h1 style="font-size: 24px; font-weight: bold; color: #f97316; margin: 0;">Jasai</h1>
             <p style="color: #eab308; font-weight: 500; margin: 0;">Detalles de la Orden</p>
+            
           </div>
         </div>
         <div style="background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; border-radius: 8px; padding: 12px; display: inline-block;">
@@ -59,7 +60,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
             <span style="color: #f97316; font-size: 20px;">👤</span>
             <h2 style="font-size: 18px; font-weight: bold; color: #f97316; margin: 0;">Información del Cliente</h2>
           </div>
-          <div style="display: flex; flex-direction: column; gap: 16px;">
+           <div style="display: flex; flex-direction: column; gap: 16px;">
             <div>
               <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Nombre Completo</p>
               <p style="color: white; font-weight: 600; margin: 0;">${order.customer?.name || order.customer || 'Cliente'}</p>
@@ -72,10 +73,11 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
               <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Número Telefónico</p>
               <p style="color: white; font-weight: 600; margin: 0;">${order.customer?.phone || order.phone || 'No especificado'}</p>
             </div>
-            <div>
-              <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Ubicación para Envío</p>
-              <p style="color: white; font-weight: 600; margin: 0;">${order.customer?.location?.alias || order.shippingAddress || 'No especificada'}</p>
-            </div>
+             <div>
+               <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Ubicación para Envío</p>
+               <p style="color: white; font-weight: 600; margin: 0;">${order.customerDefaultLocation?.alias || order.customer?.shippingAddress || order.customer?.location?.alias || order.shippingAddress || 'No especificada'}</p>
+               ${order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl ? `<a href="${order.customerDefaultLocation?.googleMapsUrl || order.customer.location.googleMapsUrl}" target="_blank" rel="noopener noreferrer" style="color: #fbbf24; font-size: 12px; text-decoration: underline;">Ver en Google Maps</a>` : ''}
+             </div>
           </div>
         </div>
 
@@ -166,9 +168,10 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
             <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Teléfono:</p>
             <p style="color: white; font-weight: bold; margin: 0;">${order.customer?.phone || order.phone || 'No especificado'}</p>
           </div>
-          <div style="grid-column: 1 / -1;">
+           <div style="grid-column: 1 / -1;">
             <p style="color: #eab308; font-weight: 500; font-size: 14px; margin: 0 0 4px 0;">Dirección de Entrega:</p>
-            <p style="color: white; font-weight: bold; margin: 0;">${order.customer?.location?.alias || order.shippingAddress || 'No especificada'}</p>
+             <p style="color: white; font-weight: bold; margin: 0;">${order.customerDefaultLocation?.alias || order.customer?.shippingAddress || order.customer?.location?.alias || order.shippingAddress || 'No especificada'}</p>
+             ${order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl ? `<a href="${order.customerDefaultLocation?.googleMapsUrl || order.customer.location.googleMapsUrl}" target="_blank" rel="noopener noreferrer" style="color: #fbbf24; font-size: 12px; text-decoration: underline;">Ver en Google Maps</a>` : ''}
           </div>
         </div>
       </div>
@@ -208,7 +211,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
       <div style="margin-top: 32px; padding-top: 24px; border-top: 2px solid #f97316; text-align: center;">
         <p style="color: #eab308; font-size: 12px; margin: 0;">
           Orden #${order.id || order._id || order.orderNumber || 'N/A'} - Generada el ${new Date(
-            order.date || order.createdAt || new Date()
+            order.createdAt || order.date || new Date()
           ).toLocaleDateString('es-ES', {
             year: 'numeric',
             month: 'long',

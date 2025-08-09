@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import Spinner from '../../atoms/Spinner';
 import { Eye } from 'lucide-react';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
 import SearchBar from '../../atoms/SearchBar';
 import OrderDetailsModal from './OrderDetailsModal';
 
-const OrderTable = ({ orders, onUpdateStatus }) => {
+const OrderTable = ({ orders, onUpdateStatus, isLoading = false }) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [ordersToDisplay, setOrdersToDisplay] = useState([]);
@@ -88,6 +89,7 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
 
   return (
     <>
+      {isLoading && <Spinner message='Cargando pedidos...' />}
       <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 overflow-hidden'>
         <div className='px-6 py-4 border-b border-white/20'>
           <Text variant='h3' size='lg' className='text-white'>
@@ -145,7 +147,7 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
             <tbody className='bg-white/5 divide-y divide-white/10'>
               {filteredOrders.map(order => (
                 <tr
-                  key={order.id || order._id || order.orderNumber || `order-${Math.random()}`}
+                  key={order.id || order._id || order.orderNumber}
                   className='hover:bg-white/5 transition-colors duration-200'
                 >
                   <td className='px-6 py-4 whitespace-nowrap text-center'>
@@ -287,7 +289,7 @@ const OrderTable = ({ orders, onUpdateStatus }) => {
           </table>
         </div>
 
-        {filteredOrders.length === 0 && (
+        {!isLoading && filteredOrders.length === 0 && (
           <div className='text-center py-8'>
             <Text variant='bodyLight' size='md' className='text-white/70'>
               {searchTerm ? `No se encontraron pedidos para "${searchTerm}"` : 'No hay pedidos registrados aún'}

@@ -107,14 +107,6 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
               </div>
             </div>
           </div>
-
-          {/* Número de orden */}
-          <div className='bg-orange-500/10 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 border border-orange-500/20'>
-            <p className='text-xs sm:text-sm text-white/70'>Número de orden:</p>
-            <p className='text-base sm:text-lg font-bold text-orange-400'>
-              {orderDetails?.orderNumber || `#${Date.now()}`}
-            </p>
-          </div>
           {/* Botón */}
           <Button variant='success' onClick={onClose} className='w-full'>
             Confirmar compra

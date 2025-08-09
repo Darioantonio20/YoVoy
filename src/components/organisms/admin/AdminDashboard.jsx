@@ -317,6 +317,7 @@ const AdminDashboard = () => {
             <OrderTable
               orders={orders}
               onUpdateStatus={handleUpdateOrderStatus}
+              isLoading={adminLoading}
             />
           )}
 

@@ -955,7 +955,7 @@ const UserProfileButton = ({ className = '' }) => {
                         </div>
                         <div>
                           <Text variant="bodyBold" size="sm" className="text-white group-hover:text-orange-300 transition-colors">
-                            {order.orderNumber}
+                            {order.id || order._id || order.orderNumber || 'N/A'}
                           </Text>
                           <Text variant="caption" size="xs" className="text-gray-400">
                             {new Date(order.createdAt).toLocaleDateString('es-ES', {
@@ -1068,7 +1068,7 @@ const UserProfileButton = ({ className = '' }) => {
                   <Package className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <Text variant="h3" size="base" className="text-white">{selectedOrder.orderNumber}</Text>
+                  <Text variant="h3" size="base" className="text-white">{selectedOrder.id || selectedOrder._id || selectedOrder.orderNumber || 'N/A'}</Text>
                   <Text variant="caption" size="xs" className="text-gray-400">
                     {new Date(selectedOrder.createdAt).toLocaleDateString()}
                   </Text>

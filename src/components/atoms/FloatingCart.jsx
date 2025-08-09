@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, X, Package } from 'lucide-react';
+import { ShoppingCart, X } from 'lucide-react';
 
 const FloatingCart = ({
   itemCount = 0,
@@ -79,24 +79,6 @@ const FloatingCart = ({
               {itemCount > 99 ? '99+' : itemCount}
             </div>
           )}
-
-          {/* Tooltip mejorado */}
-          <div className='absolute right-0 top-16 bg-gray-900/95 backdrop-blur-sm text-white text-sm px-4 py-3 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-2xl border border-gray-700'>
-            <div className='flex items-center gap-2'>
-              {itemCount > 0 ? (
-                <>
-                  <Package className='w-4 h-4 text-green-400' />
-                  <span>Ver carrito ({itemCount} productos)</span>
-                </>
-              ) : (
-                <>
-                  <ShoppingCart className='w-4 h-4 text-gray-100' />
-                  <span>Tu carrito está vacío</span>
-                </>
-              )}
-            </div>
-            <div className='absolute -top-1 right-4 w-2 h-2 bg-gray-900/95 transform rotate-45 border-l border-t border-gray-700'></div>
-          </div>
         </div>
       </Link>
 

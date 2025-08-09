@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { X, User, CreditCard, CheckCircle, Download, Package } from 'lucide-react';
+import { X, User, CreditCard, CheckCircle, Download, Package, MapPin, ExternalLink } from 'lucide-react';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
 import html2canvas from 'html2canvas';
@@ -107,7 +107,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                 </span>
               </Text>
               <Text variant='bodyLight' size='sm' className='text-white/70'>
-                {order.id} - {getPaymentMethodText(order.paymentMethod)}
+                {getPaymentMethodText(order.payment?.method || order.paymentMethod || 'efectivo')} • {new Date(order.createdAt || order.date || Date.now()).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })} • ID: {order._id || order.id || 'N/A'}
               </Text>
             </div>
           </div>
@@ -178,13 +178,24 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                   <Text variant='bodyLight' size='sm' className='text-white/70'>
                     Ubicación para Envío
                   </Text>
-                  <Text
-                    variant='body'
-                    size='md'
-                    className='font-medium text-white'
-                  >
-                    {order.customer?.location?.alias || order.shippingAddress || 'No especificada'}
-                  </Text>
+                  <div className='flex flex-col gap-1'>
+                    <div className='flex items-center gap-2'>
+                      <MapPin className='w-4 h-4 text-orange-400' />
+                      <Text variant='body' size='md' className='font-medium text-white'>
+                        {order.customerDefaultLocation?.alias || order.customer?.shippingAddress || order.customer?.location?.alias || order.shippingAddress || 'No especificada'}
+                      </Text>
+                    </div>
+                    {(order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl) && (
+                      <a
+                        href={(order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl)}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='inline-flex items-center gap-1 text-xs text-orange-300 hover:text-orange-200'
+                      >
+                        <ExternalLink className='w-3 h-3' /> Ver en Google Maps
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -474,13 +485,12 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                     size='sm'
                     className='font-medium text-white'
                   >
-                    {order.date ? new Date(order.date).toLocaleDateString('es-ES', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    }) : 'Sin fecha'}
+                    {(() => {
+                      const dt = order.createdAt || order.date;
+                      return dt
+                        ? new Date(dt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+                        : 'Sin fecha';
+                    })()}
                   </Text>
                 </div>
 
@@ -540,9 +550,21 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
               >
                 Dirección de Entrega:
               </Text>
-              <Text variant='body' size='sm' className='text-white'>
-                {order.customer?.location?.alias || order.shippingAddress || 'No especificada'}
-              </Text>
+              <div className='flex flex-col gap-1'>
+                <Text variant='body' size='sm' className='text-white'>
+                  {order.customerDefaultLocation?.alias || order.customer?.shippingAddress || order.customer?.location?.alias || order.shippingAddress || 'No especificada'}
+                </Text>
+                {(order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl) && (
+                  <a
+                    href={(order.customerDefaultLocation?.googleMapsUrl || order.customer?.location?.googleMapsUrl)}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='inline-flex items-center gap-1 text-xs text-orange-300 hover:text-orange-200'
+                  >
+                    <ExternalLink className='w-3 h-3' /> Ver en Google Maps
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
