@@ -114,7 +114,7 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
     <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6'>
       <div className='mb-6'>
         <Text variant='h3' size='lg' className='text-white'>
-          <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+          <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
             {isEditing ? 'Editar Producto' : 'Crear Nuevo Producto'}
           </span>
         </Text>
@@ -135,7 +135,7 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
             type='text'
             value={formData.name}
             onChange={e => handleInputChange('name', e.target.value)}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50 ${
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F9C81E] bg-white/5 text-white placeholder-white/50 ${
               errors.name ? 'border-red-400' : 'border-white/20'
             }`}
             placeholder='Ej: Muñeca Clásica'
@@ -156,7 +156,7 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
             value={formData.description}
             onChange={e => handleInputChange('description', e.target.value)}
             rows={3}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50 ${
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F9C81E] bg-white/5 text-white placeholder-white/50 ${
               errors.description ? 'border-red-400' : 'border-white/20'
             }`}
             placeholder='Describe el producto...'
@@ -182,7 +182,7 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
                 min='0'
                 value={formData.price}
                 onChange={e => handleInputChange('price', e.target.value)}
-                className={`w-full pl-8 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50 ${
+                className={`w-full pl-8 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F9C81E] bg-white/5 text-white placeholder-white/50 ${
                   errors.price ? 'border-red-400' : 'border-white/20'
                 }`}
                 placeholder='0.00'
@@ -204,7 +204,7 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
               min='0'
               value={formData.stock}
               onChange={e => handleInputChange('stock', e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#F9C81E] bg-white/5 text-white placeholder-white/50 ${
                 errors.stock ? 'border-red-400' : 'border-white/20'
               }`}
               placeholder='0'
@@ -225,7 +225,7 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
           <select
             value={formData.category}
             onChange={e => handleInputChange('category', e.target.value)}
-            className='w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white'
+            className='w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F9C81E] bg-white/5 text-white'
           >
             {categories.map(category => (
               <option
@@ -248,12 +248,12 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
             value={formData.images.join(', ')}
             onChange={e => handleInputChange('images', e.target.value.split(', ').filter(url => url.trim()))}
             rows='3'
-            className='w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50 resize-none'
+            className='w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F9C81E] bg-white/5 text-white placeholder-white/50 resize-none'
             placeholder='URLs de imágenes separadas por comas (ej: https://i.ibb.co/xxx/producto1.jpg, https://i.ibb.co/yyy/producto2.jpg)'
           />
                       <p className='text-xs text-white/50 mt-1 flex items-center gap-1'>
-              <Lightbulb size={12} className='text-orange-400' />
-              Sube tus imágenes en <a href='https://es.imgbb.com/' target='_blank' rel='noopener noreferrer' className='text-orange-400 hover:text-orange-300 underline'>ImgBB.com</a> y pega las URLs aquí
+              <Lightbulb size={12} className='text-[#F9C81E]' />
+              Sube tus imágenes en <a href='https://es.imgbb.com/' target='_blank' rel='noopener noreferrer' className='text-[#F9C81E] hover:text-[#F9C81E]/80 underline'>ImgBB.com</a> y pega las URLs aquí
             </p>
         </div>
 
@@ -268,12 +268,12 @@ const ProductForm = ({ product, onSave, onCancel, isEditing = false }) => {
             onChange={e => handleInputChange('adminNote', e.target.value)}
             rows={2}
             maxLength={200}
-            className='w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white/5 text-white placeholder-white/50'
+            className='w-full px-3 py-2 border border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F9C81E] bg-white/5 text-white placeholder-white/50'
             placeholder='Agrega una nota interna sobre el producto (ej: stock bajo, descuentos, etc.)'
           />
           <div className='flex justify-between items-center mt-1'>
             <Text variant='bodyLight' size='xs' className='text-white/50 flex items-center gap-1'>
-              <Lightbulb size={12} className='text-orange-400' />
+              <Lightbulb size={12} className='text-[#F9C81E]' />
               Esta nota será visible para los clientes
             </Text>
             <Text variant='bodyLight' size='xs' className='text-white/50'>

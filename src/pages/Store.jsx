@@ -197,7 +197,7 @@ export default function Store() {
                 icon={
                   <ShoppingBag
                     size={32}
-                    className='inline-block align-middle text-orange-400 mr-2'
+                    className='inline-block align-middle text-[#F9C81E] mr-2'
                   />
                 }
                 textColor='text-white'
@@ -215,7 +215,7 @@ export default function Store() {
                   <div
                     key={index}
                     onClick={() => handleCategorySearch(category)}
-                    className='group relative overflow-hidden bg-white rounded-2xl cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/30 transform-gpu h-80'
+                    className='group relative overflow-hidden bg-white rounded-2xl cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-[#F9C81E]/30 transform-gpu h-80'
                   >
                     {/* Imagen de fondo */}
                     <div
@@ -231,7 +231,7 @@ export default function Store() {
                     {/* Contenido */}
                     <div className='relative z-10 h-full flex flex-col justify-end p-6'>
                       {/* Nombre de categoría */}
-                      <h3 className='text-xl font-bold text-white mb-2 group-hover:text-orange-300 transition-colors duration-300'>
+                      <h3 className='text-xl font-bold text-white mb-2 group-hover:text-[#F9C81E] transition-colors duration-300'>
                         {getCategoryData(category).name}
                       </h3>
 
@@ -256,7 +256,7 @@ export default function Store() {
 
                         {/* Flecha indicadora */}
                         <div className='opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0'>
-                          <span className='text-orange-400 text-xl'>→</span>
+                          <span className='text-[#F9C81E] text-xl'>→</span>
                         </div>
                       </div>
                     </div>
@@ -289,7 +289,7 @@ export default function Store() {
                 <Button
                   variant='minimal'
                   onClick={handleBackToSearch}
-                  className='text-white hover:text-orange-900'
+                  className='text-white hover:text-[#F9C81E]'
                 >
                   <ArrowLeft size={30} />
                 </Button>
@@ -300,7 +300,7 @@ export default function Store() {
                 icon={
                   <ShoppingBag
                     size={32}
-                    className='inline-block align-middle text-orange-400 mr-2'
+                    className='inline-block align-middle text-[#F9C81E] mr-2'
                   />
                 }
                 textColor='text-white'
@@ -337,7 +337,7 @@ export default function Store() {
                 <Button
                   variant='minimal'
                   onClick={handleBackToStores}
-                  className='text-white hover:text-orange-900'
+                  className='text-white hover:text-[#F9C81E]'
                 >
                   <ArrowLeft size={30} />
                 </Button>

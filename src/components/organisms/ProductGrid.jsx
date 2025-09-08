@@ -43,7 +43,7 @@ const ProductGrid = memo(({
       {isLoading && (
         <div className='text-center py-8'>
           <div className='inline-flex items-center gap-3'>
-            <div className='w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin'></div>
+            <div className='w-6 h-6 border-2 border-[#F9C81E] border-t-transparent rounded-full animate-spin'></div>
             <Text className='text-white/70 text-sm'>Cargando productos...</Text>
           </div>
         </div>

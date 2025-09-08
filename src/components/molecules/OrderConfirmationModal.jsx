@@ -59,7 +59,7 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
                         Cantidad: {item.quantity}
                       </p>
                       {item.note && (
-                        <p className='text-xs sm:text-sm text-orange-400/80 italic mt-1'>
+                        <p className='text-xs sm:text-sm text-[#F9C81E]/80 italic mt-1'>
                           Nota: {item.note}
                         </p>
                       )}
@@ -101,7 +101,7 @@ const OrderConfirmationModal = ({ isOpen, onClose, orderDetails }) => {
                   ${shipping.toFixed(2)}
                 </span>
               </div>
-              <div className='flex justify-between text-base sm:text-lg font-bold text-orange-400 border-t border-white/20 pt-2'>
+              <div className='flex justify-between text-base sm:text-lg font-bold text-[#F9C81E] border-t border-white/20 pt-2'>
                 <span>Total:</span>
                 <span>${total.toFixed(2)}</span>
               </div>

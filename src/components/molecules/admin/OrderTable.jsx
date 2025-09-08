@@ -93,7 +93,7 @@ const OrderTable = ({ orders, onUpdateStatus, isLoading = false }) => {
       <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 overflow-hidden'>
         <div className='px-6 py-4 border-b border-white/20'>
           <Text variant='h3' size='lg' className='text-white'>
-            <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+            <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
               Pedidos Registrados
             </span>
           </Text>
@@ -195,8 +195,8 @@ const OrderTable = ({ orders, onUpdateStatus, isLoading = false }) => {
                         <div key={`${order.id || order._id}-note-${index}`} className='flex items-start gap-2'>
                           <div className='w-5 h-5 flex-shrink-0 mt-0.5'>
                             {product.note ? (
-                              <div className='w-5 h-5 bg-orange-500/20 rounded-full flex items-center justify-center border border-orange-500/30'>
-                                <span className='text-orange-400 text-sm'>📝</span>
+                              <div className='w-5 h-5 bg-[#F9C81E]/20 rounded-full flex items-center justify-center border border-[#F9C81E]/30'>
+                                <span className='text-[#F9C81E] text-sm'>📝</span>
                               </div>
                             ) : (
                               <div className='w-5 h-5 bg-white/5 rounded-full flex items-center justify-center border border-white/10'>
@@ -205,7 +205,7 @@ const OrderTable = ({ orders, onUpdateStatus, isLoading = false }) => {
                             )}
                           </div>
                           {product.note ? (
-                            <p className='text-orange-300/90 text-sm italic'>
+                            <p className='text-[#F9C81E]/90 text-sm italic'>
                               "{product.note}"
                             </p>
                           ) : (
@@ -254,7 +254,7 @@ const OrderTable = ({ orders, onUpdateStatus, isLoading = false }) => {
                       <select
                         value={order.status || 'pendiente'}
                         onChange={e => onUpdateStatus(order.id || order._id, e.target.value)}
-                        className='text-xs border border-white/20 rounded px-2 py-1 bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-orange-400'
+                        className='text-xs border border-white/20 rounded px-2 py-1 bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-[#F9C81E]'
                       >
                         <option
                           value='pendiente'

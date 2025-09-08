@@ -186,7 +186,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
     { id: 'tecnologia', label: 'tecnologia', icon: Monitor, color: 'text-blue-400' },
     { id: 'moda', label: 'moda', icon: Shirt, color: 'text-pink-400' },
     { id: 'juguetes', label: 'juguetes', icon: Baby, color: 'text-yellow-400' },
-    { id: 'comida', label: 'comida', icon: Utensils, color: 'text-orange-400' },
+    { id: 'comida', label: 'comida', icon: Utensils, color: 'text-[#F9C81E]' },
     { id: 'hogar', label: 'hogar', icon: Home, color: 'text-green-400' },
     { id: 'jardin', label: 'jardin', icon: Sprout, color: 'text-emerald-400' },
     { id: 'mascotas', label: 'mascotas', icon: Dog, color: 'text-amber-400' },
@@ -232,7 +232,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                 type='text'
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                 placeholder='Nombre del administrador'
               />
             </div>
@@ -245,7 +245,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                 type='email'
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                 placeholder='admin@tienda.com'
               />
             </div>
@@ -258,7 +258,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                 type='tel'
                 value={formData.store?.phone || ''}
                 onChange={(e) => handleStoreInputChange('phone', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                 placeholder='+1 (555) 123-4567'
               />
             </div>
@@ -282,7 +282,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                 type='text'
                 value={formData.store?.name || ''}
                 onChange={(e) => handleStoreInputChange('name', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                 placeholder='Nombre de la tienda'
               />
             </div>
@@ -295,7 +295,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                 type='text'
                 value={formData.store?.responsibleName || ''}
                 onChange={(e) => handleStoreInputChange('responsibleName', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                 placeholder='Nombre del responsable'
               />
             </div>
@@ -308,7 +308,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                 type='text'
                 value={formData.store?.location?.alias || ''}
                 onChange={(e) => handleStoreLocationChange('alias', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                 placeholder='Ubicación de la tienda'
               />
             </div>
@@ -321,7 +321,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                 type='url'
                 value={formData.store?.location?.googleMapsUrl || ''}
                 onChange={(e) => handleStoreLocationChange('googleMapsUrl', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                 placeholder='https://maps.app.goo.gl/...'
               />
             </div>
@@ -335,7 +335,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
               value={formData.store?.description || ''}
               onChange={(e) => handleStoreInputChange('description', e.target.value)}
               rows='3'
-              className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 resize-none'
+              className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50 resize-none'
               placeholder='Describe tu tienda y los productos que ofreces'
             />
           </div>
@@ -348,12 +348,12 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
               value={formData.store?.images?.join(', ') || ''}
               onChange={(e) => handleStoreInputChange('images', e.target.value.split(', ').filter(url => url.trim()))}
               rows='2'
-              className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 resize-none'
+              className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50 resize-none'
               placeholder='URLs de imágenes separadas por comas (ej: https://i.ibb.co/xxx/logo.png, https://i.ibb.co/yyy/banner.png)'
             />
             <p className='text-xs text-white/50 mt-1 flex items-center gap-1'>
-              <Lightbulb size={12} className='text-orange-400' />
-              Sube tus imágenes en <a href='https://es.imgbb.com/' target='_blank' rel='noopener noreferrer' className='text-orange-400 hover:text-orange-300 underline'>ImgBB.com</a> y pega las URLs aquí
+              <Lightbulb size={12} className='text-[#F9C81E]' />
+              Sube tus imágenes en <a href='https://es.imgbb.com/' target='_blank' rel='noopener noreferrer' className='text-[#F9C81E] hover:text-[#F9C81E]/80 underline'>ImgBB.com</a> y pega las URLs aquí
             </p>
           </div>
         </div>
@@ -377,8 +377,8 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                   className='peer sr-only'
                 />
                 <div
-                  className='w-6 h-6 rounded-lg bg-transparent border-2 border-orange-500/70 transition-all duration-300 ease-in-out
-                    peer-checked:bg-gradient-to-br from-orange-400 to-yellow-400
+                  className='w-6 h-6 rounded-lg bg-transparent border-2 border-[#F9C81E]/70 transition-all duration-300 ease-in-out
+                    peer-checked:bg-gradient-to-br from-[#F9C81E] to-yellow-400
                     peer-checked:border-0 peer-checked:rotate-12
                     after:content-[""] after:absolute after:top-[22px] after:left-[14px]
                     after:-translate-x-1/2 after:-translate-y-1/2 after:w-4 after:h-4
@@ -410,9 +410,9 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
           </Text>
           
           {/* Botones de configuración rápida */}
-          <div className='p-3 bg-orange-500/10 border border-orange-500/20 rounded-lg'>
-            <p className='text-xs text-orange-300/90 mb-2 font-medium flex items-center gap-1'>
-              <Zap size={12} className='text-orange-300' />
+          <div className='p-3 bg-[#F9C81E]/10 border border-[#F9C81E]/20 rounded-lg'>
+            <p className='text-xs text-[#F9C81E]/90 mb-2 font-medium flex items-center gap-1'>
+              <Zap size={12} className='text-[#F9C81E]' />
               Configuración rápida:
             </p>
             <div className='flex flex-wrap gap-2'>
@@ -427,7 +427,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                   }));
                   handleStoreInputChange('schedule', quickSchedule);
                 }}
-                className='px-3 py-1.5 text-xs bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded text-orange-300 hover:text-orange-200 transition-colors'
+                className='px-3 py-1.5 text-xs bg-[#F9C81E]/20 hover:bg-[#F9C81E]/30 border border-[#F9C81E]/30 rounded text-[#F9C81E] hover:text-[#F9C81E]/80 transition-colors'
               >
                 Lunes a Viernes 9:00-18:00
               </button>
@@ -442,7 +442,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                   }));
                   handleStoreInputChange('schedule', quickSchedule);
                 }}
-                className='px-3 py-1.5 text-xs bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded text-orange-300 hover:text-orange-200 transition-colors'
+                className='px-3 py-1.5 text-xs bg-[#F9C81E]/20 hover:bg-[#F9C81E]/30 border border-[#F9C81E]/30 rounded text-[#F9C81E] hover:text-[#F9C81E]/80 transition-colors'
               >
                 Lunes a Sábado 8:00-20:00
               </button>
@@ -473,7 +473,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                     type='checkbox'
                     checked={day.isOpen}
                     onChange={(e) => handleScheduleChange(index, 'isOpen', e.target.checked)}
-                    className='w-5 h-5 text-orange-500 bg-transparent border-2 border-orange-500/70 rounded focus:ring-orange-500/50 focus:ring-2'
+                    className='w-5 h-5 text-[#F9C81E] bg-transparent border-2 border-[#F9C81E]/70 rounded focus:ring-[#F9C81E]/50 focus:ring-2'
                   />
                   <span className='text-sm text-white/90 font-medium'>{day.day}</span>
                 </div>
@@ -486,7 +486,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                         type='time'
                         value={day.openTime}
                         onChange={(e) => handleScheduleChange(index, 'openTime', e.target.value)}
-                        className='px-3 py-2 text-sm bg-white/10 border border-white/20 rounded text-white focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                        className='px-3 py-2 text-sm bg-white/10 border border-white/20 rounded text-white focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                       />
                     </div>
                     <div className='flex items-center gap-2'>
@@ -495,11 +495,11 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                         type='time'
                         value={day.closeTime}
                         onChange={(e) => handleScheduleChange(index, 'closeTime', e.target.value)}
-                        className='px-3 py-2 text-sm bg-white/10 border border-white/20 rounded text-white focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                        className='px-3 py-2 text-sm bg-white/10 border border-white/20 rounded text-white focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                       />
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span className='text-xs text-orange-400/80 font-medium'>
+                      <span className='text-xs text-[#F9C81E]/80 font-medium'>
                         {day.openTime} - {day.closeTime}
                       </span>
                     </div>
@@ -532,7 +532,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                 type='url'
                 value={formData.store?.socialMedia?.tiktok || ''}
                 onChange={(e) => handleSocialMediaChange('tiktok', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                 placeholder='https://www.tiktok.com/@tu_tienda'
               />
             </div>
@@ -545,7 +545,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                 type='url'
                 value={formData.store?.socialMedia?.facebook || ''}
                 onChange={(e) => handleSocialMediaChange('facebook', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                 placeholder='https://www.facebook.com/tu_tienda'
               />
             </div>
@@ -558,7 +558,7 @@ const StoreForm = ({ storeData, onSave, onCancel }) => {
                 type='url'
                 value={formData.store?.socialMedia?.instagram || ''}
                 onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
-                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                className='w-full p-3 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                 placeholder='https://www.instagram.com/tu_tienda'
               />
             </div>

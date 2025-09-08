@@ -48,8 +48,8 @@ const FloatingCart = ({
           <div
             className={`
             w-14 h-14 
-            bg-gradient-to-br from-orange-500 via-orange-600 to-red-500 
-            hover:from-orange-600 hover:via-orange-700 hover:to-red-600 
+            bg-gradient-to-br from-[#F9C81E] via-[#F9C81E] to-red-500 
+            hover:from-[#F9C81E]/80 hover:via-[#F9C81E]/90 hover:to-red-600 
             rounded-full flex items-center justify-center 
             shadow-lg hover:shadow-xl 
             transition-all duration-300 ease-out
@@ -101,7 +101,7 @@ const FloatingCart = ({
       {/* Alerta de carrito vacío mejorada */}
       {showEmptyAlert && (
         <div className='fixed top-20 right-6 z-50 animate-bounce'>
-          <div className='bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-2 max-w-xs border border-yellow-300'>
+          <div className='bg-gradient-to-r from-yellow-400 to-[#F9C81E] text-black font-bold px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-2 max-w-xs border border-yellow-300'>
             <ShoppingCart className='w-5 h-5 flex-shrink-0' />
             <span className='text-sm font-medium'>Tu carrito está vacío</span>
             <button

@@ -38,7 +38,7 @@ const ProductImageModal = ({ isOpen, onClose, product, productImageUrl }) => {
         {/* Header */}
         <div className='flex items-center justify-between p-3 sm:p-4 md:p-6 border-b border-white/10 flex-shrink-0'>
           <div className='flex items-center gap-2 sm:gap-3'>
-            <div className='w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center'>
+            <div className='w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[#F9C81E] to-red-500 flex items-center justify-center'>
               <span className='text-white text-sm sm:text-lg'>
                 {product.image}
               </span>
@@ -51,12 +51,12 @@ const ProductImageModal = ({ isOpen, onClose, product, productImageUrl }) => {
                 {product.category}
               </p>
               {product.adminNote && (
-                <div className='mt-1 p-2 bg-orange-500/20 border border-orange-500/30 rounded-lg'>
+                <div className='mt-1 p-2 bg-[#F9C81E]/20 border border-[#F9C81E]/30 rounded-lg'>
                   <div className='flex items-center gap-1 mb-1'>
-                    <FileText size={12} className='text-orange-400' />
-                    <span className='text-orange-300 text-xs font-medium'>Nota del vendedor:</span>
+                    <FileText size={12} className='text-[#F9C81E]' />
+                    <span className='text-[#F9C81E] text-xs font-medium'>Nota del vendedor:</span>
                   </div>
-                  <p className='text-orange-200 text-xs leading-relaxed'>
+                  <p className='text-[#F9C81E]/80 text-xs leading-relaxed'>
                     {product.adminNote}
                   </p>
                 </div>

@@ -71,7 +71,7 @@ const PaymentMethodModal = ({ isOpen, onClose, onConfirm, orderDetails }) => {
               key={method.id}
               className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
                 selectedMethod === method.id
-                  ? 'border-orange-500 bg-orange-500/10'
+                  ? 'border-[#F9C81E] bg-[#F9C81E]/10'
                   : 'border-white/20 hover:border-white/40 bg-white/5'
               }`}
               onClick={() => setSelectedMethod(method.id)}
@@ -80,7 +80,7 @@ const PaymentMethodModal = ({ isOpen, onClose, onConfirm, orderDetails }) => {
                 <div
                   className={`p-2 rounded-lg ${
                     selectedMethod === method.id
-                      ? 'bg-orange-500/20'
+                      ? 'bg-[#F9C81E]/20'
                       : 'bg-white/10'
                   }`}
                 >
@@ -93,7 +93,7 @@ const PaymentMethodModal = ({ isOpen, onClose, onConfirm, orderDetails }) => {
                 <div
                   className={`w-5 h-5 rounded-full border-2 ${
                     selectedMethod === method.id
-                      ? 'border-orange-500 bg-orange-500'
+                      ? 'border-[#F9C81E] bg-[#F9C81E]'
                       : 'border-white/40'
                   }`}
                 >
@@ -122,7 +122,7 @@ const PaymentMethodModal = ({ isOpen, onClose, onConfirm, orderDetails }) => {
                 ${shipping.toFixed(2)}
               </span>
             </div>
-            <div className='flex justify-between text-lg font-bold text-orange-400 border-t border-white/20 pt-2'>
+            <div className='flex justify-between text-lg font-bold text-[#F9C81E] border-t border-white/20 pt-2'>
               <span>Total:</span>
               <span>${total.toFixed(2)}</span>
             </div>

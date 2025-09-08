@@ -182,7 +182,7 @@ const AdminDashboard = () => {
                   size='2xl'
                   className='sm:text-3xl text-white'
                 >
-                  <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                  <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                     Panel Administrativo
                   </span>
                 </Text>
@@ -281,7 +281,7 @@ const AdminDashboard = () => {
                 onClick={() => setActiveSection('orders')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm transition-all duration-300 ${
                   activeSection === 'orders'
-                    ? 'border-orange-400 text-orange-300'
+                    ? 'border-[#F9C81E] text-[#F9C81E]'
                     : 'border-transparent text-white/70 hover:text-white hover:border-white/30'
                 }`}
               >
@@ -291,7 +291,7 @@ const AdminDashboard = () => {
                 onClick={() => setActiveSection('products')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm transition-all duration-300 ${
                   activeSection === 'products'
-                    ? 'border-orange-400 text-orange-300'
+                    ? 'border-[#F9C81E] text-[#F9C81E]'
                     : 'border-transparent text-white/70 hover:text-white hover:border-white/30'
                 }`}
               >
@@ -301,7 +301,7 @@ const AdminDashboard = () => {
                 onClick={() => setActiveSection('store')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm transition-all duration-300 ${
                   activeSection === 'store'
-                    ? 'border-orange-400 text-orange-300'
+                    ? 'border-[#F9C81E] text-[#F9C81E]'
                     : 'border-transparent text-white/70 hover:text-white hover:border-white/30'
                 }`}
               >
@@ -530,7 +530,7 @@ const AdminDashboard = () => {
                                 tecnologia: { label: 'tecnologia', icon: Monitor, color: 'text-blue-400' },
                                 moda: { label: 'moda', icon: Shirt, color: 'text-pink-400' },
                                 juguetes: { label: 'juguetes', icon: Baby, color: 'text-yellow-400' },
-                                comida: { label: 'comida', icon: Utensils, color: 'text-orange-400' },
+                                comida: { label: 'comida', icon: Utensils, color: 'text-[#F9C81E]' },
                                 hogar: { label: 'hogar', icon: Home, color: 'text-green-400' },
                                 jardin: { label: 'jardin', icon: Sprout, color: 'text-emerald-400' },
                                 mascotas: { label: 'mascotas', icon: Dog, color: 'text-amber-400' },
@@ -546,7 +546,7 @@ const AdminDashboard = () => {
                               return (
                                 <div
                                   key={category}
-                                  className='flex items-center gap-2 px-3 py-2 bg-orange-500/20 border border-orange-500/30 rounded-lg'
+                                  className='flex items-center gap-2 px-3 py-2 bg-[#F9C81E]/20 border border-[#F9C81E]/30 rounded-lg'
                                 >
                                   {categoryInfo?.icon && (
                                     <categoryInfo.icon 
@@ -554,7 +554,7 @@ const AdminDashboard = () => {
                                       className={`${categoryInfo.color} flex-shrink-0`} 
                                     />
                                   )}
-                                  <Text variant='body' size='sm' className='text-orange-300'>
+                                  <Text variant='body' size='sm' className='text-[#F9C81E]'>
                                     {categoryInfo?.label}
                                   </Text>
                                 </div>

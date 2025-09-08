@@ -84,8 +84,8 @@ const Pagination = ({
                 disabled={isLoading}
                 className={`px-3 py-2 min-w-[40px] ${
                   page === currentPage 
-                    ? 'bg-orange-500 text-white' 
-                    : 'text-white/70 hover:text-orange-400'
+                    ? 'bg-[#F9C81E] text-white' 
+                    : 'text-white/70 hover:text-[#F9C81E]'
                 }`}
               >
                 {page}

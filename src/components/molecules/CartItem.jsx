@@ -19,7 +19,7 @@ const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote, origina
       {/* Contenedor superior: imagen, nombre y descripción */}
       <div className='flex gap-3 sm:gap-4 w-full'>
         {/* Imagen del producto */}
-        <div className='w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 rounded-full flex items-center justify-center flex-shrink-0 border border-white/10 overflow-hidden'>
+        <div className='w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-[#F9C81E]/20 to-yellow-500/20 rounded-full flex items-center justify-center flex-shrink-0 border border-white/10 overflow-hidden'>
           {item.image ? (
             <img 
               src={item.image} 
@@ -56,7 +56,7 @@ const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote, origina
 
         {/* Precio en mobile */}
         <div className='flex flex-col items-end sm:hidden'>
-          <p className='text-base font-bold text-orange-400'>
+          <p className='text-base font-bold text-[#F9C81E]'>
             ${totalPrice.toFixed(2)}
           </p>
           <p className='text-xs text-white/60'>
@@ -73,7 +73,7 @@ const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote, origina
               type="text"
               defaultValue={item.note || ''}
               placeholder="Agregar nota"
-              className='flex-1 h-8 px-3 text-sm bg-white/10 rounded-lg border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+              className='flex-1 h-8 px-3 text-sm bg-white/10 rounded-lg border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
               onKeyPress={(e) => {
                 if (e.key === 'Enter') {
                   onUpdateNote(e.target.value);
@@ -87,7 +87,7 @@ const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote, origina
                 onUpdateNote(input.value);
                 setIsEditingNote(false);
               }}
-              className='h-8 px-3 bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 rounded-lg text-sm font-medium transition-colors flex items-center justify-center whitespace-nowrap'
+              className='h-8 px-3 bg-[#F9C81E]/20 hover:bg-[#F9C81E]/30 text-[#F9C81E] rounded-lg text-sm font-medium transition-colors flex items-center justify-center whitespace-nowrap'
             >
               Guardar
             </button>
@@ -96,12 +96,12 @@ const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote, origina
           <div className='flex flex-wrap gap-2'>
             {item.note ? (
               <p className='text-sm text-white/80 italic break-all flex-grow'>
-                <span className='font-medium text-orange-400/80'>Nota:</span> {item.note}
+                <span className='font-medium text-[#F9C81E]/80'>Nota:</span> {item.note}
               </p>
             ) : null}
             <button
               onClick={() => setIsEditingNote(true)}
-              className='flex items-center gap-1.5 text-sm text-orange-400 hover:text-orange-300 transition-colors bg-orange-500/10 hover:bg-orange-500/20 px-3 h-8 rounded-lg whitespace-nowrap'
+              className='flex items-center gap-1.5 text-sm text-[#F9C81E] hover:text-[#F9C81E]/80 transition-colors bg-[#F9C81E]/10 hover:bg-[#F9C81E]/20 px-3 h-8 rounded-lg whitespace-nowrap'
             >
               <MessageCircle className='w-4 h-4' />
               <span className='font-medium'>{item.note ? 'Editar nota' : 'Agregar nota'}</span>
@@ -135,7 +135,7 @@ const CartItem = memo(({ item, onRemove, onUpdateQuantity, onUpdateNote, origina
 
         {/* Precio - visible solo en desktop */}
         <div className='hidden sm:block text-right min-w-[90px]'>
-          <p className='text-lg font-bold text-orange-400'>
+          <p className='text-lg font-bold text-[#F9C81E]'>
             ${totalPrice.toFixed(2)}
           </p>
           <p className='text-xs text-white/60'>

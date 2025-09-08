@@ -21,7 +21,7 @@ const OrderSummary = memo(
               </span>
             </div>
             <div className='border-t border-white/20 pt-4'>
-              <div className='flex justify-between items-center text-xl lg:text-2xl font-bold text-orange-400'>
+              <div className='flex justify-between items-center text-xl lg:text-2xl font-bold text-[#F9C81E]'>
                 <span>Total:</span>
                 <span>${total.toFixed(2)}</span>
               </div>

@@ -45,7 +45,7 @@ const HeroSection = memo(() => {
               size='7xl'
               className='text-white mb-6 drop-shadow-2xl md:text-8xl'
             >
-              JASAI
+              FlyGo Flash!
             </Text>
             <Text
               as='p'

@@ -27,13 +27,13 @@ const SearchBar = ({
           onChange={onChange}
           onKeyPress={handleKeyPress}
           placeholder={placeholder}
-          className='w-full pl-10 pr-4 py-3 rounded-lg border border-white/30 bg-white/20 text-white placeholder-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-200'
+          className='w-full pl-10 pr-4 py-3 rounded-lg border border-white/30 bg-white/20 text-white placeholder-gray-100 focus:outline-none focus:ring-2 focus:ring-[#F9C81E] focus:border-transparent transition-all duration-200'
         />
       </div>
       {showSearchButton && onSearch && (
         <button
           onClick={onSearch}
-          className='px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors duration-200 flex items-center gap-2'
+          className='px-6 py-3 bg-[#F9C81E] hover:bg-[#F9C81E]/80 text-white font-medium rounded-lg transition-colors duration-200 flex items-center gap-2'
         >
           <Search className='w-4 h-4' />
           Buscar

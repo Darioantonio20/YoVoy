@@ -32,7 +32,7 @@ const Button = memo(
         'bg-gradient-to-r from-slate-600 to-slate-700 text-white shadow-lg hover:from-slate-700 hover:to-slate-800 focus:ring-slate-500 rounded-full px-8',
 
       // Variante Fire con efecto Liquid Glass
-      fire: 'relative overflow-hidden bg-gradient-to-br from-red-500/20 via-orange-500/20 to-yellow-500/20 backdrop-blur-xl border border-red-300/30 text-white shadow-[0_8px_32px_rgba(239,68,68,0.3)] hover:shadow-[0_8px_32px_rgba(239,68,68,0.5)] focus:ring-red-400 before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-1000 before:ease-out after:absolute after:inset-0 after:bg-gradient-to-br after:from-red-400/30 after:via-orange-400/30 after:to-yellow-400/30 after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300 after:animate-pulse',
+      fire: 'relative overflow-hidden bg-gradient-to-br from-[#F9C81E]/20 via-[#F9C81E]/30 to-yellow-500/20 backdrop-blur-xl border border-[#F9C81E]/30 text-white shadow-[0_8px_32px_rgba(249,200,30,0.3)] hover:shadow-[0_8px_32px_rgba(249,200,30,0.5)] focus:ring-[#F9C81E] before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-1000 before:ease-out after:absolute after:inset-0 after:bg-gradient-to-br after:from-[#F9C81E]/30 after:via-[#F9C81E]/40 after:to-yellow-400/30 after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300 after:animate-pulse',
 
       // Variante Liquid Glass en negro y blanco
       liquid:

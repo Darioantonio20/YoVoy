@@ -250,14 +250,14 @@ export default function Cart() {
               <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-4 sm:p-6'>
                 <div className='mb-4 sm:mb-6'>
                   <h2 className='text-xl sm:text-2xl font-bold text-white mb-2 flex items-center'>
-                    <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                    <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                       Productos en tu carrito
                     </span>
-                    <span className='ml-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-sm font-semibold px-3 py-1 rounded-full'>
+                    <span className='ml-3 bg-gradient-to-r from-[#F9C81E] to-yellow-500 text-white text-sm font-semibold px-3 py-1 rounded-full'>
                       {cartItems.length}
                     </span>
                   </h2>
-                  <div className='w-20 h-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full'></div>
+                  <div className='w-20 h-1 bg-gradient-to-r from-[#F9C81E] to-yellow-500 rounded-full'></div>
                 </div>
 
                 <CartList
@@ -278,29 +278,29 @@ export default function Cart() {
                   <div className='bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-4 sm:p-6'>
                     <div className='mb-4'>
                       <h3 className='text-lg font-bold text-white mb-2 flex items-center'>
-                        <MapPin className='w-5 h-5 text-orange-400 mr-2' />
-                        <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                        <MapPin className='w-5 h-5 text-[#F9C81E] mr-2' />
+                        <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                           Ubicación de entrega
                         </span>
                       </h3>
-                      <div className='w-16 h-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full'></div>
+                      <div className='w-16 h-1 bg-gradient-to-r from-[#F9C81E] to-yellow-500 rounded-full'></div>
                     </div>
 
                     {/* Ubicación actual */}
                     <div className='mb-4'>
-                      <div className='flex items-center justify-between p-3 bg-orange-500/20 border border-orange-500/30 rounded-lg'>
+                      <div className='flex items-center justify-between p-3 bg-[#F9C81E]/20 border border-[#F9C81E]/30 rounded-lg'>
                         <div className='flex items-center gap-2'>
-                          <MapPin className='w-4 h-4 text-orange-400' />
+                          <MapPin className='w-4 h-4 text-[#F9C81E]' />
                           <div>
-                            <Text variant='bodyBold' size='sm' className='text-orange-300'>
+                            <Text variant='bodyBold' size='sm' className='text-[#F9C81E]'>
                               {selectedLocation?.alias || 'Sin ubicación'}
                             </Text>
-                            <Text variant='caption' size='xs' className='text-orange-200/70 truncate'>
+                            <Text variant='caption' size='xs' className='text-[#F9C81E]/70 truncate'>
                               {selectedLocation?.googleMapsUrl || ''}
                             </Text>
                           </div>
                         </div>
-                        <Star className='w-4 h-4 text-orange-300' fill='currentColor' />
+                        <Star className='w-4 h-4 text-[#F9C81E]' fill='currentColor' />
                       </div>
                     </div>
 
@@ -359,12 +359,12 @@ export default function Cart() {
             {/* Header del modal */}
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-700">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-[#F9C81E] to-[#F9C81E] rounded-full flex items-center justify-center">
                   <MapPin className="w-5 h-5 text-white" />
                 </div>
                 <Text variant="h3" size="base" className="text-white">Seleccionar Ubicación</Text>
               </div>
-              <Button onClick={() => setShowLocationSelector(false)} variant="minimal" className="p-2 text-red-400 hover:bg-gray-700 border-none bg-transparent">
+              <Button onClick={() => setShowLocationSelector(false)} variant="minimal" className="p-2 text-[#F9C81E] hover:bg-gray-700 border-none bg-transparent">
                 <X className="w-5 h-5" />
               </Button>
             </div>
@@ -376,21 +376,21 @@ export default function Cart() {
                   key={location._id}
                   className={`flex items-center justify-between p-3 rounded-lg border transition-colors cursor-pointer ${
                     index === currentLocationIndex
-                      ? 'bg-orange-500/20 border-orange-500/30' 
+                      ? 'bg-[#F9C81E]/20 border-[#F9C81E]/30' 
                       : 'bg-gray-800 border-gray-600 hover:bg-gray-700'
                   }`}
                   onClick={() => handleSetCurrentLocation(location._id)}
                 >
                   <div className="flex items-center gap-3">
-                    <MapPin className={`w-4 h-4 flex-shrink-0 self-center ${index === currentLocationIndex ? 'text-orange-300' : 'text-orange-400'}`} />
+                    <MapPin className={`w-4 h-4 flex-shrink-0 self-center ${index === currentLocationIndex ? 'text-[#F9C81E]' : 'text-[#F9C81E]'}`} />
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                         <div className="flex items-center gap-2">
-                          <Text variant="body" size="sm" className={`font-medium ${index === currentLocationIndex ? 'text-orange-300' : 'text-white'}`}>
+                          <Text variant="body" size="sm" className={`font-medium ${index === currentLocationIndex ? 'text-[#F9C81E]' : 'text-white'}`}>
                             {location.alias}
                           </Text>
                           {index === currentLocationIndex && (
-                            <Star className="w-3 h-3 text-orange-300" fill="currentColor" />
+                            <Star className="w-3 h-3 text-[#F9C81E]" fill="currentColor" />
                           )}
                         </div>
                         <Text variant="body" size="xs" className="text-white/70 truncate">
@@ -403,7 +403,7 @@ export default function Cart() {
                   {/* Indicador de selección */}
                   <div className="flex items-center gap-1 self-center">
                     {index === currentLocationIndex && (
-                      <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+                      <div className="w-3 h-3 bg-[#F9C81E] rounded-full"></div>
                     )}
                   </div>
                 </div>

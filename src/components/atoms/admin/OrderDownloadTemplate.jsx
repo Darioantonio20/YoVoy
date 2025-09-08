@@ -32,15 +32,15 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
     };
   })();
   return `
-    <div style="border: 4px solid #f97316; border-radius: 12px; padding: 32px; background: linear-gradient(135deg, #1f2937 0%, #111827 100%); font-family: Arial, sans-serif; color: white;">
+    <div style="border: 4px solid #F9C81E; border-radius: 12px; padding: 32px; background: linear-gradient(135deg, #1f2937 0%, #111827 100%); font-family: Arial, sans-serif; color: white;">
       <!-- Header -->
-      <div style="text-align: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 2px solid #f97316;">
+      <div style="text-align: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 2px solid #F9C81E;">
         <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px;">
-          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f97316 0%, #eab308 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #F9C81E 0%, #eab308 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                             <span style="color: white; font-size: 20px;">📋</span>
           </div>
           <div>
-            <h1 style="font-size: 24px; font-weight: bold; color: #f97316; margin: 0;">Jasai</h1>
+            <h1 style="font-size: 24px; font-weight: bold; color: #F9C81E; margin: 0;">Jasai</h1>
             <p style="color: #eab308; font-weight: 500; margin: 0;">Detalles de la Orden</p>
             
           </div>
@@ -55,10 +55,10 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
 
       <!-- Información del Cliente -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px;">
-        <div style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 24px; border: 1px solid rgba(249, 115, 22, 0.3);">
+        <div style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 24px; border: 1px solid rgba(249, 200, 30, 0.3);">
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-            <span style="color: #f97316; font-size: 20px;">👤</span>
-            <h2 style="font-size: 18px; font-weight: bold; color: #f97316; margin: 0;">Información del Cliente</h2>
+            <span style="color: #F9C81E; font-size: 20px;">👤</span>
+            <h2 style="font-size: 18px; font-weight: bold; color: #F9C81E; margin: 0;">Información del Cliente</h2>
           </div>
            <div style="display: flex; flex-direction: column; gap: 16px;">
             <div>
@@ -107,7 +107,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
 
       <!-- Productos -->
       <div style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 24px; margin-bottom: 32px; border: 1px solid rgba(255, 255, 255, 0.1);">
-        <h2 style="font-size: 18px; font-weight: bold; color: #f97316; margin: 0 0 16px 0;">Productos Ordenados</h2>
+        <h2 style="font-size: 18px; font-weight: bold; color: #F9C81E; margin: 0 0 16px 0;">Productos Ordenados</h2>
         <div style="display: flex; flex-direction: column; gap: 12px;">
           ${order.products
             .map(
@@ -120,11 +120,11 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
                 <div>
                   <p style="font-weight: 600; color: white; margin: 0;">${product.name}</p>
                   <p style="font-size: 12px; color: #eab308; margin: 0;">Cantidad: ${product.quantity}</p>
-                  ${product.note ? `<p style="font-size: 11px; color: #f97316; margin: 4px 0 0 0; font-style: italic;">Nota Cliente: "${product.note}"</p>` : ''}
+                  ${product.note ? `<p style="font-size: 11px; color: #F9C81E; margin: 4px 0 0 0; font-style: italic;">Nota Cliente: "${product.note}"</p>` : ''}
                   ${product.adminNote ? `<p style="font-size: 11px; color: #3b82f6; margin: 4px 0 0 0; font-style: italic;">Nota Admin: "${product.adminNote}"</p>` : ''}
                 </div>
               </div>
-              <p style="font-weight: bold; color: #f97316; margin: 0;">$${((product.price || 0) * (product.quantity || 1)).toFixed(2)}</p>
+              <p style="font-weight: bold; color: #F9C81E; margin: 0;">$${((product.price || 0) * (product.quantity || 1)).toFixed(2)}</p>
             </div>
           `
             )
@@ -134,7 +134,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
 
       <!-- Resumen de Costos -->
       <div style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 24px; margin-bottom: 32px; border: 1px solid rgba(255, 255, 255, 0.1);">
-        <h2 style="font-size: 18px; font-weight: bold; color: #f97316; margin: 0 0 16px 0;">Resumen de Costos</h2>
+        <h2 style="font-size: 18px; font-weight: bold; color: #F9C81E; margin: 0 0 16px 0;">Resumen de Costos</h2>
         <div style="display: flex; flex-direction: column; gap: 12px;">
           <div style="display: flex; justify-content: space-between;">
             <span style="color: #eab308;">Subtotal:</span>
@@ -147,17 +147,17 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
           <div style="border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 12px;">
             <div style="display: flex; justify-content: space-between;">
               <span style="font-size: 18px; font-weight: bold; color: white;">Total:</span>
-              <span style="font-size: 18px; font-weight: bold; color: #f97316;">$${(order.total || order.totals?.total || 0).toFixed(2)}</span>
+              <span style="font-size: 18px; font-weight: bold; color: #F9C81E;">$${(order.total || order.totals?.total || 0).toFixed(2)}</span>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Información para el repartidor -->
-      <div style="background: rgba(249, 115, 22, 0.1); border-radius: 8px; padding: 24px; border: 2px solid #f97316;">
+      <div style="background: rgba(249, 200, 30, 0.1); border-radius: 8px; padding: 24px; border: 2px solid #F9C81E;">
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-          <span style="color: #f97316; font-size: 24px;">🚚</span>
-          <h2 style="font-size: 18px; font-weight: bold; color: #f97316; margin: 0;">Información para el Repartidor</h2>
+          <span style="color: #F9C81E; font-size: 24px;">🚚</span>
+          <h2 style="font-size: 18px; font-weight: bold; color: #F9C81E; margin: 0;">Información para el Repartidor</h2>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
           <div>
@@ -179,7 +179,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
       ${(order.notes || order.products.some(p => p.note || p.adminNote)) ? `
       <!-- Notas de la Orden -->
       <div style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 24px; margin-bottom: 32px; border: 1px solid rgba(255, 255, 255, 0.1);">
-        <h2 style="font-size: 18px; font-weight: bold; color: #f97316; margin: 0 0 16px 0;">Notas de la Orden</h2>
+        <h2 style="font-size: 18px; font-weight: bold; color: #F9C81E; margin: 0 0 16px 0;">Notas de la Orden</h2>
         <div style="display: flex; flex-direction: column; gap: 12px;">
           ${order.notes ? `
           <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid #a855f7; border-radius: 8px; padding: 12px;">
@@ -188,8 +188,8 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
           </div>
           ` : ''}
           ${order.products.some(p => p.note) ? `
-          <div style="background: rgba(249, 115, 22, 0.1); border: 1px solid #f97316; border-radius: 8px; padding: 12px;">
-            <p style="color: #f97316; font-weight: 600; font-size: 12px; margin: 0 0 4px 0;">Notas del Cliente:</p>
+          <div style="background: rgba(249, 200, 30, 0.1); border: 1px solid #F9C81E; border-radius: 8px; padding: 12px;">
+            <p style="color: #F9C81E; font-weight: 600; font-size: 12px; margin: 0 0 4px 0;">Notas del Cliente:</p>
             ${order.products.filter(p => p.note).map(product => `
             <p style="color: white; font-size: 12px; margin: 4px 0; font-style: italic;">• <strong>${product.name}:</strong> "${product.note}"</p>
             `).join('')}
@@ -208,7 +208,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
       ` : ''}
 
       <!-- Footer -->
-      <div style="margin-top: 32px; padding-top: 24px; border-top: 2px solid #f97316; text-align: center;">
+      <div style="margin-top: 32px; padding-top: 24px; border-top: 2px solid #F9C81E; text-align: center;">
         <p style="color: #eab308; font-size: 12px; margin: 0;">
           Orden #${order.id || order._id || order.orderNumber || 'N/A'} - Generada el ${new Date(
             order.createdAt || order.date || new Date()
@@ -220,7 +220,7 @@ const OrderDownloadTemplate = ({ order, getPaymentMethodText }) => {
             minute: '2-digit',
           })}
         </p>
-        <p style="color: #f97316; font-weight: 500; margin: 8px 0 0 0;">Jasai - Tu tienda de confianza</p>
+        <p style="color: #F9C81E; font-weight: 500; margin: 8px 0 0 0;">Jasai - Tu tienda de confianza</p>
       </div>
     </div>
   `;

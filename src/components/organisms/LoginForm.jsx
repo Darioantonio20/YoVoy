@@ -687,13 +687,13 @@ const LoginForm = memo(({ onBack }) => {
                     <div className='mt-2 p-2 bg-blue-500/10 border border-blue-500/20 rounded text-xs text-blue-300/90'>
                       <p className='font-medium text-blue-300'>📸 Instrucciones para subir imágenes:</p>
                       <div className='space-y-1 mt-1'>
-                        <p>1. Ve a <a href="https://es.imgbb.com/" target="_blank" rel="noopener noreferrer" className='text-orange-400 hover:text-orange-300 underline'>ImgBB.com</a></p>
+                        <p>1. Ve a <a href="https://es.imgbb.com/" target="_blank" rel="noopener noreferrer" className='text-[#F9C81E] hover:text-[#F9C81E]/80 underline'>ImgBB.com</a></p>
                         <p>2. Sube la imagen de tu tienda (arrastra y suelta)</p>
                         <p>3. Haz clic derecho en la imagen subida</p>
                         <p>4. Selecciona "Abrir imagen en nueva pestaña"</p>
                         <p>5. Copia la URL de la nueva pestaña</p>
                         <p>6. Pega la URL aquí</p>
-                        <p className='text-orange-400 font-medium'>• Ejemplo: https://i.ibb.co/abc123/imagen-tienda.jpg</p>
+                        <p className='text-[#F9C81E] font-medium'>• Ejemplo: https://i.ibb.co/abc123/imagen-tienda.jpg</p>
                       </div>
                     </div>
                   </div>
@@ -706,7 +706,7 @@ const LoginForm = memo(({ onBack }) => {
                       <button
                         type='button'
                         onClick={() => window.open('https://www.google.com/maps', '_blank')}
-                        className='flex items-center gap-2 px-3 py-2 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded-lg text-orange-300 hover:text-orange-200 transition-colors text-xs'
+                        className='flex items-center gap-2 px-3 py-2 bg-[#F9C81E]/20 hover:bg-[#F9C81E]/30 border border-[#F9C81E]/30 rounded-lg text-[#F9C81E] hover:text-[#F9C81E]/80 transition-colors text-xs'
                         disabled={isLoading}
                       >
                         <svg className='w-4 h-4' viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -767,7 +767,7 @@ const LoginForm = memo(({ onBack }) => {
                         { id: 'tecnologia', label: 'tecnologia', icon: Monitor, color: 'text-blue-400' },
                         { id: 'moda', label: 'moda', icon: Shirt, color: 'text-pink-400' },
                         { id: 'juguetes', label: 'juguetes', icon: Baby, color: 'text-yellow-400' },
-                        { id: 'comida', label: 'comida', icon: Utensils, color: 'text-orange-400' },
+                        { id: 'comida', label: 'comida', icon: Utensils, color: 'text-[#F9C81E]' },
                         { id: 'hogar', label: 'hogar', icon: Home, color: 'text-green-400' },
                         { id: 'jardin', label: 'jardin', icon: Sprout, color: 'text-emerald-400' },
                         { id: 'mascotas', label: 'mascotas', icon: Dog, color: 'text-amber-400' },
@@ -811,8 +811,8 @@ const LoginForm = memo(({ onBack }) => {
                             disabled={isLoading}
                           />
                           <div
-                            className='w-7 h-7 rounded-lg bg-transparent border-2 border-orange-500/70 transition-all duration-300 ease-in-out
-                              peer-checked:bg-gradient-to-br from-orange-400 to-yellow-400
+                            className='w-7 h-7 rounded-lg bg-transparent border-2 border-[#F9C81E]/70 transition-all duration-300 ease-in-out
+                              peer-checked:bg-gradient-to-br from-[#F9C81E] to-yellow-400
                               peer-checked:border-0 peer-checked:rotate-12
                               after:content-[""] after:absolute after:top-[22px] after:left-[14px]
                               after:-translate-x-1/2 after:-translate-y-1/2 after:w-4 after:h-4
@@ -844,9 +844,9 @@ const LoginForm = memo(({ onBack }) => {
                     </label>
                     
                     {/* Botones de configuración rápida */}
-                    <div className='mb-4 p-3 bg-orange-500/10 border border-orange-500/20 rounded-lg'>
-                      <p className='text-xs text-orange-300/90 mb-2 font-medium flex items-center gap-1'>
-                        <Zap size={12} className='text-orange-300' />
+                    <div className='mb-4 p-3 bg-[#F9C81E]/10 border border-[#F9C81E]/20 rounded-lg'>
+                      <p className='text-xs text-[#F9C81E]/90 mb-2 font-medium flex items-center gap-1'>
+                        <Zap size={12} className='text-[#F9C81E]' />
                         Configuración rápida:
                       </p>
                       <div className='flex flex-wrap gap-2'>
@@ -864,7 +864,7 @@ const LoginForm = memo(({ onBack }) => {
                               store: { ...prev.store, schedule: quickSchedule }
                             }));
                           }}
-                          className='px-3 py-1.5 text-xs bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded text-orange-300 hover:text-orange-200 transition-colors'
+                          className='px-3 py-1.5 text-xs bg-[#F9C81E]/20 hover:bg-[#F9C81E]/30 border border-[#F9C81E]/30 rounded text-[#F9C81E] hover:text-[#F9C81E]/80 transition-colors'
                           disabled={isLoading}
                         >
                           Lunes a Viernes 9:00-18:00
@@ -883,7 +883,7 @@ const LoginForm = memo(({ onBack }) => {
                               store: { ...prev.store, schedule: quickSchedule }
                             }));
                           }}
-                          className='px-3 py-1.5 text-xs bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded text-orange-300 hover:text-orange-200 transition-colors'
+                          className='px-3 py-1.5 text-xs bg-[#F9C81E]/20 hover:bg-[#F9C81E]/30 border border-[#F9C81E]/30 rounded text-[#F9C81E] hover:text-[#F9C81E]/80 transition-colors'
                           disabled={isLoading}
                         >
                           Lunes a Sábado 8:00-20:00
@@ -935,7 +935,7 @@ const LoginForm = memo(({ onBack }) => {
                                   }
                                 }));
                               }}
-                              className='w-5 h-5 text-orange-500 bg-transparent border-2 border-orange-500/70 rounded focus:ring-orange-500/50 focus:ring-2'
+                              className='w-5 h-5 text-[#F9C81E] bg-transparent border-2 border-[#F9C81E]/70 rounded focus:ring-[#F9C81E]/50 focus:ring-2'
                               disabled={isLoading}
                             />
                             <span className='text-sm text-white/90 font-medium'>{day.day}</span>
@@ -963,7 +963,7 @@ const LoginForm = memo(({ onBack }) => {
                                       }
                                     }));
                                   }}
-                                  className='px-3 py-2 text-sm bg-white/10 border border-white/20 rounded text-white focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                                  className='px-3 py-2 text-sm bg-white/10 border border-white/20 rounded text-white focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                                   disabled={isLoading}
                                 />
                               </div>
@@ -986,12 +986,12 @@ const LoginForm = memo(({ onBack }) => {
                                       }
                                     }));
                                   }}
-                                  className='px-3 py-2 text-sm bg-white/10 border border-white/20 rounded text-white focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50'
+                                  className='px-3 py-2 text-sm bg-white/10 border border-white/20 rounded text-white focus:outline-none focus:border-[#F9C81E]/50 focus:ring-1 focus:ring-[#F9C81E]/50'
                                   disabled={isLoading}
                                 />
                               </div>
                               <div className='flex items-center gap-2'>
-                                <span className='text-xs text-orange-400/80 font-medium'>
+                                <span className='text-xs text-[#F9C81E]/80 font-medium'>
                                   {day.openTime} - {day.closeTime}
                                 </span>
                               </div>
@@ -1204,7 +1204,7 @@ const LoginForm = memo(({ onBack }) => {
                     <button
                       type='button'
                       onClick={() => window.open('https://www.google.com/maps', '_blank')}
-                      className='flex items-center gap-2 px-3 py-2 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded-lg text-orange-300 hover:text-orange-200 transition-colors text-xs'
+                      className='flex items-center gap-2 px-3 py-2 bg-[#F9C81E]/20 hover:bg-[#F9C81E]/30 border border-[#F9C81E]/30 rounded-lg text-[#F9C81E] hover:text-[#F9C81E]/80 transition-colors text-xs'
                       disabled={isLoading}
                     >
                       <svg className='w-4 h-4' viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -1302,7 +1302,7 @@ const LoginForm = memo(({ onBack }) => {
           {!isLogin && !isStore && (
             <button
               type='button'
-              className='block w-full text-sm text-orange-400 mt-2 sm:mt-2 hover:underline text-center'
+              className='block w-full text-sm text-[#F9C81E] mt-2 sm:mt-2 hover:underline text-center'
               onClick={() => toggleStoreForm()}
               disabled={isLoading}
             >

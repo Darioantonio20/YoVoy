@@ -109,12 +109,12 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
         {/* Header */}
         <div className='flex items-center justify-between mb-6'>
           <div className='flex items-center space-x-3'>
-            <div className='w-10 h-10 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 border border-orange-400/30 rounded-full flex items-center justify-center'>
-              <CheckCircle className='w-6 h-6 text-orange-400' />
+            <div className='w-10 h-10 bg-gradient-to-br from-[#F9C81E]/20 to-yellow-500/20 border border-[#F9C81E]/30 rounded-full flex items-center justify-center'>
+              <CheckCircle className='w-6 h-6 text-[#F9C81E]' />
             </div>
             <div>
               <Text variant='h2' size='xl' className='text-white'>
-                <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                   Detalles de la Orden
                 </span>
               </Text>
@@ -138,9 +138,9 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
           <div className='space-y-6'>
             <div className='bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10'>
               <div className='flex items-center space-x-2 mb-4'>
-                <User className='w-5 h-5 text-orange-400' />
+                <User className='w-5 h-5 text-[#F9C81E]' />
                 <Text variant='h3' size='lg' className='text-white'>
-                  <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                  <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                     Información del Cliente
                   </span>
                 </Text>
@@ -192,7 +192,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                   </Text>
                   <div className='flex flex-col gap-1'>
                     <div className='flex items-center gap-2'>
-                      <MapPin className='w-4 h-4 text-orange-400' />
+                      <MapPin className='w-4 h-4 text-[#F9C81E]' />
                       <Text variant='body' size='md' className='font-medium text-white'>
                         {order.customerDefaultLocation?.alias || order.customer?.shippingAddress || order.customer?.location?.alias || order.shippingAddress || 'No especificada'}
                       </Text>
@@ -204,7 +204,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                           target='_blank'
                           rel='noopener noreferrer'
                           referrerPolicy='no-referrer'
-                          className='text-xs text-orange-300 hover:text-orange-200 break-all'
+                          className='text-xs text-[#F9C81E] hover:text-[#F9C81E]/80 break-all'
                         >
                           {mapsUrl}
                         </a>
@@ -221,11 +221,11 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
             {/* Información de Pago */}
             <div className='bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10'>
               <div className='flex items-center space-x-2 mb-4'>
-                <div className='w-5 h-5 flex items-center justify-center text-orange-400'>
+                <div className='w-5 h-5 flex items-center justify-center text-[#F9C81E]'>
                   {getPaymentMethodIcon(order.payment?.method || order.paymentMethod || 'efectivo')}
                 </div>
                 <Text variant='h3' size='lg' className='text-white'>
-                  <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                  <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                     Información de Pago
                   </span>
                 </Text>
@@ -272,7 +272,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
             {/* Productos */}
             <div className='bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10'>
               <Text variant='h3' size='lg' className='text-white mb-4'>
-                <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                   Productos Ordenados
                 </span>
               </Text>
@@ -284,7 +284,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                     className='flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10'
                   >
                     <div className='flex items-center space-x-3'>
-                      <div className='w-8 h-8 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 border border-orange-400/30 rounded-full flex items-center justify-center'>
+                      <div className='w-8 h-8 bg-gradient-to-br from-[#F9C81E]/20 to-yellow-500/20 border border-[#F9C81E]/30 rounded-full flex items-center justify-center'>
                         <Package size={16} className='text-gray-400' />
                       </div>
                       <div>
@@ -305,7 +305,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                           </Text>
                           {product.note && (
                             <div className='flex items-center gap-1.5'>
-                              <span className='px-1.5 py-0.5 text-[10px] bg-orange-500/20 text-orange-300 rounded-full border border-orange-500/30'>
+                              <span className='px-1.5 py-0.5 text-[10px] bg-[#F9C81E]/20 text-[#F9C81E] rounded-full border border-[#F9C81E]/30'>
                                 Nota Cliente
                               </span>
                               <Text
@@ -349,7 +349,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
             {/* Resumen de Costos */}
             <div className='bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10'>
               <Text variant='h3' size='lg' className='text-white mb-4'>
-                <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                   Resumen de Costos
                 </span>
               </Text>
@@ -398,7 +398,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                     <Text
                       variant='body'
                       size='lg'
-                      className='font-bold text-orange-400'
+                      className='font-bold text-[#F9C81E]'
                     >
                       ${(order.total || order.totals?.total || 0).toFixed(2)}
                     </Text>
@@ -411,7 +411,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
             {(order.notes || order.products.some(p => p.note || p.adminNote)) && (
               <div className='bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10'>
                 <Text variant='h3' size='lg' className='text-white mb-4'>
-                  <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                  <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                     Notas de la Orden
                   </span>
                 </Text>
@@ -437,7 +437,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                   {order.products.some(p => p.note) && (
                     <div className='p-3 bg-white/5 rounded-lg border border-white/10'>
                       <div className='flex items-center gap-2 mb-2'>
-                        <span className='px-2 py-1 text-xs bg-orange-500/20 text-orange-300 rounded-full border border-orange-500/30'>
+                        <span className='px-2 py-1 text-xs bg-[#F9C81E]/20 text-[#F9C81E] rounded-full border border-[#F9C81E]/30'>
                           Notas del Cliente
                         </span>
                       </div>
@@ -488,7 +488,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
             {/* Información Adicional */}
             <div className='bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10'>
               <Text variant='h3' size='lg' className='text-white mb-4'>
-                <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+                <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                   Información Adicional
                 </span>
               </Text>
@@ -528,9 +528,9 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
         {/* Información para el repartidor */}
         <div className='mt-8 p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10'>
           <div className='flex items-center space-x-2 mb-2'>
-            <span className='text-orange-400 text-lg'>🚚</span>
+            <span className='text-[#F9C81E] text-lg'>🚚</span>
             <Text variant='h3' size='md' className='text-white font-semibold'>
-              <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+              <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                 Información para el Repartidor
               </span>
             </Text>
@@ -579,7 +579,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
                       target='_blank'
                       rel='noopener noreferrer'
                       referrerPolicy='no-referrer'
-                      className='text-xs text-orange-300 hover:text-orange-200 break-all'
+                      className='text-xs text-[#F9C81E] hover:text-[#F9C81E]/80 break-all'
                     >
                       {mapsUrl}
                     </a>
@@ -599,7 +599,7 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
             variant='success'
             onClick={handleDownloadImage}
             disabled={isDownloading}
-            className='flex items-center space-x-3 px-8 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-lg font-semibold'
+            className='flex items-center space-x-3 px-8 py-3 bg-gradient-to-r from-[#F9C81E] to-yellow-500 hover:from-[#F9C81E]/80 hover:to-yellow-600 text-lg font-semibold'
           >
             <Download className='w-5 h-5' />
             <span>

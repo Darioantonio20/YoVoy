@@ -476,7 +476,7 @@ const UserProfileButton = ({ className = '' }) => {
         <div className='relative'>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`w-14 h-14 bg-gradient-to-br from-orange-500 via-orange-600 to-red-500 hover:from-orange-600 hover:via-orange-700 hover:to-red-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 backdrop-blur-sm active:scale-95 ${isOpen ? 'ring-4 ring-orange-400 ring-opacity-75' : ''}`}
+            className={`w-14 h-14 bg-gradient-to-br from-[#F9C81E] via-[#F9C81E] to-[#F9C81E] hover:from-[#F9C81E]/80 hover:via-[#F9C81E]/90 hover:to-[#F9C81E]/80 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 backdrop-blur-sm active:scale-95 ${isOpen ? 'ring-4 ring-[#F9C81E] ring-opacity-75' : ''}`}
           >
             {isProfileUrlValid ? (
               <img
@@ -490,7 +490,7 @@ const UserProfileButton = ({ className = '' }) => {
             )}
           </button>
 
-          <div className={`absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-br from-orange-400 to-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+          <div className={`absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-br from-[#F9C81E] to-[#F9C81E] text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${isOpen ? 'rotate-180' : ''}`}>
             <ChevronDown className='w-3 h-3' />
           </div>
         </div>
@@ -503,7 +503,7 @@ const UserProfileButton = ({ className = '' }) => {
             {/* Header del menú */}
             <div className='flex items-center justify-between mb-4 pb-3 border-b border-gray-700'>
               <div className='flex items-center gap-3'>
-                <div className='w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center overflow-hidden'>
+                <div className='w-10 h-10 bg-gradient-to-br from-[#F9C81E] to-[#F9C81E] rounded-full flex items-center justify-center overflow-hidden'>
                   {isProfileUrlValid ? (
                     <img
                       src={profileUrl}
@@ -519,7 +519,7 @@ const UserProfileButton = ({ className = '' }) => {
                   <Text variant='h3' size='base' className='text-white'>{user.name || 'Mi Perfil'}</Text>
                   <Text variant='caption' size='sm' className='text-gray-400'>{user.role === 'admin' ? 'Administrador' : 'Cliente'}</Text>
                   {currentLocation && (
-                    <Text variant='caption' size='xs' className='text-orange-400'>📍 {currentLocation.alias}</Text>
+                    <Text variant='caption' size='xs' className='text-[#F9C81E]'>📍 {currentLocation.alias}</Text>
                   )}
                 </div>
               </div>
@@ -531,8 +531,8 @@ const UserProfileButton = ({ className = '' }) => {
             {/* Opciones del menú */}
             <div className='space-y-2'>
               <Button onClick={handleEditProfile} variant='minimal' className='w-full flex items-center gap-3 px-3 py-3 text-left text-gray-200 hover:bg-gray-800 rounded-xl border-none bg-transparent'>
-                <div className='w-8 h-8 bg-orange-900/50 rounded-lg flex items-center justify-center group-hover:bg-orange-800/70 transition-colors'>
-                  <Edit3 className='w-4 h-4 text-orange-400' />
+                <div className='w-8 h-8 bg-[#F9C81E]/20 rounded-lg flex items-center justify-center group-hover:bg-[#F9C81E]/30 transition-colors'>
+                  <Edit3 className='w-4 h-4 text-[#F9C81E]' />
                 </div>
                 <div>
                   <Text variant='bodyBold' size='sm' className='text-white'>Editar Perfil</Text>
@@ -561,13 +561,13 @@ const UserProfileButton = ({ className = '' }) => {
               </Button>
 
               <div className='border-t border-gray-700 pt-2'>
-                <Button onClick={handleLogout} variant='minimal' className='w-full flex items-center gap-3 px-3 py-3 text-left text-red-400 hover:bg-red-900/30 rounded-xl border-none bg-transparent'>
-                  <div className='w-8 h-8 bg-red-900/50 rounded-lg flex items-center justify-center group-hover:bg-red-800/70 transition-colors'>
-                    <LogOut className='w-4 h-4 text-red-400' />
+                <Button onClick={handleLogout} variant='minimal' className='w-full flex items-center gap-3 px-3 py-3 text-left text-[#F9C81E] hover:bg-[#F9C81E]/20 rounded-xl border-none bg-transparent'>
+                  <div className='w-8 h-8 bg-[#F9C81E]/30 rounded-lg flex items-center justify-center group-hover:bg-[#F9C81E]/50 transition-colors'>
+                    <LogOut className='w-4 h-4 text-[#F9C81E]' />
                   </div>
                   <div>
-                    <Text variant='bodyBold' size='sm' className='text-red-300'>Cerrar Sesión</Text>
-                    <Text variant='caption' size='xs' className='text-red-400'>Salir de la aplicación</Text>
+                    <Text variant='bodyBold' size='sm' className='text-[#F9C81E]'>Cerrar Sesión</Text>
+                    <Text variant='caption' size='xs' className='text-[#F9C81E]/80'>Salir de la aplicación</Text>
                   </div>
                 </Button>
               </div>
@@ -583,12 +583,12 @@ const UserProfileButton = ({ className = '' }) => {
             {/* Header del modal */}
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-700">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-[#F9C81E] to-[#F9C81E] rounded-full flex items-center justify-center">
                   <Edit3 className="w-5 h-5 text-white" />
                 </div>
                 <Text variant="h3" size="base" className="text-white">Editar Perfil</Text>
               </div>
-              <Button onClick={handleCancelEdit} variant="minimal" className="p-2 text-red-400 hover:bg-gray-700 border-none bg-transparent">
+              <Button onClick={handleCancelEdit} variant="minimal" className="p-2 text-[#F9C81E] hover:bg-gray-700 border-none bg-transparent">
                 <X size={20} />
               </Button>
             </div>
@@ -597,7 +597,7 @@ const UserProfileButton = ({ className = '' }) => {
             {isLoadingProfile ? (
               <div className="flex items-center justify-center py-8">
                 <div className="flex flex-col items-center gap-3">
-                  <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-8 h-8 border-2 border-[#F9C81E] border-t-transparent rounded-full animate-spin"></div>
                   <Text variant="body" size="sm" className="text-gray-400">Cargando datos del perfil...</Text>
                 </div>
               </div>
@@ -610,7 +610,7 @@ const UserProfileButton = ({ className = '' }) => {
                   type="text"
                   value={userData.name}
                   onChange={(e) => handleUpdateUserData('name', e.target.value)}
-                  className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm sm:text-base"
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F9C81E] focus:border-transparent text-sm sm:text-base"
                   placeholder="Ingresa tu nombre completo"
                 />
               </div>
@@ -622,7 +622,7 @@ const UserProfileButton = ({ className = '' }) => {
                   type="tel"
                   value={userData.phone}
                   onChange={(e) => handleUpdateUserData('phone', e.target.value)}
-                  className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm sm:text-base"
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F9C81E] focus:border-transparent text-sm sm:text-base"
                   placeholder="+52 55 1234 5678"
                 />
               </div>
@@ -646,7 +646,7 @@ const UserProfileButton = ({ className = '' }) => {
                   <Text variant="bodyBold" size="sm" className="text-white mb-2">Imagen de Perfil</Text>
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0">
-                      <div className="w-14 h-14 rounded-full overflow-hidden bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center border border-gray-600">
+                      <div className="w-14 h-14 rounded-full overflow-hidden bg-gradient-to-br from-[#F9C81E] to-[#F9C81E] flex items-center justify-center border border-gray-600">
                         {userData.profileImageUrl?.trim() ? (
                           <img
                             src={userData.profileImageUrl}
@@ -664,7 +664,7 @@ const UserProfileButton = ({ className = '' }) => {
                         type="url"
                         value={userData.profileImageUrl}
                         onChange={(e) => handleUpdateUserData('profileImageUrl', e.target.value)}
-                        className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm sm:text-base"
+                        className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F9C81E] focus:border-transparent text-sm sm:text-base"
                         placeholder="https://cdn.site.com/avatars/cliente-demo.png"
                       />
                       <div className="mt-1">
@@ -681,7 +681,7 @@ const UserProfileButton = ({ className = '' }) => {
                           const invalidProto = !/^https?:\/\//i.test(val);
                           if (tooLong || invalidProto) {
                             return (
-                              <Text variant="caption" size="xs" className="text-red-400">
+                              <Text variant="caption" size="xs" className="text-[#F9C81E]">
                                 {tooLong ? 'La URL excede 500 caracteres. ' : ''}{invalidProto ? 'La URL debe iniciar con http:// o https://.' : ''}
                               </Text>
                             );
@@ -707,11 +707,11 @@ const UserProfileButton = ({ className = '' }) => {
                       key={location._id} 
                       className={`flex flex-col sm:flex-row items-start sm:items-center gap-2 p-2 sm:p-3 rounded-lg border transition-colors ${
                         index === userData.currentLocationIndex
-                          ? 'bg-orange-500/20 border-orange-500/30' 
+                          ? 'bg-[#F9C81E]/20 border-[#F9C81E]/30' 
                           : 'bg-gray-800 border-gray-600'
                       }`}
                     >
-                      <MapPin className={`w-4 h-4 flex-shrink-0 self-center ${index === userData.currentLocationIndex ? 'text-orange-300' : 'text-orange-400'}`} />
+                      <MapPin className={`w-4 h-4 flex-shrink-0 self-center ${index === userData.currentLocationIndex ? 'text-[#F9C81E]' : 'text-[#F9C81E]'}`} />
                       
                       {/* Contenido de la ubicación */}
                       {editingLocation === location._id ? (
@@ -722,7 +722,7 @@ const UserProfileButton = ({ className = '' }) => {
                               type="text"
                               value={editingLocationText.alias}
                               onChange={(e) => setEditingLocationText(prev => ({ ...prev, alias: e.target.value }))}
-                              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
+                              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F9C81E] focus:border-transparent text-sm"
                               placeholder="Nombre de la ubicación"
                             />
                             <input
@@ -730,7 +730,7 @@ const UserProfileButton = ({ className = '' }) => {
                               value={editingLocationText.googleMapsUrl}
                               onChange={(e) => setEditingLocationText(prev => ({ ...prev, googleMapsUrl: e.target.value }))}
                               onKeyPress={(e) => e.key === 'Enter' && handleUpdateLocation(location._id)}
-                              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
+                              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F9C81E] focus:border-transparent text-sm"
                               placeholder="Pega el vínculo de Google Maps"
                             />
                             <div className="flex flex-col sm:flex-row gap-2">
@@ -745,7 +745,7 @@ const UserProfileButton = ({ className = '' }) => {
                               <Button
                                 onClick={handleCancelEditLocation}
                                 variant="minimal"
-                                className="flex-1 p-2 sm:p-1 text-red-400 hover:text-red-300 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 hover:border-red-400/50"
+                                className="flex-1 p-2 sm:p-1 text-[#F9C81E] hover:text-[#F9C81E]/80 bg-[#F9C81E]/20 hover:bg-[#F9C81E]/30 border border-[#F9C81E]/30 hover:border-[#F9C81E]/50"
                               >
                                 <Text variant="caption" size="sm">✗ Cancelar</Text>
                               </Button>
@@ -757,11 +757,11 @@ const UserProfileButton = ({ className = '' }) => {
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                             <div className="flex items-center gap-2">
-                              <Text variant="body" size="sm" className={`font-medium ${index === userData.currentLocationIndex ? 'text-orange-300' : 'text-white'}`}>
+                              <Text variant="body" size="sm" className={`font-medium ${index === userData.currentLocationIndex ? 'text-[#F9C81E]' : 'text-white'}`}>
                                 {location.alias}
                               </Text>
                               {index === userData.currentLocationIndex && (
-                                <Star className="w-3 h-3 text-orange-300" fill="currentColor" />
+                                <Star className="w-3 h-3 text-[#F9C81E]" fill="currentColor" />
                               )}
                             </div>
                             <Text variant="body" size="xs" className="text-white/70 truncate">
@@ -777,7 +777,7 @@ const UserProfileButton = ({ className = '' }) => {
                           <Button
                             onClick={() => handleSetCurrentLocation(location._id)}
                             variant="minimal"
-                            className="p-1 text-orange-400 hover:text-orange-300 bg-orange-500/20 hover:bg-orange-500/30 border-none"
+                            className="p-1 text-[#F9C81E] hover:text-[#F9C81E]/80 bg-[#F9C81E]/20 hover:bg-[#F9C81E]/30 border-none"
                             disabled={isLoadingLocations}
                           >
                             <Star size={14} />
@@ -795,7 +795,7 @@ const UserProfileButton = ({ className = '' }) => {
                           <Button
                             onClick={() => handleDeleteLocation(location._id)}
                             variant="minimal"
-                            className="p-1 text-red-400 hover:text-red-500 bg-red-500/20 hover:bg-red-500/30 border-none"
+                            className="p-1 text-[#F9C81E] hover:text-[#F9C81E]/80 bg-[#F9C81E]/20 hover:bg-[#F9C81E]/30 border-none"
                             disabled={isLoadingLocations}
                           >
                             <Trash2 size={14} />
@@ -812,7 +812,7 @@ const UserProfileButton = ({ className = '' }) => {
                   <button
                     type="button"
                     onClick={() => window.open('https://www.google.com/maps', '_blank')}
-                    className="flex items-center gap-2 px-3 py-2 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded-lg text-orange-300 hover:text-orange-200 transition-colors text-xs w-full justify-center"
+                    className="flex items-center gap-2 px-3 py-2 bg-[#F9C81E]/20 hover:bg-[#F9C81E]/30 border border-[#F9C81E]/30 rounded-lg text-[#F9C81E] hover:text-[#F9C81E]/80 transition-colors text-xs w-full justify-center"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
@@ -838,7 +838,7 @@ const UserProfileButton = ({ className = '' }) => {
                       type="text"
                       value={newLocation.alias}
                       onChange={(e) => setNewLocation(prev => ({ ...prev, alias: e.target.value }))}
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F9C81E] focus:border-transparent text-sm sm:text-base"
                       placeholder="Nombre de la ubicación (ej: Casa, Trabajo, etc.)"
                     />
                     <input
@@ -846,7 +846,7 @@ const UserProfileButton = ({ className = '' }) => {
                       value={newLocation.googleMapsUrl}
                       onChange={(e) => setNewLocation(prev => ({ ...prev, googleMapsUrl: e.target.value }))}
                       onKeyPress={(e) => e.key === 'Enter' && handleAddLocation()}
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F9C81E] focus:border-transparent text-sm sm:text-base"
                       placeholder="Pega aquí el vínculo de Google Maps"
                     />
                     <Button
@@ -890,7 +890,7 @@ const UserProfileButton = ({ className = '' }) => {
                 </div>
                 <Text variant="h3" size="base" className="text-white">Mis Pedidos</Text>
               </div>
-              <Button onClick={handleCloseOrdersModal} variant="minimal" className="p-2 text-red-400 hover:bg-gray-700 border-none bg-transparent">
+              <Button onClick={handleCloseOrdersModal} variant="minimal" className="p-2 text-[#F9C81E] hover:bg-gray-700 border-none bg-transparent">
                 <X size={20} />
               </Button>
             </div>
@@ -913,7 +913,7 @@ const UserProfileButton = ({ className = '' }) => {
                 {searchOrders && (
                   <button
                     onClick={() => setSearchOrders('')}
-                    className="text-orange-400 hover:text-orange-300 transition-colors"
+                    className="text-[#F9C81E] hover:text-[#F9C81E]/80 transition-colors"
                   >
                     Limpiar búsqueda
                   </button>
@@ -946,15 +946,15 @@ const UserProfileButton = ({ className = '' }) => {
             ) : (
               <div className="space-y-4">
                 {filteredOrders.map((order) => (
-                  <div key={order._id} className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-5 border border-gray-700/50 hover:border-orange-500/30 transition-all duration-300 group">
+                  <div key={order._id} className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-5 border border-gray-700/50 hover:border-[#F9C81E]/30 transition-all duration-300 group">
                     {/* Header con número de orden y estado */}
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-gradient-to-br from-[#F9C81E] to-[#F9C81E] rounded-lg flex items-center justify-center">
                           <Package className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <Text variant="bodyBold" size="sm" className="text-white group-hover:text-orange-300 transition-colors">
+                          <Text variant="bodyBold" size="sm" className="text-white group-hover:text-[#F9C81E] transition-colors">
                             {order.id || order._id || order.orderNumber || 'N/A'}
                           </Text>
                           <Text variant="caption" size="xs" className="text-gray-400">
@@ -972,7 +972,7 @@ const UserProfileButton = ({ className = '' }) => {
                         order.status === 'pendiente' ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' :
                         order.status === 'en_proceso' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
                         order.status === 'completado' ? 'bg-green-500/20 text-green-300 border-green-500/30' :
-                        order.status === 'cancelado' ? 'bg-red-500/20 text-red-300 border-red-500/30' :
+                        order.status === 'cancelado' ? 'bg-[#F9C81E]/20 text-[#F9C81E] border-[#F9C81E]/30' :
                         'bg-gray-500/20 text-gray-300 border-gray-500/30'
                       }`}>
                         {order.status}
@@ -982,7 +982,7 @@ const UserProfileButton = ({ className = '' }) => {
                     {/* Información de la tienda */}
                     <div className="mb-4 p-3 bg-gray-700/30 rounded-lg border border-gray-600/50">
                       <div className="flex items-center gap-2 mb-2">
-                        <Store className="w-4 h-4 text-orange-400" />
+                        <Store className="w-4 h-4 text-[#F9C81E]" />
                         <Text variant="bodyBold" size="xs" className="text-white">
                           {order.storeId?.name || 'Tienda'}
                         </Text>
@@ -997,7 +997,7 @@ const UserProfileButton = ({ className = '' }) => {
                           </div>
                           <div className="flex items-center gap-1">
                             <DollarSign className="w-4 h-4 text-gray-400" />
-                            <Text variant="bodyBold" size="xs" className="text-orange-400">
+                            <Text variant="bodyBold" size="xs" className="text-[#F9C81E]">
                               ${order.totals?.total || 0}
                             </Text>
                           </div>
@@ -1009,7 +1009,7 @@ const UserProfileButton = ({ className = '' }) => {
                     {order.products && order.products.length > 0 && (
                       <div className="mb-4">
                         <div className="flex items-center gap-2 mb-3">
-                          <Pizza className="w-4 h-4 text-orange-400" />
+                          <Pizza className="w-4 h-4 text-[#F9C81E]" />
                           <Text variant="bodyBold" size="xs" className="text-white">
                             Productos ordenados
                           </Text>
@@ -1018,13 +1018,13 @@ const UserProfileButton = ({ className = '' }) => {
                           {order.products.slice(0, 3).map((product, index) => (
                             <div key={index} className="flex items-center justify-between p-2 bg-gray-700/20 rounded-lg border border-gray-600/30">
                               <div className="flex items-center gap-2">
-                                <span className="w-2 h-2 bg-orange-400 rounded-full flex-shrink-0"></span>
+                                <span className="w-2 h-2 bg-[#F9C81E] rounded-full flex-shrink-0"></span>
                                 <Text variant="caption" size="xs" className="text-gray-200 font-medium">
                                   {product.name}
                                 </Text>
                               </div>
                               {product.quantity > 1 && (
-                                <div className="px-2 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full border border-orange-500/30">
+                                <div className="px-2 py-1 bg-[#F9C81E]/20 text-[#F9C81E] text-xs rounded-full border border-[#F9C81E]/30">
                                   x{product.quantity}
                                 </div>
                               )}
@@ -1032,7 +1032,7 @@ const UserProfileButton = ({ className = '' }) => {
                           ))}
                           {order.products.length > 3 && (
                             <div className="text-center py-2">
-                              <Text variant="caption" size="xs" className="text-orange-400 font-medium">
+                              <Text variant="caption" size="xs" className="text-[#F9C81E] font-medium">
                                 +{order.products.length - 3} productos más
                               </Text>
                             </div>
@@ -1074,7 +1074,7 @@ const UserProfileButton = ({ className = '' }) => {
                   </Text>
                 </div>
               </div>
-              <Button onClick={handleCloseOrderDetail} variant="minimal" className="p-2 text-red-400 hover:bg-gray-700 border-none bg-transparent">
+              <Button onClick={handleCloseOrderDetail} variant="minimal" className="p-2 text-[#F9C81E] hover:bg-gray-700 border-none bg-transparent">
                 <X size={20} />
               </Button>
             </div>
@@ -1085,7 +1085,7 @@ const UserProfileButton = ({ className = '' }) => {
                 selectedOrder.status === 'pendiente' ? 'bg-yellow-500/20 text-yellow-300' :
                 selectedOrder.status === 'en_proceso' ? 'bg-blue-500/20 text-blue-300' :
                 selectedOrder.status === 'completado' ? 'bg-green-500/20 text-green-300' :
-                selectedOrder.status === 'cancelado' ? 'bg-red-500/20 text-red-300' :
+                selectedOrder.status === 'cancelado' ? 'bg-[#F9C81E]/20 text-[#F9C81E]' :
                 'bg-gray-500/20 text-gray-300'
               }`}>
                 <Clock className="w-4 h-4" />
@@ -1117,7 +1117,7 @@ const UserProfileButton = ({ className = '' }) => {
               <div className="space-y-3">
                 {selectedOrder.products?.map((product, index) => (
                   <div key={index} className="flex items-center gap-3 p-3 bg-gray-800 rounded-lg">
-                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg flex items-center justify-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#F9C81E]/20 to-[#F9C81E]/20 rounded-lg flex items-center justify-center">
                       {product.image ? (
                         <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
                       ) : (
@@ -1130,13 +1130,13 @@ const UserProfileButton = ({ className = '' }) => {
                         Cantidad: {product.quantity} • ${product.price}
                       </Text>
                       {product.note && (
-                        <Text variant="caption" size="xs" className="text-orange-400">
+                        <Text variant="caption" size="xs" className="text-[#F9C81E]">
                           Nota: {product.note}
                         </Text>
                       )}
                     </div>
                     <div className="text-right">
-                      <Text variant="bodyBold" size="sm" className="text-orange-400">
+                      <Text variant="bodyBold" size="sm" className="text-[#F9C81E]">
                         ${(product.price * product.quantity).toFixed(2)}
                       </Text>
                     </div>
@@ -1159,8 +1159,8 @@ const UserProfileButton = ({ className = '' }) => {
                 return (
                   <div className="mb-4 p-3 bg-gray-700/50 rounded-lg border border-gray-600">
                     <div className="flex items-center gap-2 mb-2">
-                      <Clock className="w-4 h-4 text-orange-400" />
-                      <Text variant="bodyBold" size="xs" className="text-orange-300">
+                      <Clock className="w-4 h-4 text-[#F9C81E]" />
+                      <Text variant="bodyBold" size="xs" className="text-[#F9C81E]">
                         Pedido realizado a las {formattedOrderTime}
                       </Text>
                     </div>
@@ -1170,8 +1170,8 @@ const UserProfileButton = ({ className = '' }) => {
                       </Text>
                       <div className={`px-2 py-1 rounded-full text-xs font-medium ${
                         deliveryInfo.isLateNight 
-                          ? 'bg-red-500/20 text-red-300' 
-                          : 'bg-orange-500/20 text-orange-300'
+                          ? 'bg-[#F9C81E]/20 text-[#F9C81E]' 
+                          : 'bg-[#F9C81E]/20 text-[#F9C81E]'
                       }`}>
                         {deliveryInfo.timeSlot}
                       </div>
@@ -1202,12 +1202,12 @@ const UserProfileButton = ({ className = '' }) => {
                           <Text variant="body" size="sm" className="text-gray-300">
                             Ajuste por horario ({deliveryInfo.timeSlot}):
                           </Text>
-                          <Text variant="body" size="sm" className="text-orange-400">+${deliveryInfo.additionalFee}</Text>
+                          <Text variant="body" size="sm" className="text-[#F9C81E]">+${deliveryInfo.additionalFee}</Text>
                         </div>
                       )}
                       <div className="flex justify-between border-t border-gray-600 pt-1">
                         <Text variant="bodyBold" size="sm" className="text-gray-300">Total envío:</Text>
-                        <Text variant="bodyBold" size="sm" className="text-orange-400">${deliveryInfo.totalFee}</Text>
+                        <Text variant="bodyBold" size="sm" className="text-[#F9C81E]">${deliveryInfo.totalFee}</Text>
                       </div>
                     </>
                   );
@@ -1216,7 +1216,7 @@ const UserProfileButton = ({ className = '' }) => {
                 <div className="border-t border-gray-600 pt-2">
                   <div className="flex justify-between">
                     <Text variant="bodyBold" size="sm" className="text-white">Total:</Text>
-                    <Text variant="bodyBold" size="sm" className="text-orange-400">${selectedOrder.totals?.total || 0}</Text>
+                    <Text variant="bodyBold" size="sm" className="text-[#F9C81E]">${selectedOrder.totals?.total || 0}</Text>
                   </div>
                 </div>
               </div>

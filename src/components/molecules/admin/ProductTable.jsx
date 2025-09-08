@@ -102,7 +102,7 @@ const ProductTable = ({ products, onEdit, onDelete, onDeleteProduct, isLoading }
         <div className='flex items-center justify-between'>
           <div>
             <Text variant='h3' size='lg' className='text-white'>
-              <span className='bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent'>
+              <span className='bg-gradient-to-r from-[#F9C81E] to-yellow-400 bg-clip-text text-transparent'>
                 Productos de la Tienda
               </span>
             </Text>
@@ -180,7 +180,7 @@ const ProductTable = ({ products, onEdit, onDelete, onDeleteProduct, isLoading }
                 >
                 <td className='px-6 py-4 whitespace-nowrap text-left'>
                   <div className='flex items-center'>
-                    <div className='w-10 h-10 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 border border-orange-400/30 rounded-full flex items-center justify-center mr-3 overflow-hidden'>
+                    <div className='w-10 h-10 bg-gradient-to-br from-[#F9C81E]/20 to-yellow-500/20 border border-[#F9C81E]/30 rounded-full flex items-center justify-center mr-3 overflow-hidden'>
                       {product.images && product.images.length > 0 ? (
                         <img 
                           src={product.images[0]} 

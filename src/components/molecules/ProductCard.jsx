@@ -39,7 +39,7 @@ const ProductCard = memo(({ product, onAddToCart }) => {
   return (
     <>
       <div
-        className='group relative bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl shadow-xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/20 hover:border-white/40 overflow-hidden'
+        className='group relative bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl shadow-xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-[#F9C81E]/20 hover:border-white/40 overflow-hidden'
         onMouseEnter={() => setShowDesc(true)}
         onMouseLeave={() => setShowDesc(false)}
         onTouchStart={() => setShowDesc(v => !v)}
@@ -56,7 +56,7 @@ const ProductCard = memo(({ product, onAddToCart }) => {
           {/* Header con categoría y stock */}
           <div className='flex items-center justify-between mb-2 sm:mb-3 md:mb-4'>
             <span className='inline-flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white text-[10px] sm:text-xs font-medium px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-white/30 group-hover:bg-white/30 transition-all duration-300'>
-              <span className='w-1.5 h-1.5 sm:w-2 sm:h-2 bg-orange-400 rounded-full'></span>
+              <span className='w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#F9C81E] rounded-full'></span>
               <span className='hidden sm:inline'>{product.category}</span>
               <span className='sm:hidden'>
                 {product.category && product.category.length > 8
@@ -87,8 +87,8 @@ const ProductCard = memo(({ product, onAddToCart }) => {
               {productImageUrl ? (
                 <>
                   {!imageLoaded && (
-                    <div className='absolute inset-0 bg-gradient-to-br from-orange-400/20 to-red-400/20 rounded-xl sm:rounded-2xl animate-pulse flex items-center justify-center'>
-                      <ImageIcon className='w-4 h-4 sm:w-6 sm:h-6 text-orange-400' />
+                    <div className='absolute inset-0 bg-gradient-to-br from-[#F9C81E]/20 to-red-400/20 rounded-xl sm:rounded-2xl animate-pulse flex items-center justify-center'>
+                      <ImageIcon className='w-4 h-4 sm:w-6 sm:h-6 text-[#F9C81E]' />
                     </div>
                   )}
                   <img
@@ -111,13 +111,13 @@ const ProductCard = memo(({ product, onAddToCart }) => {
 
           {/* Información del producto */}
           <div className='text-center mb-3 sm:mb-4'>
-            <h3 className='text-sm sm:text-base md:text-lg font-bold text-white mb-1 sm:mb-2 group-hover:text-orange-300 transition-colors duration-300 line-clamp-2 leading-tight'>
+            <h3 className='text-sm sm:text-base md:text-lg font-bold text-white mb-1 sm:mb-2 group-hover:text-[#F9C81E] transition-colors duration-300 line-clamp-2 leading-tight'>
               {product.name}
             </h3>
 
             {/* Precio */}
             <div className='flex items-center justify-center mb-2 sm:mb-3'>
-              <span className='text-lg sm:text-xl md:text-2xl font-bold text-orange-400 group-hover:text-orange-300 transition-colors duration-300'>
+              <span className='text-lg sm:text-xl md:text-2xl font-bold text-[#F9C81E] group-hover:text-[#F9C81E] transition-colors duration-300'>
                 {formattedPrice}
               </span>
             </div>
@@ -125,12 +125,12 @@ const ProductCard = memo(({ product, onAddToCart }) => {
             {/* Nota del admin - Mini sección (siempre reserva espacio) */}
             <div className='mb-2 h-[52px] sm:h-[56px]'>
               {product.adminNote ? (
-                <div className='h-full p-1.5 sm:p-2 bg-orange-500/20 border border-orange-500/30 rounded-lg'>
+                <div className='h-full p-1.5 sm:p-2 bg-[#F9C81E]/20 border border-[#F9C81E]/30 rounded-lg'>
                   <div className='flex items-center gap-1 mb-1'>
-                    <FileText size={10} className='text-orange-400 flex-shrink-0' />
-                    <span className='text-orange-300 text-[10px] sm:text-xs font-medium'>Nota del vendedor:</span>
+                    <FileText size={10} className='text-[#F9C81E] flex-shrink-0' />
+                    <span className='text-[#F9C81E] text-[10px] sm:text-xs font-medium'>Nota del vendedor:</span>
                   </div>
-                  <p className='text-orange-200 text-[10px] sm:text-xs leading-relaxed line-clamp-2'>
+                  <p className='text-[#F9C81E]/80 text-[10px] sm:text-xs leading-relaxed line-clamp-2'>
                     {product.adminNote}
                   </p>
                 </div>
@@ -144,7 +144,7 @@ const ProductCard = memo(({ product, onAddToCart }) => {
           <div className='flex gap-1.5 sm:gap-2'>
             <Button
               variant='fire'
-              className='flex-1 text-xs sm:text-sm font-medium transition-all duration-300 hover:scale-105 group-hover:shadow-lg group-hover:shadow-orange-500/30 py-1.5 sm:py-2 flex items-center justify-center'
+              className='flex-1 text-xs sm:text-sm font-medium transition-all duration-300 hover:scale-105 group-hover:shadow-lg group-hover:shadow-[#F9C81E]/30 py-1.5 sm:py-2 flex items-center justify-center'
               onClick={() => onAddToCart?.(product)}
               disabled={!product.stock || product.stock <= 0}
             >

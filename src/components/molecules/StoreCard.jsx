@@ -97,7 +97,7 @@ const StoreCard = ({ store, onSelect }) => {
 
   return (
     <div
-      className='group relative overflow-hidden bg-white rounded-2xl shadow-lg cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/30 transform-gpu h-80'
+      className='group relative overflow-hidden bg-white rounded-2xl shadow-lg cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-[#F9C81E]/30 transform-gpu h-80'
       onClick={() => onSelect(store)}
     >
       {/* Imagen de fondo */}
@@ -112,7 +112,7 @@ const StoreCard = ({ store, onSelect }) => {
       {/* Indicador de carga */}
       {!imageLoaded && (
         <div className='absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center'>
-          <div className='w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin'></div>
+          <div className='w-8 h-8 border-4 border-[#F9C81E] border-t-transparent rounded-full animate-spin'></div>
         </div>
       )}
 
@@ -120,7 +120,7 @@ const StoreCard = ({ store, onSelect }) => {
       <div className='relative z-10 h-full flex flex-col justify-between p-6'>
         {/* Header con categoría */}
         <div className='flex justify-between items-start'>
-          <span className='inline-block bg-orange-500/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full border border-orange-400/50'>
+          <span className='inline-block bg-[#F9C81E]/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full border border-[#F9C81E]/50'>
             {storeCategory}
           </span>
 
@@ -134,7 +134,7 @@ const StoreCard = ({ store, onSelect }) => {
         {/* Información principal */}
         <div className='flex-1 flex flex-col justify-end'>
           {/* Nombre de la tienda */}
-          <h3 className='text-xl font-bold text-white mb-2 group-hover:text-orange-300 transition-colors duration-300 line-clamp-2'>
+          <h3 className='text-xl font-bold text-white mb-2 group-hover:text-[#F9C81E] transition-colors duration-300 line-clamp-2'>
             {store.name}
           </h3>
 
@@ -147,11 +147,11 @@ const StoreCard = ({ store, onSelect }) => {
 
           {/* Ubicación */}
           <div className='flex items-center space-x-2 mb-3'>
-            <MapPin className='w-4 h-4 text-orange-400' />
+            <MapPin className='w-4 h-4 text-[#F9C81E]' />
             {store.location?.googleMapsUrl ? (
               <button
                 onClick={handleLocationClick}
-                className='text-white/90 text-sm font-medium hover:text-orange-300 transition-colors duration-200 underline decoration-orange-400/50 hover:decoration-orange-300 cursor-pointer'
+                className='text-white/90 text-sm font-medium hover:text-[#F9C81E] transition-colors duration-200 underline decoration-[#F9C81E]/50 hover:decoration-[#F9C81E] cursor-pointer'
                 title='Ver en Google Maps'
               >
                 {storeLocation}
@@ -169,7 +169,7 @@ const StoreCard = ({ store, onSelect }) => {
               {store.socialMedia?.tiktok && (
                 <button
                   onClick={(e) => handleSocialMediaClick('tiktok', store.socialMedia.tiktok, e)}
-                  className='w-8 h-8 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/70 transition-all duration-200 hover:scale-110 group-hover:bg-orange-500/20'
+                  className='w-8 h-8 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/70 transition-all duration-200 hover:scale-110 group-hover:bg-[#F9C81E]/20'
                   title='Síguenos en TikTok'
                 >
                   <svg className='w-4 h-4 text-white' viewBox="0 0 24 24" fill="currentColor">
